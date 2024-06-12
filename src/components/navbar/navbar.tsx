@@ -1,0 +1,146 @@
+"use client";
+
+import React from "react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
+  NavbarContent,
+  NavbarItem,
+  Link,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+// import {AcmeLogo} from "./AcmeLogo.jsx";
+
+export default function NavigationBar() {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+  ];
+
+  return (
+    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
+      </NavbarContent>
+
+      <NavbarContent className="sm:hidden pr-3" justify="center">
+        <NavbarBrand>
+          <p className="font-bold text-inherit">ACME</p>
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarBrand>
+          <Image
+            src={"/images/logo.png"}
+            width={75}
+            height={75}
+            alt="Logo PT Brantas Energi w-fit h-fit p-5"
+          />
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent className="hidden sm:flex gap-4" justify="end">
+        <Dropdown>
+          <NavbarItem>
+            <DropdownTrigger>
+              <Button
+                disableRipple
+                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                radius="sm"
+              >
+                PROFIL PPID
+                <ChevronDown />
+              </Button>
+            </DropdownTrigger>
+          </NavbarItem>
+          <DropdownMenu
+            aria-label="ACME features"
+            className="w-[340px]"
+            itemClasses={{
+              base: "gap-4",
+            }}
+          >
+            <DropdownItem key="struktur">Struktur PPID</DropdownItem>
+            <DropdownItem key="visiMisi">Visi & Misi PPID</DropdownItem>
+            <DropdownItem key="tugasFungsiWewenang">
+              Tugas, Fungsi, & Wewenang
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+        <NavbarItem>
+          <Link href="/" color="foreground" className="text-sm">
+            REGULASI
+          </Link>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Link href="/" color="foreground" className="text-sm">
+            INFORMASI PUBLIK
+          </Link>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Link href="/" color="foreground" className="text-sm">
+            LAPORAN LAYANAN
+          </Link>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Link href="/" color="foreground" className="text-sm">
+            PROSEDUR
+          </Link>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Link href="/" color="foreground" className="text-sm">
+            PENGADUAN
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
+
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link
+              className="w-full"
+              color={
+                index === 2
+                  ? "warning"
+                  : index === menuItems.length - 1
+                    ? "danger"
+                    : "foreground"
+              }
+              href="#"
+              size="lg"
+            >
+              {item}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
+    </Navbar>
+  );
+}
