@@ -105,8 +105,6 @@ export default function Home() {
           <Layanan slides={SLIDES} options={OPTIONS} />
         </Container>
       </div>
-
-      
     </div>
   );
 }

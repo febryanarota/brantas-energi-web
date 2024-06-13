@@ -1,5 +1,4 @@
-
 export interface DataItem {
-    title: string;
-    filePath: string;
+  title: string;
+  filePath: string;
 }

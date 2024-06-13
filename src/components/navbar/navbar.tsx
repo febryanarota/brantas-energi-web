@@ -36,7 +36,12 @@ export default function NavigationBar() {
   ];
 
   return (
-    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen} className="md:py-3">
+    <Navbar
+      isBordered
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      className="md:py-3"
+    >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -50,7 +55,7 @@ export default function NavigationBar() {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarBrand >
+        <NavbarBrand>
           <a href="/">
             <Image
               src={"/images/logo.png"}
@@ -58,7 +63,7 @@ export default function NavigationBar() {
               height={75}
               alt="Logo PT Brantas Energi "
               className="p-2"
-          />
+            />
           </a>
         </NavbarBrand>
       </NavbarContent>
@@ -73,7 +78,7 @@ export default function NavigationBar() {
                 radius="sm"
               >
                 PROFIL PPID
-                <ChevronDown/>
+                <ChevronDown />
               </Button>
             </DropdownTrigger>
           </NavbarItem>
@@ -84,16 +89,27 @@ export default function NavigationBar() {
               base: "gap-4",
             }}
           >
-            <DropdownItem key="struktur" href="/struktur-ppid">Struktur PPID</DropdownItem>
-            <DropdownItem key="visiMisi" href="/visi-misi-ppid">Visi & Misi PPID</DropdownItem>
-            <DropdownItem key="tugasFungsiWewenang" href="/tugas-fungsi-wewenang">
+            <DropdownItem key="struktur" href="/struktur-ppid">
+              Struktur PPID
+            </DropdownItem>
+            <DropdownItem key="visiMisi" href="/visi-misi-ppid">
+              Visi & Misi PPID
+            </DropdownItem>
+            <DropdownItem
+              key="tugasFungsiWewenang"
+              href="/tugas-fungsi-wewenang"
+            >
               Tugas, Fungsi, & Wewenang
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
 
         <NavbarItem>
-          <Link href="/regulasi-informasi-publik" color="foreground" className="text-sm">
+          <Link
+            href="/regulasi-informasi-publik"
+            color="foreground"
+            className="text-sm"
+          >
             REGULASI
           </Link>
         </NavbarItem>
@@ -118,10 +134,24 @@ export default function NavigationBar() {
               base: "gap-4",
             }}
           >
-            <DropdownItem key="informasi-publik" href="/informasi-publik">Informasi Publik</DropdownItem>
-            <DropdownItem key="informasi-serta-merta" href="/informasi-serta-merta">Informasi Serta Merta</DropdownItem>
-            <DropdownItem key="informasi-berkala" href="/informasi-berkala">Informasi Berkala</DropdownItem>
-            <DropdownItem key="informasi-wajib-tersedia" href="/informasi-wajib-tersedia">Informasi Wajib Tersedia</DropdownItem>
+            <DropdownItem key="informasi-publik" href="/informasi-publik">
+              Informasi Publik
+            </DropdownItem>
+            <DropdownItem
+              key="informasi-serta-merta"
+              href="/informasi-serta-merta"
+            >
+              Informasi Serta Merta
+            </DropdownItem>
+            <DropdownItem key="informasi-berkala" href="/informasi-berkala">
+              Informasi Berkala
+            </DropdownItem>
+            <DropdownItem
+              key="informasi-wajib-tersedia"
+              href="/informasi-wajib-tersedia"
+            >
+              Informasi Wajib Tersedia
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
 

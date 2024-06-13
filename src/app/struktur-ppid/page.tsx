@@ -3,15 +3,21 @@ import { Container } from "@/components/ui/container";
 import Image from "next/image";
 
 export default function Page() {
-    const image = "/images/struktur.png";
+  const image = "/images/struktur.png";
 
-    return (
-        <div className="min-h-screen flex flex-col items-center pb-10">
-            <Header title={'STRUKTUR PPID'}/>
+  return (
+    <div className="min-h-screen flex flex-col items-center pb-10">
+      <Header title={"STRUKTUR PPID"} />
 
-            <Container>
-                <Image src={image} width={1000} height={1000} alt="Struktur PPID" className="w-full h-fit"/>
-            </Container>
-        </div>
-    )
-};
+      <Container>
+        <Image
+          src={image}
+          width={1000}
+          height={1000}
+          alt="Struktur PPID"
+          className="w-full h-fit"
+        />
+      </Container>
+    </div>
+  );
+}
