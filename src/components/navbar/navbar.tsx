@@ -92,7 +92,7 @@ export default function NavigationBar() {
         </Dropdown>
 
         <NavbarItem>
-          <Link href="/" color="foreground" className="text-sm">
+          <Link href="/regulasi-informasi-publik" color="foreground" className="text-sm">
             REGULASI
           </Link>
         </NavbarItem>
