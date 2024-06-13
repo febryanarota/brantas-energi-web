@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { EmblaOptionsType } from "embla-carousel";
 import Layanan from "@/components/carousel/layanan-carousel";
+import { Container } from "@/components/ui/container";
 
 export default function Home() {
   const OPTIONS: EmblaOptionsType = {
@@ -23,7 +24,7 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-10">
-            <div className="w-full max-w-5xl px-[24px] text-white sm:border-l-5 sm:border-primaryYellow py-10">
+            <Container className=" text-white sm:border-l-5 sm:border-primaryYellow py-10">
               <div className="flex flex-col gap-4 border-b-5 border-primaryYellow pb-2 sm:border-none sm:pb-0">
                 <span className="text-4xl sm:text-6xl font-bold">
                   Layanan PPID
@@ -38,14 +39,14 @@ export default function Home() {
                 consectetur adipisicing elit. Cumque sapiente quos voluptates.
                 Lorem, ipsum.
               </p>
-            </div>
+            </Container>
           </div>
         </div>
       </div>
 
       {/* Tentang Kami */}
       <div className="flex flex-col items-center pb-24">
-        <div className="w-full max-w-5xl px-[24px] flex flex-col sm:flex-row sm:mt-20 mt-10">
+        <Container className="flex flex-col sm:flex-row sm:mt-20 mt-10">
           <div className="relative sm:w-1/2 h-fit">
             <div className="relative w-[90%] h-[200px] sm:h-[350px] rounded-md overflow-hidden">
               <Image
@@ -88,11 +89,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
 
       <div className="bg-gray-100 flex justify-center py-10">
-        <div className="w-full max-w-5xl px-[24px] flex flex-col">
+        <Container className="flex flex-col">
           <div className="flex flex-col items-center">
             <p className="border-b-2 border-primaryYellow font-semibold mt-10 text-slate-800">
               LAYANAN KAMI
@@ -102,7 +103,7 @@ export default function Home() {
             </p>
           </div>
           <Layanan slides={SLIDES} options={OPTIONS} />
-        </div>
+        </Container>
       </div>
 
       

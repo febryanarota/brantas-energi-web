@@ -7,11 +7,12 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
+import { Container } from "../ui/container";
 
 export default function Footer() {
   return (
     <div className="text-white py-10 bg-gradient-to-b from-sky-800 to-sky-900 flex  justify-center">
-      <div className="max-w-5xl px-[24px] flex flex-col w-full">
+      <Container className="flex flex-col">
         <p className="text-lg font-bold my-5">BRANTAS ENERGI</p>
         <div>
           <ul className="flex flex-col gap-5">
@@ -63,7 +64,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
