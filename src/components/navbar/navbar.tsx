@@ -18,7 +18,6 @@ import {
 } from "@nextui-org/react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-// import {AcmeLogo} from "./AcmeLogo.jsx";
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -51,14 +50,16 @@ export default function NavigationBar() {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarBrand>
-          <Image
-            src={"/images/logo.png"}
-            width={75}
-            height={75}
-            alt="Logo PT Brantas Energi "
-            className="p-2"
+        <NavbarBrand >
+          <a href="/">
+            <Image
+              src={"/images/logo.png"}
+              width={75}
+              height={75}
+              alt="Logo PT Brantas Energi "
+              className="p-2"
           />
+          </a>
         </NavbarBrand>
       </NavbarContent>
 
@@ -68,11 +69,11 @@ export default function NavigationBar() {
             <DropdownTrigger>
               <Button
                 disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                className="p-0 gap-0 bg-transparent data-[hover=true]:bg-transparent"
                 radius="sm"
               >
                 PROFIL PPID
-                <ChevronDown />
+                <ChevronDown/>
               </Button>
             </DropdownTrigger>
           </NavbarItem>
@@ -97,11 +98,32 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
 
-        <NavbarItem>
-          <Link href="/" color="foreground" className="text-sm">
-            INFORMASI PUBLIK
-          </Link>
-        </NavbarItem>
+        <Dropdown>
+          <NavbarItem>
+            <DropdownTrigger>
+              <Button
+                disableRipple
+                className="p-0 gap-0 bg-transparent data-[hover=true]:bg-transparent"
+                radius="sm"
+              >
+                INFORMASI PUBLIK
+                <ChevronDown />
+              </Button>
+            </DropdownTrigger>
+          </NavbarItem>
+          <DropdownMenu
+            aria-label="ACME features"
+            className="w-[340px]"
+            itemClasses={{
+              base: "gap-4",
+            }}
+          >
+            <DropdownItem key="informasi-publik" href="/informasi-publik">Informasi Publik</DropdownItem>
+            <DropdownItem key="informasi-serta-merta" href="/informasi-serta-merta">Informasi Serta Merta</DropdownItem>
+            <DropdownItem key="informasi-berkala" href="/informasi-berkala">Informasi Berkala</DropdownItem>
+            <DropdownItem key="informasi-wajib-tersedia" href="/informasi-wajib-tersedia">Informasi Wajib Tersedia</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
 
         <NavbarItem>
           <Link href="/" color="foreground" className="text-sm">
