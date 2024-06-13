@@ -84,8 +84,8 @@ export default function NavigationBar() {
             }}
           >
             <DropdownItem key="struktur" href="/struktur-ppid">Struktur PPID</DropdownItem>
-            <DropdownItem key="visiMisi">Visi & Misi PPID</DropdownItem>
-            <DropdownItem key="tugasFungsiWewenang">
+            <DropdownItem key="visiMisi" href="/visi-misi-ppid">Visi & Misi PPID</DropdownItem>
+            <DropdownItem key="tugasFungsiWewenang" href="/tugas-fungsi-wewenang">
               Tugas, Fungsi, & Wewenang
             </DropdownItem>
           </DropdownMenu>
