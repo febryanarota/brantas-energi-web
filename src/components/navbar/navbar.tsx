@@ -37,7 +37,7 @@ export default function NavigationBar() {
   ];
 
   return (
-    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen} className="md:py-3">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -56,7 +56,8 @@ export default function NavigationBar() {
             src={"/images/logo.png"}
             width={75}
             height={75}
-            alt="Logo PT Brantas Energi w-fit h-fit p-5"
+            alt="Logo PT Brantas Energi "
+            className="p-2"
           />
         </NavbarBrand>
       </NavbarContent>
@@ -82,7 +83,7 @@ export default function NavigationBar() {
               base: "gap-4",
             }}
           >
-            <DropdownItem key="struktur">Struktur PPID</DropdownItem>
+            <DropdownItem key="struktur" href="/struktur-ppid">Struktur PPID</DropdownItem>
             <DropdownItem key="visiMisi">Visi & Misi PPID</DropdownItem>
             <DropdownItem key="tugasFungsiWewenang">
               Tugas, Fungsi, & Wewenang

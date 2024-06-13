@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { EmblaOptionsType } from "embla-carousel";
 import Layanan from "@/components/carousel/layanan-carousel";
-import Footer from "@/components/footer/footer";
 
 export default function Home() {
   const OPTIONS: EmblaOptionsType = {
@@ -106,9 +105,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div>
-        <Footer />
-      </div>
+      
     </div>
   );
 }
