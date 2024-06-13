@@ -11,7 +11,7 @@ import { Container } from "../ui/container";
 
 export default function Footer() {
   return (
-    <div className="text-white py-10 bg-gradient-to-b from-sky-800 to-sky-900 flex  justify-center">
+    <div className="text-white  bg-gradient-to-b from-sky-800 to-sky-900 flex  justify-center">
       <Container className="flex flex-col">
         <p className="text-lg font-bold my-5">BRANTAS ENERGI</p>
         <div>
@@ -40,7 +40,7 @@ export default function Footer() {
           <div className="flex flex-row gap-5">
             <a
               href=""
-              className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
+              className="p-2 rounded-full hover:bg-primaryYellow transition-colors duration-400 ease-in-out"
             >
               <Instagram width={20} height={20} />
             </a>

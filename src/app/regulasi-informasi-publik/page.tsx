@@ -1,10 +1,6 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
-
-interface DataItem {
-    title: string;
-    filePath: string;
-}
+import { DataItem } from "@/lib/dataType";
 
 export default function Page() {
     const data: DataItem[] = [
