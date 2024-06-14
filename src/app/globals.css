@@ -85,3 +85,13 @@
   flex: 0 0 100%;
   min-width: 0;
 }
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.dropdown-content.open {
+  max-height: 500px; /* Adjust according to the content height */
+}

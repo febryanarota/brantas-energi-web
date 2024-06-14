@@ -16,24 +16,27 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = React.useState(false);
+  const [isInformasiPublikOpen, setIsInformasiPublikOpen] =
+    React.useState(false);
+  const [isLaporanLayananOpen, setIsLaporanLayananOpen] = React.useState(false);
 
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  const toggleDropdownProfile = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
+
+  const toggleDropdownInformasi = () => {
+    setIsInformasiPublikOpen(!isInformasiPublikOpen);
+  };
+
+  const toggleDropdownLaporanLayanan = () => {
+    setIsLaporanLayananOpen(!isLaporanLayananOpen);
+  };
 
   return (
     <Navbar
@@ -48,9 +51,16 @@ export default function NavigationBar() {
         />
       </NavbarContent>
 
-      <NavbarContent className="sm:hidden pr-3" justify="center">
+      <NavbarContent className="sm:hidden" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">ACME</p>
+          <a href="/">
+            <Image
+              src={"/images/logo.png"}
+              width={40}
+              height={40}
+              alt="Logo PT Brantas Energi "
+            />
+          </a>
         </NavbarBrand>
       </NavbarContent>
 
@@ -175,10 +185,16 @@ export default function NavigationBar() {
               base: "gap-4",
             }}
           >
-            <DropdownItem key="laporan-layanan-informasi" href="/laporan-layanan-informasi">
+            <DropdownItem
+              key="laporan-layanan-informasi"
+              href="/laporan-layanan-informasi"
+            >
               Laporan Layanan Informasi
             </DropdownItem>
-            <DropdownItem key="permohonan-informasi" href="/permohonan-informasi">
+            <DropdownItem
+              key="permohonan-informasi"
+              href="/permohonan-informasi"
+            >
               Permohonan Informasi
             </DropdownItem>
             <DropdownItem key="laporan-tahunan" href="/laporan-tahunan">
@@ -187,10 +203,16 @@ export default function NavigationBar() {
             <DropdownItem key="pengajuan-keberatan" href="/pengajuan-keberatan">
               Pengajuan Keberatan
             </DropdownItem>
-            <DropdownItem key="laporan-keberlanjutan" href="/laporan-keberlanjutan">
+            <DropdownItem
+              key="laporan-keberlanjutan"
+              href="/laporan-keberlanjutan"
+            >
               Laporan Keberlanjutan
             </DropdownItem>
-            <DropdownItem key="kepuasan-layanan-informasi-publik" href="/kepuasan-layanan-informasi-publik">
+            <DropdownItem
+              key="kepuasan-layanan-informasi-publik"
+              href="/kepuasan-layanan-informasi-publik"
+            >
               Kepuasan Layanan Informasi Publik
             </DropdownItem>
           </DropdownMenu>
@@ -209,25 +231,98 @@ export default function NavigationBar() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className="w-full"
-              color={
-                index === 2
-                  ? "warning"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
-              href="#"
-              size="lg"
+      <NavbarMenu className="pb-20 pt-10 bg-white bg-opacity-90 flex flex-col gap-5">
+        <NavbarMenuItem>
+          <button
+            className="w-full flex flex-row justify-between cursor-pointer "
+            onClick={toggleDropdownProfile}
+          >
+            <p className="uppercase font-medium">Profil PPID</p>
+            {isProfileMenuOpen ? <ChevronUp /> : <ChevronDown />}
+          </button>
+          <div
+            className={`dropdown-content flex flex-col gap-3 pl-2 text-sm ${isProfileMenuOpen ? "open" : ""}`}
+          >
+            <a href="/struktur-ppid">Struktur PPID</a>
+            <a href="/visi-misi-ppid">Visi & Misi PPID</a>
+            <a href="/tugas-fungsi-wewenang">Tugas, Fungsi & Wewenang</a>
+          </div>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <div className="">
+            <a
+              href="/regulasi-informasi-publik"
+              className="uppercase font-medium w-full "
             >
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+              Regulasi
+            </a>
+          </div>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <button
+            className="w-full flex flex-row justify-between cursor-pointer "
+            onClick={toggleDropdownInformasi}
+          >
+            <p className="uppercase font-medium">Informasi Publik</p>
+            {isInformasiPublikOpen ? <ChevronUp /> : <ChevronDown />}
+          </button>
+          <div
+            className={`dropdown-content flex flex-col gap-3 pl-2 text-sm ${isInformasiPublikOpen ? "open" : ""}`}
+          >
+            <a href="/informasi-wajib-tersedia">Informasi Wajib Tersedia</a>
+            <a href="/informasi-berkala">Informasi Berkala</a>
+            <a href="/informasi-publik">Informasi Publik</a>
+            <a href="/informasi-serta-merta">Informasi Serta Merta</a>
+          </div>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <button
+            className="w-full flex flex-row justify-between cursor-pointer "
+            onClick={toggleDropdownLaporanLayanan}
+          >
+            <p className="uppercase font-medium">Laporan Layanan</p>
+            {isLaporanLayananOpen ? <ChevronUp /> : <ChevronDown />}
+          </button>
+          <div
+            className={`dropdown-content flex flex-col gap-3 pl-2 text-sm ${isLaporanLayananOpen ? "open" : ""}`}
+          >
+            <a href="/informas-wajib-tersedia">Laporan Layanan Informasi</a>
+            <a href="/informasi-berkala">Permohonan Informasi</a>
+            <a href="/informasi-publik">Laporan Tahunan</a>
+            <a href="/informasi-serta-merta">Pengajuan Keberatan</a>
+            <a href="/informasi-serta-merta">Laporan Keberlanjutan</a>
+            <a href="/informasi-serta-merta">
+              Kepuasan Layanan Informasi Publik
+            </a>
+          </div>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <a
+            href="/regulasi-informasi-publik"
+            className="uppercase font-medium"
+          >
+            Prosedur
+          </a>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <a
+            href="/regulasi-informasi-publik"
+            className="uppercase font-medium"
+          >
+            Pengaduan
+          </a>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <a
+            href="/regulasi-informasi-publik"
+            className="uppercase font-medium"
+          >
+            FAQ
+          </a>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );
