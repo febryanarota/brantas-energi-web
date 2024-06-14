@@ -34,7 +34,7 @@ export default function Page() {
         description=" Molestias aliquid suscipit odit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias aliquid suscipit odit!"
       >
         <div>
-          <table className="text-left w-full">
+          <table className="text-left w-full text-slate-700 text-sm">
             <thead>
               <tr className="border-b-2">
                 <th className="w-[3rem]">No</th>

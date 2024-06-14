@@ -11,7 +11,7 @@ import { Container } from "../ui/container";
 
 export default function Footer() {
   return (
-    <div className="text-white  bg-gradient-to-b from-sky-800 to-sky-900 flex  justify-center">
+    <div className="w-full text-white  bg-gradient-to-b from-sky-800 to-sky-900 flex justify-center">
       <Container className="flex flex-col">
         <p className="text-lg font-bold my-5">BRANTAS ENERGI</p>
         <div>

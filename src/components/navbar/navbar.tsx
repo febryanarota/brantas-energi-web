@@ -155,11 +155,46 @@ export default function NavigationBar() {
           </DropdownMenu>
         </Dropdown>
 
-        <NavbarItem>
-          <Link href="/" color="foreground" className="text-sm">
-            LAPORAN LAYANAN
-          </Link>
-        </NavbarItem>
+        <Dropdown>
+          <NavbarItem>
+            <DropdownTrigger>
+              <Button
+                disableRipple
+                className="p-0 gap-0 bg-transparent data-[hover=true]:bg-transparent"
+                radius="sm"
+              >
+                LAPORAN LAYANAN
+                <ChevronDown />
+              </Button>
+            </DropdownTrigger>
+          </NavbarItem>
+          <DropdownMenu
+            aria-label="ACME features"
+            className="w-[340px]"
+            itemClasses={{
+              base: "gap-4",
+            }}
+          >
+            <DropdownItem key="laporan-layanan-informasi" href="/laporan-layanan-informasi">
+              Laporan Layanan Informasi
+            </DropdownItem>
+            <DropdownItem key="permohonan-informasi" href="/permohonan-informasi">
+              Permohonan Informasi
+            </DropdownItem>
+            <DropdownItem key="laporan-tahunan" href="/laporan-tahunan">
+              Laporan Tahunan
+            </DropdownItem>
+            <DropdownItem key="pengajuan-keberatan" href="/pengajuan-keberatan">
+              Pengajuan Keberatan
+            </DropdownItem>
+            <DropdownItem key="laporan-keberlanjutan" href="/laporan-keberlanjutan">
+              Laporan Keberlanjutan
+            </DropdownItem>
+            <DropdownItem key="kepuasan-layanan-informasi-publik" href="/kepuasan-layanan-informasi-publik">
+              Kepuasan Layanan Informasi Publik
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
 
         <NavbarItem>
           <Link href="/" color="foreground" className="text-sm">
