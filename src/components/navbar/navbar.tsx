@@ -222,7 +222,7 @@ export default function NavigationBar() {
         </NavbarItem>
 
         <NavbarItem>
-          <Link href="/" color="foreground" className="text-sm">
+          <Link href="/whistle-blowing-system" color="foreground" className="text-sm">
             PENGADUAN
           </Link>
         </NavbarItem>
@@ -305,7 +305,7 @@ export default function NavigationBar() {
         </NavbarMenuItem>
         <NavbarMenuItem>
           <a
-            href="/regulasi-informasi-publik"
+            href="/whistle-blowing-system"
             className="uppercase font-medium"
           >
             Pengaduan
