@@ -1,6 +1,12 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Struktur PPID | PPID Brantas Energi",
+};
+
 
 export default function Page() {
   const image = "/images/struktur.png";

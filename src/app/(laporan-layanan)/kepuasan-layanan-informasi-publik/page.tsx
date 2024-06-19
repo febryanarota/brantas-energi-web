@@ -1,6 +1,11 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
 import FormKepuasanLayanan from "./form-kepuasan-layanan";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Survei Kepuasan Layanan | PPID Brantas Energi",
+};
 
 export default function Page() {
   return (

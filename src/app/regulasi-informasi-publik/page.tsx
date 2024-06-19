@@ -1,6 +1,11 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
 import { DataItem } from "@/lib/dataType";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Regulasi | PPID Brantas Energi",
+};
 
 export default function Page() {
   const data: DataItem[] = [

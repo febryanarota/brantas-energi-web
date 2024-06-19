@@ -1,5 +1,10 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Visi & Misi | PPID Brantas Energi",
+};
 
 export default function Page() {
   const visi =

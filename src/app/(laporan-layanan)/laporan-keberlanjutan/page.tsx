@@ -3,6 +3,11 @@ import { Container } from "@/components/ui/container";
 import { DataItem, laporan } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Laporan Keberlanjutan | PPID Brantas Energi",
+};
 
 export default function Page() {
   const dataItem: laporan[] = [

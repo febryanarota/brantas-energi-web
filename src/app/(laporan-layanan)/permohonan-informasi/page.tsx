@@ -1,6 +1,11 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
 import FormPermohonanInformasi from "./form-permohonan-informasi";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Permohonan Informasi | PPID Brantas Energi",
+};
 
 export default function Page() {
   return (
