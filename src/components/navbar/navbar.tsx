@@ -45,13 +45,8 @@ export default function NavigationBar() {
       onMenuOpenChange={setIsMenuOpen}
       className="md:py-3"
     >
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
 
-      <NavbarContent className="sm:hidden" justify="center">
+      <NavbarContent className="lg:hidden" justify="start">
         <NavbarBrand>
           <a href="/">
             <Image
@@ -63,8 +58,15 @@ export default function NavigationBar() {
           </a>
         </NavbarBrand>
       </NavbarContent>
+      <NavbarContent className="lg:hidden" justify="end">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
+      </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      
+
+      <NavbarContent className="hidden lg:flex gap-4" justify="center">
         <NavbarBrand>
           <a href="/">
             <Image
@@ -78,7 +80,7 @@ export default function NavigationBar() {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="end">
+      <NavbarContent className="hidden lg:flex gap-4" justify="end">
         <Dropdown>
           <NavbarItem>
             <DropdownTrigger>
@@ -226,6 +228,12 @@ export default function NavigationBar() {
             PENGADUAN
           </Link>
         </NavbarItem>
+
+        <NavbarItem>
+          <Link href="/frequently-asked-questions" color="foreground" className="text-sm">
+            FAQ
+          </Link>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarMenu className="pb-20 pt-10 bg-white bg-opacity-90 flex flex-col gap-5">
@@ -313,7 +321,7 @@ export default function NavigationBar() {
         </NavbarMenuItem>
         <NavbarMenuItem>
           <a
-            href="/regulasi-informasi-publik"
+            href="/frequently-asked-questions"
             className="uppercase font-medium"
           >
             FAQ
