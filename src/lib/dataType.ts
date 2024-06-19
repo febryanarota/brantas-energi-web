@@ -3,7 +3,7 @@ export interface DataItem {
   filePath: string;
 }
 
-export interface laporanTahunan {
+export interface laporan {
   title: string;
   filePath: string;
   thumbnail: string;

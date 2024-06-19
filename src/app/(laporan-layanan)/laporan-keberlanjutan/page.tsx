@@ -1,6 +1,6 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
-import { laporan } from "@/lib/dataType";
+import { DataItem, laporan } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
 import Image from "next/image";
 
@@ -40,7 +40,7 @@ export default function Page() {
 
   return (
     <div className="pb-20">
-      <Header title="Laporan Tahunan" />
+      <Header title="Laporan Keberlanjutan" />
       <Container>
         <div className="grid md:grid-cols-4 grid-cols-2 gap-10">
           {dataItem.map((item, index) => (

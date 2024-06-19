@@ -200,9 +200,6 @@ export default function NavigationBar() {
             <DropdownItem key="laporan-tahunan" href="/laporan-tahunan">
               Laporan Tahunan
             </DropdownItem>
-            <DropdownItem key="pengajuan-keberatan" href="/pengajuan-keberatan">
-              Pengajuan Keberatan
-            </DropdownItem>
             <DropdownItem
               key="laporan-keberlanjutan"
               href="/laporan-keberlanjutan"
@@ -292,7 +289,6 @@ export default function NavigationBar() {
             <a href="/informas-wajib-tersedia">Laporan Layanan Informasi</a>
             <a href="/informasi-berkala">Permohonan Informasi</a>
             <a href="/informasi-publik">Laporan Tahunan</a>
-            <a href="/informasi-serta-merta">Pengajuan Keberatan</a>
             <a href="/informasi-serta-merta">Laporan Keberlanjutan</a>
             <a href="/informasi-serta-merta">
               Kepuasan Layanan Informasi Publik
