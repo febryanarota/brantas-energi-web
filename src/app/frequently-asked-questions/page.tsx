@@ -37,8 +37,8 @@ export default function Page() {
                 <Accordion variant="light">
                     {
                         data.map((item, index) => (
-                            <AccordionItem key={index} title={item.q}>
-                                {item.a}
+                            <AccordionItem key={index} title={item.q} className="font-medium text-md">
+                                <p className="font-normal text-sm pb-10 text-justify">{item.a}</p>
                             </AccordionItem>
                         ))
                     }
