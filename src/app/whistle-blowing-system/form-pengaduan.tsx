@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { Button } from "@nextui-org/button";
 
 export default function FormPengaduan() {
@@ -58,17 +59,13 @@ export default function FormPengaduan() {
         </div>
 
         <div className="w-full flex flex-col text-gray-600">
-          <label className="" htmlFor="lampiran">
-            Upload Lampiran
-          </label>
-          <input
-            type="text"
-            name="lampiran"
-            id="lampiran"
-            className="border-2 rounded-sm p-2 w-full"
-          />
-          <p>Only one file</p>
-          <p>10 MB limit</p>
+          
+          <label htmlFor="lampiran">Upload Lampiran</label>
+          <Input id="lampiran" type='file' className="border-2 rounded-sm"/>
+          <div className="flex flex-col gap-3 py-2">
+            <p>Only one file</p>
+            <p>10 MB limit</p>
+          </div>
         </div>
         
         <p className="w-full font-medium underline mt-5">Data Pelapor</p>
