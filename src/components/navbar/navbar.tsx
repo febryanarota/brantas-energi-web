@@ -294,11 +294,11 @@ export default function NavigationBar() {
           <div
             className={`dropdown-content flex flex-col gap-3 pl-2 text-sm ${isLaporanLayananOpen ? "open" : ""}`}
           >
-            <a href="/informas-wajib-tersedia">Laporan Layanan Informasi</a>
-            <a href="/informasi-berkala">Permohonan Informasi</a>
-            <a href="/informasi-publik">Laporan Tahunan</a>
-            <a href="/informasi-serta-merta">Laporan Keberlanjutan</a>
-            <a href="/informasi-serta-merta">
+            <a href="/laporan-layanan-informasi">Laporan Layanan Informasi</a>
+            <a href="/permohonan-informasi">Permohonan Informasi</a>
+            <a href="/laporan-tahunan">Laporan Tahunan</a>
+            <a href="/laporan-keberlanjutan">Laporan Keberlanjutan</a>
+            <a href="/kepuasan-layanan-informasi-publik">
               Kepuasan Layanan Informasi Publik
             </a>
           </div>
