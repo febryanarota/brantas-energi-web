@@ -2,7 +2,7 @@ import {
   Facebook,
   Instagram,
   Mails,
-  MapPinned,
+  Map,
   Phone,
   Twitter,
   Youtube,
@@ -17,27 +17,31 @@ export default function Footer() {
         <div>
           <ul className="flex flex-col gap-5">
             <li className="flex flex-row items-center gap-5">
-              <MapPinned width={20} height={20} />
-              <p className="text-sm">
-                Gedung Sapta Taruna, Jl. DI. Panjaitan No.Kav. 12, Jakarta Timur
-                13340
+              <div className="flex-none">
+                <Map width={20} height={20} />
+              </div>
+              <p className="text-sm">Gedung Sapta Taruna, Jl. DI. Panjaitan No.Kav. 12, Jakarta Timur 13340
               </p>
             </li>
             <li className="flex flex-row items-center gap-5">
-              <Phone width={20} height={20} />
+              <div className="flex-none">
+                <Phone width={20} height={20} />
+              </div>
               <p className="text-sm">(021) 29613918</p>
             </li>
             <li className="flex flex-row items-center gap-5">
-              <Mails width={20} height={20} />
+              <div className="flex-none">
+                <Mails width={20} height={20} />
+              </div>
               <p className="text-sm">corporate@brantasenergi.co.id</p>
             </li>
           </ul>
         </div>
-        <div className="w-full flex flex-row justify-between border-t-2 border-primaryYellow mt-20 pt-5 items-center">
-          <p className="text-sm">
+        <div className="w-full flex md:flex-row flex-col-reverse md:justify-between border-t-2 border-primaryYellow mt-20 pt-5 items-center ">
+          <p className="text-sm mt-5 md:mt-0">
             © Copyright PT Brantas Energi (Persero) 2024. All Rights Reserved.
           </p>
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-row gap-5 ">
             <a
               href=""
               className="p-2 rounded-full hover:bg-primaryYellow transition-colors duration-400 ease-in-out"
