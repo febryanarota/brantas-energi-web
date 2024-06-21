@@ -98,7 +98,7 @@ export default function Home() {
             <p className="border-b-2 border-primaryYellow font-semibold mt-10 text-slate-800">
               LAYANAN KAMI
             </p>
-            <p className="text-4xl font-semibold my-5 mb-10">
+            <p className="text-4xl font-semibold my-5 mb-10 md:text-left text-center">
               Daftar Informasi Publik Brantas Energi
             </p>
           </div>

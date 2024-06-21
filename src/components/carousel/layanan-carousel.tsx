@@ -29,7 +29,7 @@ const Layanan: React.FC<PropType> = (props) => {
               <div className="embla__slide py-2" key={index}>
                 <div className="relative w-full h-[500px]  items-center justify-center flex ">
                   <div className="w-full ">
-                    <div className="w-[90%] rounded-md overflow-hidden">
+                    <div className="w-[90%] rounded-md overflow-hidden md:block hidden">
                       <Image
                         src="/images/tol-cisumdawu.jpg"
                         width={1000}
@@ -39,7 +39,7 @@ const Layanan: React.FC<PropType> = (props) => {
                       />
                     </div>
                   </div>
-                  <div className="absolute w-1/2 h-[90%] bg-white z-[100] right-0 rounded-lg shadow-md p-10">
+                  <div className="absolute md:w-1/2 w-full h-[90%] bg-white z-[100] right-0 rounded-lg shadow-md p-10">
                     <div className="flex flex-col w-full h-full">
                       <a
                         href="#"
