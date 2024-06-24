@@ -26,7 +26,7 @@ export async function login (formData: FormData) {
     const user = {username: formData.get('username'), name: "lee"}
 
     // create session
-    const expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+    const expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
     const session = await encrypt({user, expires})
 
     // set session in the cookie
@@ -50,7 +50,7 @@ export async function updateSession(request: NextRequest) {
 
     // refresh the session expiration time
     const parsed = await decrypt(session);
-    parsed.expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+    parsed.expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
     const updatedSession = await encrypt(parsed);
 
     const response = NextResponse.next();
