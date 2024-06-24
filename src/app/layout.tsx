@@ -22,9 +22,7 @@ export default function RootLayout({
         className={`${inter.className} min-w-screen w-full max-w-screen overflow-x-hidden`}
       >
         <Providers>
-          <NavigationBar />
           <div>{children}</div>
-          <Footer />
         </Providers>
       </body>
     </html>
