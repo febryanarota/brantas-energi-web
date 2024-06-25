@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../../globals.css"; // Import global styles
 import { Providers } from "@/app/providers";
 import Footer from "@/components/footer/footer";
+import Sidebar from "@/components/sidebar/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,11 +17,11 @@ export default function CmsLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`${inter.className} min-w-screen w-full max-w-screen overflow-x-hidden`}>
-        <Providers>
-          {children}a
-          <div>test layout</div>
-        </Providers>
+    <div className={`${inter.className} min-w-screen w-full max-w-screen overflow-x-hidden flex flex-row`}>
+        <Sidebar/>
+        <div className="bg-slate-200 grow h-full min-h-screen">
+          {children}
+        </div>
     </div>
   );
 }

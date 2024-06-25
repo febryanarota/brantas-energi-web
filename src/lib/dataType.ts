@@ -10,6 +10,9 @@ export interface laporan {
 }
 
 export interface qna {
-  q: string;
-  a: string;
+  id: number;
+  question: string;
+  answer: string;
+  position: number;
+  created_at: Date;
 }

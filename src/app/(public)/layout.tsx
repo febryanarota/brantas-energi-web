@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "PPID Brantas Energi",
 };
 
-export default function CmsLayout({
+export default function publicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
