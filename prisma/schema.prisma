@@ -9,9 +9,30 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model qna {
-  id         BigInt   @id @default(autoincrement())
-  question   String   @unique @default("") @db.VarChar
+  id         Int      @id @default(autoincrement())
+  question   String   @default("") @db.VarChar
   answer     String   @default("") @db.VarChar
-  position   BigInt   @unique
+  position   Int      @default(autoincrement()) @db.SmallInt
   created_at DateTime @default(now()) @db.Timestamptz(6)
+  status     status?  @default(createPending)
+}
+
+model account {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username   String   @unique @default("") @db.VarChar
+  password   String   @db.VarChar
+  role       role     @default(user)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+enum status {
+  verified
+  createPending
+  deletePending
+  updatePending
+}
+
+enum role {
+  admin
+  user
 }
