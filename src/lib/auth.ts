@@ -23,43 +23,6 @@ export async function decrypt(input: string): Promise<any> {
     return payload;
 }
 
-export async function login (formData: FormData) {
-    try {
-        const user = await prisma.account.findFirst({
-            where: {
-                username: formData.get('username') as string,
-            }
-        })
-
-        if (!user) {
-            throw new Error('Username not found');
-        }
-
-        // check password
-        if (user.password !== formData.get('password')) {
-            throw new Error('Invalid password');
-        }
-
-        const role = user.role;
-
-        // create session
-        const expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
-        const session = await encrypt({role, expires})
-
-        // set session in the cookie
-        cookies().set('session', session, {expires, httpOnly: true});
-        return;
-
-    } catch (error) {
-        return NextResponse.json({error: error}, {status: 401});
-    }
-}
-
-export async function logout() {
-    // remove session from the cookie
-    cookies().set('session', '', {expires: new Date(0)});
-}
-
 export async function getSession() {
     const session = cookies().get('session')?.value;
     if (!session) return null;
