@@ -1,6 +1,8 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "./prisma";
+import { redirect } from "next/navigation";
 
 // TODO: move the key to the env
 const secretKey = 'secret';
@@ -22,15 +24,35 @@ export async function decrypt(input: string): Promise<any> {
 }
 
 export async function login (formData: FormData) {
-    // verify credentials and get the user data
-    const user = {username: formData.get('username'), name: "lee"}
+    try {
+        const user = await prisma.account.findFirst({
+            where: {
+                username: formData.get('username') as string,
+            }
+        })
 
-    // create session
-    const expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
-    const session = await encrypt({user, expires})
+        if (!user) {
+            throw new Error('Username not found');
+        }
 
-    // set session in the cookie
-    cookies().set('session', session, {expires, httpOnly: true});
+        // check password
+        if (user.password !== formData.get('password')) {
+            throw new Error('Invalid password');
+        }
+
+        const role = user.role;
+
+        // create session
+        const expires = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days
+        const session = await encrypt({role, expires})
+
+        // set session in the cookie
+        cookies().set('session', session, {expires, httpOnly: true});
+        return;
+
+    } catch (error) {
+        return NextResponse.json({error: error}, {status: 401});
+    }
 }
 
 export async function logout() {
