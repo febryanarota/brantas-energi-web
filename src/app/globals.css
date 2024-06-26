@@ -95,3 +95,22 @@
 .dropdown-content.open {
   max-height: 500px; /* Adjust according to the content height */
 }
+
+.sidebar-item {
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+}
+
+.sidebar-item:hover {
+  background-color: rgb(12, 74, 110);
+  cursor: pointer;
+}
+
+.sidebar-item-child {
+  padding: 0.5rem 2rem;
+}
+
+.sidebar-item-child:hover {
+  background-color: rgb(12, 74, 110);
+  cursor: pointer;
+}
