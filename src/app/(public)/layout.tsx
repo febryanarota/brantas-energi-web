@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import '../globals.css'
+import "../globals.css";
 import Footer from "@/components/footer/footer";
 import NavigationBar from "@/components/navbar/navbar";
 
@@ -17,9 +17,9 @@ export default function publicLayout({
 }>) {
   return (
     <>
-        <NavigationBar />
-        <div>{children}</div>
-        <Footer />
+      <NavigationBar />
+      <div>{children}</div>
+      <Footer />
     </>
   );
 }
