@@ -16,11 +16,13 @@ export default function CmsLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`${inter.className} min-w-screen w-full max-w-screen  flex flex-row relative`}>
-        <Sidebar/>
-        <div className="bg-slate-200 grow h-full min-h-screen max-h-screen overflow-auto py-10 px-5">
-          {children}
-        </div>
+    <div
+      className={`${inter.className} min-w-screen w-full max-w-screen  flex flex-row relative`}
+    >
+      <Sidebar />
+      <div className="bg-slate-200 grow h-full min-h-screen max-h-screen overflow-auto py-10 px-5">
+        {children}
+      </div>
     </div>
   );
 }

@@ -20,7 +20,9 @@ export default function Footer() {
               <div className="flex-none">
                 <Map width={20} height={20} />
               </div>
-              <p className="text-sm">Gedung Sapta Taruna, Jl. DI. Panjaitan No.Kav. 12, Jakarta Timur 13340
+              <p className="text-sm">
+                Gedung Sapta Taruna, Jl. DI. Panjaitan No.Kav. 12, Jakarta Timur
+                13340
               </p>
             </li>
             <li className="flex flex-row items-center gap-5">

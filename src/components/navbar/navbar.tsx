@@ -45,7 +45,6 @@ export default function NavigationBar() {
       onMenuOpenChange={setIsMenuOpen}
       className="md:py-3"
     >
-
       <NavbarContent className="lg:hidden" justify="start">
         <NavbarBrand>
           <a href="/">
@@ -63,8 +62,6 @@ export default function NavigationBar() {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
       </NavbarContent>
-
-      
 
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
         <NavbarBrand>
@@ -224,13 +221,21 @@ export default function NavigationBar() {
         </NavbarItem>
 
         <NavbarItem>
-          <Link href="/whistle-blowing-system" color="foreground" className="text-sm">
+          <Link
+            href="/whistle-blowing-system"
+            color="foreground"
+            className="text-sm"
+          >
             PENGADUAN
           </Link>
         </NavbarItem>
 
         <NavbarItem>
-          <Link href="/frequently-asked-questions" color="foreground" className="text-sm">
+          <Link
+            href="/frequently-asked-questions"
+            color="foreground"
+            className="text-sm"
+          >
             FAQ
           </Link>
         </NavbarItem>
@@ -304,18 +309,12 @@ export default function NavigationBar() {
           </div>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <a
-            href="/prosedur"
-            className="uppercase font-medium"
-          >
+          <a href="/prosedur" className="uppercase font-medium">
             Prosedur
           </a>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <a
-            href="/whistle-blowing-system"
-            className="uppercase font-medium"
-          >
+          <a href="/whistle-blowing-system" className="uppercase font-medium">
             Pengaduan
           </a>
         </NavbarMenuItem>

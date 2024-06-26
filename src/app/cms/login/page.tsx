@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -13,15 +13,15 @@ export default function Page() {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     setLoading(true);
-    const response = await fetch('/api/login', {
-      method: 'POST',
+    const response = await fetch("/api/login", {
+      method: "POST",
       body: formData,
     });
 
     const result = await response.json();
 
     if (result.success) {
-      router.push('/cms/profile');
+      router.push("/cms/profile");
     } else {
       setError(result.error);
     }
@@ -49,10 +49,16 @@ export default function Page() {
           className="px-3 py-2 border-b-2"
         />
         <br />
-        <Button type="submit" className={`bg-primaryYellow font-extrabold px-10 mt-5`} disabled={loading ? true : false}>
-          {loading ? 'Loading' : 'Login'}
+        <Button
+          type="submit"
+          className={`bg-primaryYellow font-extrabold px-10 mt-5`}
+          disabled={loading ? true : false}
+        >
+          {loading ? "Loading" : "Login"}
         </Button>
-        {error && !loading && <p className="text-red-500 mt-2 text-sm">{error}</p>}
+        {error && !loading && (
+          <p className="text-red-500 mt-2 text-sm">{error}</p>
+        )}
       </form>
     </div>
   );

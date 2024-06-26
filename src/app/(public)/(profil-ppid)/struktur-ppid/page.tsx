@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: "Struktur PPID | PPID Brantas Energi",
 };
 
-
 export default function Page() {
   const image = "/images/struktur.png";
 
