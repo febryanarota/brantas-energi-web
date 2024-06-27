@@ -1,12 +1,13 @@
+'use client'
+
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { useState } from "react";
+import Content from "../contents/content";
+import { GripVertical } from "lucide-react";
 
-const DraggableList = () => {
-  const [items, setItems] = useState([
-    { id: "1", content: "item 1" },
-    { id: "2", content: "item 2" },
-    { id: "3", content: "item 3" },
-  ]);
+export default function DraggableList({type, data} : {type: string, data: any[]}) {
+
+  const [items, setItems] = useState(data);
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -16,6 +17,7 @@ const DraggableList = () => {
     newItems.splice(result.destination.index, 0, reorderedItem);
 
     setItems(newItems);
+    console.log(newItems)
   };
 
   return (
@@ -24,18 +26,17 @@ const DraggableList = () => {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
+              <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className="my-5 rounded-md flex items-center"
+                    className="my-5 rounded-md flex flex-row"
                   >
-                    <div className="bg-slate-300 w-full h-full p-5 rounded-md">
-                        <p>{item.content}</p>
-                        <input type="text" />
-                    </div>
+                    <GripVertical className="mt-2 text-slate-500"/>
+                    <Content content={item} type={type}></Content>
+
                   </div>
                 )}
               </Draggable>
@@ -48,4 +49,3 @@ const DraggableList = () => {
   );
 };
 
-export default DraggableList;
