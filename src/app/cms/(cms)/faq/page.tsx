@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 // import { useEffect, useState } from "react";
 
-export async function getData(): Promise<qna[]> {
+async function getData(): Promise<qna[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/faq?status=all`, {
       method: 'GET',
