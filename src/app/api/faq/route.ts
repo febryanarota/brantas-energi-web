@@ -1,16 +1,16 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  const sessionExists = req.headers.get('cookie')?.valueOf();
+  const searchParams = new URL(req.url).searchParams;
+  const statusParam = searchParams.get('status')?.toLowerCase();
+  
   try {
     let result;
-    const sessionExists = req.headers.get('cookie')?.valueOf();
     
     // Get the search parameters from the request URL
-    const searchParams = new URL(req.url).searchParams;
-    const statusParam = searchParams.get('status')?.toLowerCase();
 
     // Determine query based on session and status parameter
     if (statusParam === 'all' && sessionExists) {
