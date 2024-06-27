@@ -4,7 +4,6 @@ import { getSession } from "@/lib/auth";
 import { qna } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-// import { useEffect, useState } from "react";
 
 async function getData(): Promise<qna[]> {
   try {
@@ -36,7 +35,6 @@ export default async function Page() {
 
   const data : qna[] = await getData()
   
-
   return (
     <div>
       <CMSContainer heading="Frequently Asked Questions">
