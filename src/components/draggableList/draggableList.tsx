@@ -1,7 +1,7 @@
 'use client'
 
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Content from "../contents/content";
 import { GripVertical } from "lucide-react";
 
@@ -20,12 +20,9 @@ export default function DraggableList({type, data} : {type: string, data: any[]}
     console.log(newItems)
   };
 
-  const handleDelete = (id: number) => {
-    const newItems = Array.from(items);
-    const index = newItems.findIndex((item) => item.id === id);
-    newItems.splice(index, 1);
-    setItems(newItems);
-  }
+  const handleDelete = useCallback((id: number) => {
+    setItems(prevItems => prevItems.filter(item => item.id !== id));
+  }, []);
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

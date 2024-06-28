@@ -67,7 +67,7 @@ export default function Content({type, content, deleteHandler} : {type:string, c
             default:
                 setRenderContent(<div>hi</div>)
         }
-    }, [status]);
+    }, [status, type, content, deleteHandler]);
 
     return (
         <div className={`${border} bg-white shadow-sm w-full h-full border-2 p-5 rounded-md `}>
