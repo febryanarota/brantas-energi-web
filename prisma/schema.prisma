@@ -9,13 +9,15 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model qna {
-  id           Int           @id @default(autoincrement())
-  question     String        @default("") @db.VarChar
-  answer       String        @default("") @db.VarChar
-  position     Int           @default(autoincrement()) @db.SmallInt
-  created_at   DateTime      @default(now()) @db.Timestamptz(6)
-  status       status?       @default(createPending)
-  contentBlock contentBlock?
+  id                                        Int             @id @default(autoincrement())
+  question                                  String          @default("") @db.VarChar
+  answer                                    String          @default("") @db.VarChar
+  position                                  Int             @default(autoincrement()) @db.SmallInt
+  created_at                                DateTime        @default(now()) @db.Timestamptz(6)
+  status                                    status?         @default(createPending)
+  contentBlock                              contentBlock?
+  qnaEditBuffer_qnaEditBuffer_editedToqna   qnaEditBuffer[] @relation("qnaEditBuffer_editedToqna")
+  qnaEditBuffer_qnaEditBuffer_originalToqna qnaEditBuffer[] @relation("qnaEditBuffer_originalToqna")
 }
 
 model account {
@@ -52,6 +54,16 @@ model paragraph {
   text         String
   created_at   DateTime      @default(now()) @db.Timestamptz(6)
   contentBlock contentBlock?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model qnaEditBuffer {
+  id                              Int      @id @default(autoincrement())
+  original                        Int
+  edited                          Int
+  created_at                      DateTime @default(now()) @db.Timestamptz(6)
+  qna_qnaEditBuffer_editedToqna   qna      @relation("qnaEditBuffer_editedToqna", fields: [edited], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  qna_qnaEditBuffer_originalToqna qna      @relation("qnaEditBuffer_originalToqna", fields: [original], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 enum status {
