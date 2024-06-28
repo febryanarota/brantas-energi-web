@@ -1,39 +1,82 @@
+'use client'
 import { qna } from "@prisma/client"
 import FaqContent from "./faq-content"
+import { useEffect, useState } from "react"
+import { cancelButton, createButton, deleteButton, updateButton } from "./buttons"
 
-export default function Content({type, content} : {type:string, content:any}) {
+export default function Content({type, content, deleteHandler} : {type:string, content:any, deleteHandler:Function}) {
+    const [status, setStatus] = useState(content.status);
+    const [border, setBorder] = useState('border-white');
+    const [button, setButton] = useState<JSX.Element | null>(null);
 
-    const renderContent = (type: string) => {
+
+    const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
+    useEffect(() => {
+        switch (status) {
+            case 'createPending':
+                setBorder('border-emerald-400');
+                setButton(
+                    <div className="flex flex-row">
+                        <div>
+                            {createButton(content.id, setStatus)}
+                        </div>
+                        <div>
+                            {cancelButton(content.id)}
+                        </div>
+                    </div>
+                )
+                break;
+            case 'updatePending':
+                setBorder('border-yellow-400');
+                setButton(
+                    <div className="flex flex-row">
+                        <div>
+                            {updateButton(content.id, setStatus)}
+                        </div>
+                        <div>
+                            {cancelButton(content.id)}
+                        </div>
+                    </div>
+                )
+                break;
+            case 'deletePending':
+                setBorder('border-red-400');
+                setButton(
+                    <div className="flex flex-row">
+                        <div>
+                            {deleteButton(content.id, setStatus)}
+                        </div>
+                        <div>
+                            {cancelButton(content.id)}
+                        </div>
+                    </div>
+                );
+                break;
+            case 'deleted':
+                deleteHandler(content.id);
+                break;
+            default:
+                setBorder('border-white');
+                setButton(deleteButton(content.id, setStatus))
+        }
+
         switch (type) {
             case 'faq':
-                return <FaqContent content={content as qna} />
-            // case 'image':
-            //     return <Image content={content} />
-            // case 'video':
-            //     return <Video content={content} />
+                setRenderContent(<FaqContent content={content as qna}/>)
+                break;
             default:
-                return <div>hi</div>
+                setRenderContent(<div>hi</div>)
         }
-    }
-
-    let background;
-    switch (content.status) {
-        case 'createPending':
-            background = 'border-emerald-400'
-            break;
-        case 'updatePending':
-            background = 'border-yellow-400'
-            break;
-        case 'deletePending':
-            background = 'border-red-400'
-            break;
-        default:
-            background = 'border-white'
-    }
+    }, [status]);
 
     return (
-        <div className={`${background} bg-white shadow-sm w-full h-full border-2 p-5 rounded-md `}>
-            {renderContent(type)}
+        <div className={`${border} bg-white shadow-sm w-full h-full border-2 p-5 rounded-md `}>
+            <div className="flex flex-row justify-between items-start">
+            <div className="flex flex-col">
+                {renderContent}
+            </div>
+            {button}
+        </div>
         </div>
     )
 };

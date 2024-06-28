@@ -43,15 +43,6 @@ export function CMSContainer({
   return (
     <div className="w-full flex flex-col py-5">
       <div className={`w-full max-w-5xl px-[24px] ${className}`} {...props}>
-        {heading && (
-          <div className="mb-10 mt-10 ">
-            <h1 className="text-3xl font-bold tracking-wider ">{heading}</h1>
-
-            {description && (
-              <p className="text-gray-700 max-w-3xl">{description}</p>
-            )}
-          </div>
-        )}
         {children}
       </div>
     </div>

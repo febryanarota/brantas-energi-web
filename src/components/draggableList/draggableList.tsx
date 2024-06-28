@@ -20,6 +20,13 @@ export default function DraggableList({type, data} : {type: string, data: any[]}
     console.log(newItems)
   };
 
+  const handleDelete = (id: number) => {
+    const newItems = Array.from(items);
+    const index = newItems.findIndex((item) => item.id === id);
+    newItems.splice(index, 1);
+    setItems(newItems);
+  }
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="droppable">
@@ -35,7 +42,7 @@ export default function DraggableList({type, data} : {type: string, data: any[]}
                     className="my-5 rounded-md flex flex-row"
                   >
                     <GripVertical className="mt-2 text-slate-500"/>
-                    <Content content={item} type={type}></Content>
+                    <Content content={item} type={type} deleteHandler={handleDelete}></Content>
 
                   </div>
                 )}
