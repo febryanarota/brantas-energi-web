@@ -34,9 +34,9 @@ model contentBlock {
   faqId                        Int?       @unique
   created_at                   DateTime   @default(now()) @db.Timestamptz(6)
   paragraphId                  Int?       @unique
-  qna                          qna?       @relation(fields: [faqId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  page_contentBlock_pageTopage page       @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  paragraph                    paragraph? @relation(fields: [paragraphId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  qna                          qna?       @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  page_contentBlock_pageTopage page       @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  paragraph                    paragraph? @relation(fields: [paragraphId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model page {
