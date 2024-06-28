@@ -2,11 +2,14 @@ import DraggableList from "@/components/draggableList/draggableList";
 import { CMSContainer } from "@/components/ui/container";
 import { getSession } from "@/lib/auth";
 import { qna } from "@prisma/client";
+import { Plus } from "lucide-react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 async function getData(): Promise<qna[]> {
   try {
+    
+    // TO DO: retrive from content table
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/faq?status=all`, {
       method: 'GET',
       headers: {
@@ -29,7 +32,6 @@ async function getData(): Promise<qna[]> {
 }
 
 export default async function Page() {
-
   const session = await getSession();
   if (!session) redirect('/cms/login');
 
@@ -37,8 +39,11 @@ export default async function Page() {
   
   return (
     <div>
-      <CMSContainer heading="Frequently Asked Questions">
-        {/* TO DO: pass contentBlocks not the typeBlocks and its data */}
+      <CMSContainer>
+        <div className="flex flex-row justify-between items-center border-b-3 pb-2">
+          <h1 className="text-3xl font-bold tracking-widerfle">Frequently Asked Questions</h1>
+          <button className="bg-primaryYellow rounded-full p-1.5" ><Plus/></button>
+        </div>
         <DraggableList type="faq" data={data}/>
       </CMSContainer>
     </div>
