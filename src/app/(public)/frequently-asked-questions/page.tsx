@@ -9,9 +9,11 @@ export default async function Page() {
     headers : {
       'Content-Type' : 'application/json',
     },
+    credentials : 'include'
   });
 
   const data : qna[] = await res.json();
+  console.log(data);
   return (
     <Faq data={data} />
   )
