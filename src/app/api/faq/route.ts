@@ -100,3 +100,33 @@ export async function DELETE(req: NextRequest) {
     );
   }
 }
+
+export async function POST(req: NextRequest) {
+  const sessionExists = req.headers.get('cookie')?.valueOf();
+  const body = await req.json();
+
+  if (!sessionExists) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  try {
+    const result = await prisma.qna.create({
+      data: {
+        question: body.question,
+        answer: body.answer,
+        //TO DO: verified if session is admi, else pending
+        status: "verified"
+      }
+    });
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error creating data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
