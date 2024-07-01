@@ -1,10 +1,14 @@
-import { qna } from "@prisma/client";
-import { Trash, Check, X, Pencil } from "lucide-react";
+'use client'
 
-export function deleteButton(id: number, setStatus: Function) {
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { qna } from "@prisma/client";
+import { Trash, Check, X } from "lucide-react";
+
+export const DeleteButton = ({ id, setStatus, api } : {id: number, setStatus: Function, api: string}) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
     const handleDelete = async () => {
-        console.log('delete');
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/faq`, {
+        const res = await fetch(api, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,19 +23,38 @@ export function deleteButton(id: number, setStatus: Function) {
             throw new Error('Network response was not ok');
         }
 
-        const result: qna = await res.json();
+        const result = await res.json();
         if (result) setStatus('deleted');
     }
 
     return (
-        <button onClick={handleDelete}><Trash className="mt-1 hover:bg-red-100 rounded-full p-1" width={30} height={30} /></button>
+        <>
+            <button onClick={onOpen}><Trash className="mt-1 hover:bg-red-100 rounded-full p-1" width={30} height={30} /></button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
+                <ModalContent>
+                    {(onClose) => (
+                        <ModalBody className="flex items-center justify-center py-10">
+                            <p>Are you sure want to delete this?</p>
+                            <div className="flex flex-row w-full items-center justify-center gap-5">
+                                <Button className="w-md" onClick={onOpenChange}>
+                                    Cancel
+                                </Button>
+                                <Button className="w-md bg-red-300" onClick={handleDelete}>
+                                    Delete
+                                </Button>
+                            </div>
+                        </ModalBody>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 }
 
-export function createButton(id: number, setStatus: Function) {
+export function createButton(id: number, setStatus: Function, api: string) {
     const handleUpdate = async () => {
         console.log('create');
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/faq`, {
+        const res = await fetch(api, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +70,7 @@ export function createButton(id: number, setStatus: Function) {
             throw new Error('Network response was not ok');
         }
 
-        const result: qna = await res.json();
+        const result = await res.json();
         if (result && result.status) setStatus(result.status);
     };
     return (
