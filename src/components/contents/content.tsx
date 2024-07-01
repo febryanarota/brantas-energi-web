@@ -2,7 +2,7 @@
 import { qna } from "@prisma/client"
 import FaqContent from "./faq-content"
 import { useEffect, useState } from "react"
-import { cancelButton, createButton, DeleteButton, updateButton } from "./buttons"
+import { cancelButton, createButton, DeleteButton, EditButton, updateButton } from "./buttons"
 
 export default function Content({type, content, deleteHandler} : {type:string, content:any, deleteHandler:Function}) {
     const [status, setStatus] = useState(content.status);
@@ -44,7 +44,7 @@ export default function Content({type, content, deleteHandler} : {type:string, c
                 setButton(
                     <div className="flex flex-row">
                         <div>
-                            setButton(<DeleteButton id = {content.id} setStatus={setStatus} api={`${process.env.NEXT_PUBLIC_URL}/api/faq`} />)
+                            <DeleteButton id = {content.id} setStatus={setStatus} api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}/>
                         </div>
                         <div>
                             {cancelButton(content.id)}
@@ -57,7 +57,14 @@ export default function Content({type, content, deleteHandler} : {type:string, c
                 break;
             default:
                 setBorder('border-white');
-                setButton(<DeleteButton id = {content.id} setStatus={setStatus} api={`${process.env.NEXT_PUBLIC_URL}/api/faq`} />)
+                setButton(<div className="flex flex-row">
+                    <div>
+                        <EditButton id = {content.id} setStatus={setStatus} type={type}/>
+                    </div>
+                    <div>
+                        <DeleteButton id = {content.id} setStatus={setStatus} api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}/>
+                    </div>
+                </div>);
         }
 
         switch (type) {
