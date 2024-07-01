@@ -2,7 +2,10 @@
 
 import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react";
 import { qna } from "@prisma/client";
-import { Trash, Check, X } from "lucide-react";
+import { on } from "events";
+import { Trash, Check, X, Pencil } from "lucide-react";
+import { FaqEditModal } from "../modals/faq-edit-modal";
+import { useEffect, useState } from "react";
 
 export const DeleteButton = ({ id, setStatus, api } : {id: number, setStatus: Function, api: string}) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -43,6 +46,38 @@ export const DeleteButton = ({ id, setStatus, api } : {id: number, setStatus: Fu
                                     Delete
                                 </Button>
                             </div>
+                        </ModalBody>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
+    );
+}
+
+export const EditButton = ({ id, setStatus, type } : {id: number, setStatus: Function, type: string}) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [modal, setModal] =  useState<JSX.Element | null>(null);
+
+    useEffect(() => {
+        switch (type) {
+          case 'faq':
+            setModal(<FaqEditModal id={id}/>);
+            break;
+          default:
+            setModal(null);
+        }
+      }, [type]);
+
+    return (
+        <>
+            <button onClick={onOpen}><Pencil className="mt-1 hover:bg-yellow-100 rounded-full p-1" width={30} height={30} /></button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <ModalBody>
+                            {
+                                modal
+                            }
                         </ModalBody>
                     )}
                 </ModalContent>
