@@ -49,7 +49,15 @@ export default async function Page() {
           <FormFaq/>
           {/* the button supposed to be here */}
         </div>
-        <DraggableList type="faq" data={data}/>
+        {
+          data.length > 0 ?
+            <DraggableList type="faq" data={data}/>
+          :
+          <div className="flex justify-center items-center w-full mt-10">
+            <p className="text-2xl text-gray-400">No data found</p>
+          </div>
+
+        }
       </CMSContainer>
     </div>
   );
