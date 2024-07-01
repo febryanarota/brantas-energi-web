@@ -16,3 +16,8 @@ export interface qna {
   position: number;
   created_at: Date;
 }
+
+export interface FormValues {
+  question: string;
+  answer: string;
+}

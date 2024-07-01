@@ -1,5 +1,6 @@
 "use client";
 
+import { FormValues } from "@/lib/dataType";
 import { FaqSchema } from "@/lib/validation";
 import {
   Button,
@@ -11,11 +12,6 @@ import {
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { Plus } from "lucide-react";
 
-// Define the form values interface
-interface FormValues {
-  question: string;
-  answer: string;
-}
 
 export default function FormFaq() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -25,8 +21,6 @@ export default function FormFaq() {
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
-      // Sanitize inputs
-
       // Prepare form data
       const formData = {
         question: values.question,
