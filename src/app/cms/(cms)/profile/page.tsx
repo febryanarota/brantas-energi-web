@@ -42,6 +42,7 @@ export default async function Page() {
           <h1 className="text-3xl font-bold tracking-widerfle">Company Profile</h1>
         </div>
         <p>{data[0].facebook}</p>
+        <p>{data[0].instagram}</p>
       </CMSContainer>
     </div>
   );
