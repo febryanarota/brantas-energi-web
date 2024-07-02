@@ -1,7 +1,7 @@
 "use client";
 
 import {
-    Button,
+  Button,
   Modal,
   ModalBody,
   ModalContent,
@@ -68,17 +68,12 @@ export default function FormTrigger() {
   );
 }
 
-
 const Text = () => {
-  
-  
-  const handleSubmit = () => {
-
-  }
+  const handleSubmit = () => {};
 
   return (
     <div className="w-full">
-      <Editor/>
+      <Editor />
     </div>
   );
 };

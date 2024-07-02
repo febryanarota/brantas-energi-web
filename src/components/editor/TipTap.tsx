@@ -24,7 +24,7 @@ const Tiptap = ({ onChange, content }: any) => {
 
   return (
     <div className="w-full px-4">
-      <Toolbar editor={editor} content={content}/>
+      <Toolbar editor={editor} content={content} />
       <EditorContent style={{ whiteSpace: "pre-line" }} editor={editor} />
     </div>
   );

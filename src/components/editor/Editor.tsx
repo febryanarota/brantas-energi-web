@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import Tiptap from './TipTap'
+import React, { useState } from "react";
+import Tiptap from "./TipTap";
 
 export const Editor = () => {
-  const [content, setContent] = useState<string>('')
+  const [content, setContent] = useState<string>("");
   const handleContentChange = (reason: any) => {
-    setContent(reason)
-  }
+    setContent(reason);
+  };
   const handleSubmit = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = {
       content: content,
-    }
-    console.log(data)
-  }
+    };
+    console.log(data);
+  };
   return (
     <form
       onSubmit={handleSubmit}
@@ -25,5 +25,5 @@ export const Editor = () => {
         onChange={(newContent: string) => handleContentChange(newContent)}
       />
     </form>
-  )
-}
+  );
+};
