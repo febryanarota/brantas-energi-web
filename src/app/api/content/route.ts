@@ -1,3 +1,4 @@
+import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { blockType, status } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -44,6 +45,36 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching data:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const sessionExists = req.cookies.get("session");
+
+  if (!sessionExists) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json();
+
+  try {
+    const payload = await decrypt(sessionExists.value);
+    const postStatus = payload.role === "admin" ? "verified" : "createPending";
+
+    const result = await prisma.contentBlock.create({
+      data: {
+        page: body.page,
+        blockType: body.blockType as blockType,
+        status: postStatus as status,
+        position: body.position,
+        faqId: body.faqId,
+        textId: body.textId,
+      },
+    });
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error creating data:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
