@@ -60,7 +60,7 @@ export default function Sidebar() {
             <a href="#" className="sidebar-item">
               Profil
             </a>
-            <a href="#" className="sidebar-item">
+            <a href="/cms/regulasi" className="sidebar-item">
               Regulasi
             </a>
             <a

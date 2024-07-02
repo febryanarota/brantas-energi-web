@@ -9,7 +9,6 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { qna } from "@prisma/client";
-import { on } from "events";
 import { Trash, Check, X, Pencil } from "lucide-react";
 import { FaqEditModal } from "../modals/faq-edit-modal";
 import { useEffect, useState } from "react";
