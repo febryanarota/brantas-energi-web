@@ -142,14 +142,6 @@ const Toolbar = ({ editor, content }: Props) => {
           </button>
         </div>
 
-        {content && (
-          <button
-            type="submit"
-            className="px-4 bg-sky-700 text-white py-2 rounded-md self-end justify-self-end place-self-end"
-          >
-            Add
-          </button>
-        )}
       </div>
     </div>
   );

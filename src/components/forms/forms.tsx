@@ -7,10 +7,9 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { Plus } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Editor } from "../editor/Editor";
+import { TextForm } from "./text-form";
 
 export default function FormTrigger() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -20,13 +19,13 @@ export default function FormTrigger() {
   useEffect(() => {
     switch (type) {
       case "text":
-        setFormBody(<Text />);
+        setFormBody(<TextForm openChange={onOpenChange}/>);
         break;
       case "header":
         setFormBody(<Header />);
         break;
       default:
-        setFormBody(<Text />);
+        setFormBody(<TextForm openChange={onOpenChange}/>);
     }
   }, [type]);
 
@@ -68,15 +67,7 @@ export default function FormTrigger() {
   );
 }
 
-const Text = () => {
-  const handleSubmit = () => {};
 
-  return (
-    <div className="w-full">
-      <Editor />
-    </div>
-  );
-};
 
 const Header = () => {
   return <div>Header Form</div>;
