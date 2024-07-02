@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  useDisclosure,
-} from "@nextui-org/react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { Button, Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-org/react";
 import { Plus } from "lucide-react";
-import { ChangeEvent, useEffect, useState } from "react";
 import { TextForm } from "./text-form";
 
 export default function FormTrigger() {
@@ -19,15 +13,15 @@ export default function FormTrigger() {
   useEffect(() => {
     switch (type) {
       case "text":
-        setFormBody(<TextForm openChange={onOpenChange}/>);
+        setFormBody(<TextForm openChange={onOpenChange} />);
         break;
       case "header":
         setFormBody(<Header />);
         break;
       default:
-        setFormBody(<TextForm openChange={onOpenChange}/>);
+        setFormBody(<TextForm openChange={onOpenChange} />);
     }
-  }, [type]);
+  }, [type, onOpenChange]);
 
   const handleSelection = (event: ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value);
@@ -66,8 +60,6 @@ export default function FormTrigger() {
     </>
   );
 }
-
-
 
 const Header = () => {
   return <div>Header Form</div>;
