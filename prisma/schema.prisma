@@ -10,8 +10,8 @@ datasource db {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model qna {
   id                                        Int             @id @default(autoincrement())
-  question                                  String          @default("") @db.VarChar
-  answer                                    String          @default("") @db.VarChar
+  question                                  String
+  answer                                    String
   position                                  Int             @default(autoincrement()) @db.SmallInt
   created_at                                DateTime        @default(now()) @db.Timestamptz(6)
   status                                    status?         @default(createPending)
@@ -29,16 +29,17 @@ model account {
 }
 
 model contentBlock {
-  id                           Int        @id @default(autoincrement())
-  page                         String     @db.VarChar
-  position                     Int        @db.SmallInt
-  blockType                    blockType  @default(paragraph)
-  faqId                        Int?       @unique
-  created_at                   DateTime   @default(now()) @db.Timestamptz(6)
-  paragraphId                  Int?       @unique
-  qna                          qna?       @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  page_contentBlock_pageTopage page       @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  paragraph                    paragraph? @relation(fields: [paragraphId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                           Int       @id @default(autoincrement())
+  page                         String    @db.VarChar
+  position                     Int       @db.SmallInt
+  blockType                    blockType @default(text)
+  faqId                        Int?      @unique
+  created_at                   DateTime  @default(now()) @db.Timestamptz(6)
+  textId                       Int?      @unique(map: "contentBlock_paragraphId_key")
+  status                       status    @default(createPending)
+  qna                          qna?      @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  page_contentBlock_pageTopage page      @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  text                         text?     @relation(fields: [textId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model page {
@@ -46,14 +47,6 @@ model page {
   header                               String?        @db.VarChar
   created_at                           DateTime       @default(now()) @db.Timestamptz(6)
   contentBlock_contentBlock_pageTopage contentBlock[] @relation("contentBlock_pageTopage")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model paragraph {
-  id           Int           @id @default(autoincrement())
-  text         String
-  created_at   DateTime      @default(now()) @db.Timestamptz(6)
-  contentBlock contentBlock?
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -79,6 +72,13 @@ model profile {
   facebook   String?  @db.VarChar
 }
 
+model text {
+  id           Int           @id @default(autoincrement())
+  content      String?       @db.VarChar
+  created_at   DateTime      @default(now()) @db.Timestamptz(6)
+  contentBlock contentBlock?
+}
+
 enum status {
   verified
   createPending
@@ -93,5 +93,5 @@ enum role {
 
 enum blockType {
   faq
-  paragraph
+  text
 }
