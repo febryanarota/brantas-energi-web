@@ -11,7 +11,7 @@ export const FaqEditModal = ({ id }: { id: number }) => {
     question: "",
     answer: "",
   });
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +45,6 @@ export const FaqEditModal = ({ id }: { id: number }) => {
     { setSubmitting, resetForm }: FormikHelpers<FormValues>,
   ) => {
     try {
-
       // Prepare form data
       const formData = {
         question: values.question,

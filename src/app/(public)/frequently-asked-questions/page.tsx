@@ -6,17 +6,15 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/faq`, {
-    method : 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'Cookie' : cookies().get('session')?.value || ''
+      "Content-Type": "application/json",
+      Cookie: cookies().get("session")?.value || "",
     },
-    credentials: 'include'
+    credentials: "include",
   });
 
-  const data : qna[] = await res.json();
-  console.log(data)
-  return (
-    <Faq data={data} />
-  )
+  const data: qna[] = await res.json();
+  console.log(data);
+  return <Faq data={data} />;
 }

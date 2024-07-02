@@ -2,26 +2,19 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-    const sessionExists = req.headers.get('cookie')?.valueOf();
-    
-    if (!sessionExists) {
-        return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-        );
-    }
-    
-    try {
-        const result = await prisma.profile.findMany();
-        return NextResponse.json(result);
+  const sessionExists = req.headers.get("cookie")?.valueOf();
 
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return NextResponse.json(
-            { error: error },
-            { status: 500 }
-        );
-    }
+  if (!sessionExists) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const result = await prisma.profile.findMany();
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
 }
 
 // export async function PATCH(req: NextRequest) {

@@ -124,7 +124,7 @@
 .invalid-feedback {
   color: rgb(145, 29, 29);
   font-size: small;
-  padding-left: 0.5rem
+  padding-left: 0.5rem;
 }
 
 .submit-btn {
@@ -150,5 +150,4 @@
 
 .label {
   padding-left: 0.5rem;
-
 }

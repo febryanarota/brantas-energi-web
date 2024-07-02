@@ -12,13 +12,12 @@ import {
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { Plus } from "lucide-react";
 
-
 export default function FormFaq() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleSubmit = async (
     values: FormValues,
-    { setSubmitting, resetForm }: FormikHelpers<FormValues>
+    { setSubmitting, resetForm }: FormikHelpers<FormValues>,
   ) => {
     try {
       // Prepare form data
@@ -72,8 +71,11 @@ export default function FormFaq() {
                   <div>
                     <Form className="flex flex-col items-center gap-3">
                       <div className="form-group">
-                        <label htmlFor="question" className="label">Question</label>
-                        <Field as="textarea"
+                        <label htmlFor="question" className="label">
+                          Question
+                        </label>
+                        <Field
+                          as="textarea"
                           name="question"
                           placeholder="Enter Question"
                           autoComplete="off"
@@ -90,7 +92,8 @@ export default function FormFaq() {
                         <label htmlFor="answer" className="label">
                           Answer
                         </label>
-                        <Field as="textarea"
+                        <Field
+                          as="textarea"
                           name="answer"
                           placeholder="Enter answer"
                           className="field"

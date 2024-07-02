@@ -43,7 +43,7 @@ export async function PUT(
 
   try {
     const id = parseInt(context.params.id, 10);
-    console.log(id)
+    console.log(id);
     const result = await prisma.qna.update({
       where: {
         id: id,
