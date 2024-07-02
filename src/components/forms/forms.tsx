@@ -1,0 +1,88 @@
+"use client";
+
+import {
+    Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@nextui-org/react";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { Plus } from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Editor } from "../editor/Editor";
+
+export default function FormTrigger() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [type, setType] = useState("text");
+  const [formBody, setFormBody] = useState<JSX.Element | null>(null);
+
+  useEffect(() => {
+    switch (type) {
+      case "text":
+        setFormBody(<Text />);
+        break;
+      case "header":
+        setFormBody(<Header />);
+        break;
+      default:
+        setFormBody(<Text />);
+    }
+  }, [type]);
+
+  const handleSelection = (event: ChangeEvent<HTMLSelectElement>) => {
+    setType(event.target.value);
+  };
+
+  return (
+    <>
+      <button className="bg-primaryYellow rounded-full p-1.5" onClick={onOpen}>
+        <Plus />
+      </button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody className="py-10 px-7 flex flex-col items-center">
+              <div className="w-full flex flex-col max-w-2xl">
+                <label htmlFor="type" className="label">
+                  Block Type
+                </label>
+                <select
+                  name="type"
+                  id="type"
+                  onChange={handleSelection}
+                  className="field"
+                >
+                  <option value="text" defaultChecked>
+                    Text
+                  </option>
+                  <option value="header">Header</option>
+                </select>
+              </div>
+              {formBody}
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+
+const Text = () => {
+  
+  
+  const handleSubmit = () => {
+
+  }
+
+  return (
+    <div className="w-full">
+      <Editor/>
+    </div>
+  );
+};
+
+const Header = () => {
+  return <div>Header Form</div>;
+};
