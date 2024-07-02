@@ -1,46 +1,49 @@
 import prisma from "@/lib/prisma";
-import { blockType } from "@prisma/client";
+import { blockType, status } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const sessionExists = req.headers.get("cookie")?.valueOf();
-
-  if (!sessionExists) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const sessionExists = req.cookies.get("session");
 
   // Get the search parameters from the request URL
   const searchParams = new URL(req.url).searchParams;
-  const blockTypeParam = searchParams.get("blockType");
-  console.log(blockTypeParam);
-  // Check if blockTypeParam is a valid blockType enum value
+  const pageParam = searchParams.get("page")?.toLowerCase();
+  const statusParam = searchParams.get("status")?.toLowerCase();
 
   try {
+    let query: {
+      page?: string;
+      status?: status; 
+    } = {};
+
+    if (pageParam) {
+      query.page = pageParam;
+    }
+
     let result;
-    // Determine query based on session and status parameter
-    if (blockTypeParam) {
+
+    if (statusParam === "all" && sessionExists) {
       result = await prisma.contentBlock.findMany({
-        where: {
-          blockType: blockTypeParam as blockType,
-        },
+        where: query,
         orderBy: {
           position: "asc",
         },
       }); // Access all when session exists
+    } else if (statusParam === "all" && !sessionExists) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     } else {
+      query.status = "verified" as status; 
       result = await prisma.contentBlock.findMany({
+        where: query,
         orderBy: {
           position: "asc",
         },
-      }); // Access all when session exists
+      });
     }
 
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
