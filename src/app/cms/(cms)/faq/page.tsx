@@ -52,7 +52,9 @@ export default async function Page() {
           {/* the button supposed to be here */}
         </div>
         {data.length > 0 ? (
-          <DraggableList type="faq" data={data} />
+          // TO DO: adjust the draggable list to accept qna type
+          // <DraggableList type="faq" data={data} />
+          <div></div>
         ) : (
           <div className="flex justify-center items-center w-full mt-10">
             <p className="text-2xl text-gray-400">No data found</p>
