@@ -43,39 +43,39 @@ export async function DELETE(req: NextRequest, context: { params: { id: string }
       { status: 500 },
     );
   }
-
 }
 
-// export async function PUT(
-//   req: NextRequest,
-//   context: { params: { id: string } },
-// ) {
-//   const sessionExists = req.headers.get("cookie")?.valueOf();
-//   const body = await req.json();
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
+  const body = await req.json();
+  const sessionExists = req.cookies.get("session");
 
-//   if (!sessionExists) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
+  if (!sessionExists) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 },
+    );
+  }
 
-//   try {
-//     const id = parseInt(context.params.id, 10);
-//     console.log(id);
-//     const result = await prisma.qna.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         question: body.question,
-//         answer: body.answer,
-//       },
-//     });
+  try {
+    const id = parseInt(context.params.id, 10);
+    const result = await prisma.text.update({
+      where: {
+        id: id,
+      },
+      data: {
+        content: body.content,
+      },
+    });
 
-//     return NextResponse.json(result);
-//   } catch (error) {
-//     console.error("Error updating data:", error);
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 },
-//     );
-//   }
-// }
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}
