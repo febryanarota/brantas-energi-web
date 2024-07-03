@@ -39,7 +39,7 @@ model contentBlock {
   status                       status    @default(createPending)
   qna                          qna?      @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   page_contentBlock_pageTopage page      @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  text                         text?     @relation(fields: [textId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  text                         text?     @relation(fields: [textId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model page {
