@@ -5,7 +5,7 @@ import { Button, Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-o
 import { Plus } from "lucide-react";
 import { TextForm } from "./text-form";
 
-export default function FormTrigger() {
+export default function FormTrigger({page, session} : {page : string, session : any}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [type, setType] = useState("text");
   const [formBody, setFormBody] = useState<JSX.Element | null>(null);
@@ -13,13 +13,13 @@ export default function FormTrigger() {
   useEffect(() => {
     switch (type) {
       case "text":
-        setFormBody(<TextForm openChange={onOpenChange} />);
+        setFormBody(<TextForm openChange={onOpenChange} page={page} session={session}/>);
         break;
       case "header":
         setFormBody(<Header />);
         break;
       default:
-        setFormBody(<TextForm openChange={onOpenChange} />);
+        setFormBody(<TextForm openChange={onOpenChange} page={page} session={session}/>);
     }
   }, [type, onOpenChange]);
 

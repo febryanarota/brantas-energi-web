@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
-import { error } from "console";
+import { blockType } from "@prisma/client";
+import { decrypt } from "@/lib/auth";
 
-export const TextForm = ({ openChange }: { openChange?: () => void }) => {
+export const TextForm = ({ openChange, page, session }: { openChange?: () => void, page : string, session : any }) => {
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -21,9 +22,7 @@ export const TextForm = ({ openChange }: { openChange?: () => void }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     
     if (content === "") {
-      e.preventDefault(); // Prevent the default form submission
-      // TO DO: Add error message
-      console.log("Content is empty");
+      e.preventDefault(); 
       return;
     }
 
@@ -42,7 +41,40 @@ export const TextForm = ({ openChange }: { openChange?: () => void }) => {
         body: JSON.stringify(formData),
       });
 
-      console.log(response);
+      if (!response.ok) {
+        const errorResponse = await response.text();
+        console.error("API Response Error:", errorResponse);
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      let status = "createPending";
+      if (session.role === "admin") {
+        status = "verified";
+      }
+
+      console.log(status)
+
+      const contentResponse = await fetch("/api/content", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          blockType: "text" as blockType,
+          textId: result.id,
+          position: result.id,
+          page: page,
+          status: status,
+        }),
+      });
+
+      if (!contentResponse.ok) {
+        const errorResponse = await contentResponse.text();
+        console.error("API Response Error:", errorResponse);
+        throw new Error(`Network response was not ok: ${contentResponse.status} ${contentResponse.statusText}`);
+      }
     } catch (error) {
       console.error(error);
     }

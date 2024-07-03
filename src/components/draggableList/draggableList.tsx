@@ -4,13 +4,12 @@ import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { useCallback, useState } from "react";
 import Content from "../contents/content";
 import { GripVertical } from "lucide-react";
+import { contentBlock } from "@prisma/client";
 
 export default function DraggableList({
-  type,
   data,
 }: {
-  type: string;
-  data: any[];
+  data: contentBlock[];
 }) {
   const [items, setItems] = useState(data);
 
@@ -49,8 +48,8 @@ export default function DraggableList({
                   >
                     <GripVertical className="mt-2 text-slate-500" />
                     <Content
-                      content={item}
-                      type={type}
+                      block={item}
+                      type={item.blockType}
                       deleteHandler={handleDelete}
                     ></Content>
                   </div>
