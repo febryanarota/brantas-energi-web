@@ -12,6 +12,7 @@ import { qna } from "@prisma/client";
 import { Trash, Check, X, Pencil } from "lucide-react";
 import { FaqEditModal } from "../modals/faq-edit-modal";
 import { useEffect, useState } from "react";
+import { TextEditModal } from "../modals/text-edit-modal";
 
 export const DeleteButton = ({
   id,
@@ -88,10 +89,12 @@ export const EditButton = ({
   id,
   setStatus,
   type,
+  session,
 }: {
   id: number;
   setStatus: Function;
   type: string;
+  session: any;
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [modal, setModal] = useState<JSX.Element | null>(null);
@@ -100,6 +103,9 @@ export const EditButton = ({
     switch (type) {
       case "faq":
         setModal(<FaqEditModal id={id} />);
+        break;
+      case "text":
+        setModal(<TextEditModal openChange={onOpenChange} session={session} id={id}/>);
         break;
       default:
         setModal(null);
@@ -115,7 +121,7 @@ export const EditButton = ({
           height={30}
         />
       </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
         <ModalContent>
           {(onClose) => <ModalBody>{modal}</ModalBody>}
         </ModalContent>

@@ -3,18 +3,10 @@
 import React, { useState } from "react";
 import Tiptap from "./TipTap";
 
-export const Editor = ({ setContent, content } : { setContent: Function, content: string}) => {
-  const handleContentChange = (reason: any) => {
-    setContent(reason);
+export const Editor = ({ setContent, content }: { setContent: Function; content: string }) => {
+  const handleContentChange = (newContent: string) => {
+      setContent(newContent);
   };
 
-  return (
-    <>
-      <Tiptap
-        content={content}
-        onChange={(newContent: string) => handleContentChange(newContent)}
-      />
-      
-    </>
-  );
+  return <Tiptap content={content} onChange={handleContentChange} />;
 };

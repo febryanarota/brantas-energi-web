@@ -53,7 +53,7 @@ export default async function Page() {
           <h1 className="text-3xl font-bold tracking-widerfle">Regulasi</h1>
           <FormTrigger page={"regulasi"} session={session}/>
         </div>
-        <DraggableList data={data} />
+        <DraggableList data={data} session={session}/>
       </CMSContainer>
     </div>
   );

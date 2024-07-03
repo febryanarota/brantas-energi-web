@@ -32,8 +32,8 @@ export default function FormTrigger({page, session} : {page : string, session : 
       <button className="bg-primaryYellow rounded-full p-1.5" onClick={onOpen}>
         <Plus />
       </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-        <ModalContent>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" >
+        <ModalContent className="max-h-[80vh]">
           {(onClose) => (
             <ModalBody className="py-10 px-7 flex flex-col items-center">
               <div className="w-full flex flex-col max-w-2xl">

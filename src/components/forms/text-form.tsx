@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
 
 export const TextForm = ({ openChange, page, session }: { openChange?: () => void, page : string, session : any }) => {
+
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,6 +24,7 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
     e.preventDefault(); // Prevent the default form submission
 
     if (content === "" || content === "<p></p>") {
+      setError("Content cannot be empty");
       return;
     }
 

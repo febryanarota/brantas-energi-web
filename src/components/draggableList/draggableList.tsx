@@ -8,8 +8,10 @@ import { contentBlock } from "@prisma/client";
 
 export default function DraggableList({
   data,
+  session,
 }: {
   data: contentBlock[];
+  session : any;
 }) {
   const [items, setItems] = useState(data);
 
@@ -51,6 +53,7 @@ export default function DraggableList({
                       block={item}
                       type={item.blockType}
                       deleteHandler={handleDelete}
+                      session={session}
                     ></Content>
                   </div>
                 )}
