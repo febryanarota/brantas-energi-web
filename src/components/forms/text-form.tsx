@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
-import { decrypt } from "@/lib/auth";
 
 export const TextForm = ({ openChange, page, session }: { openChange?: () => void, page : string, session : any }) => {
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => { 
     if (content === "" || content === "<p></p>") {
@@ -20,11 +20,15 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
   }, [content]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    
-    if (content === "") {
-      e.preventDefault(); 
+    e.preventDefault(); // Prevent the default form submission
+
+    if (content === "" || content === "<p></p>") {
+      console.log("Content is empty");
+      setError("Content cannot be empty");
       return;
     }
+
+    setIsLoading(true); // Set loading state to true
 
     const formData = {
       content: content,
@@ -75,8 +79,16 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
         console.error("API Response Error:", errorResponse);
         throw new Error(`Network response was not ok: ${contentResponse.status} ${contentResponse.statusText}`);
       }
+
+      setIsLoading(false); // Set loading state to false after successful submission
+      window.location.reload(); // Reload the page to see the changes
+      if (openChange) {
+        openChange(); // Close the form
+      }
+
     } catch (error) {
       console.error(error);
+      setIsLoading(false); // Set loading state to false in case of error
     }
   };
 
@@ -99,8 +111,8 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
           >
             Cancel
           </Button>
-          <Button type="submit" className="submit-btn self-end">
-            Save
+          <Button type="submit" className="submit-btn self-end" disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
         {
