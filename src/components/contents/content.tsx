@@ -40,10 +40,12 @@ export default function Content({
   type,
   block,
   deleteHandler,
+  session
 }: {
   type: string;
   block: contentBlock;
   deleteHandler: Function;
+  session: any
 }) {
   const [status, setStatus] = useState(block.status);
   const [border, setBorder] = useState("border-white");
@@ -112,7 +114,7 @@ export default function Content({
             setButton(
               <div className="flex flex-row">
                 <div>
-                  <EditButton id={block.id} setStatus={setStatus} type={type} />
+                  <EditButton id={data.id} setStatus={setStatus} type={type} session={session}/>
                 </div>
                 <div>
                   <DeleteButton
