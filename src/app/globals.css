@@ -162,10 +162,7 @@
 }
 
 .ProseMirror {
-  padding: 10px;
-  background: transparent;
-  border-radius: 0 0 5px 5px;
-  min-height: 100px;
+  
 }
 
 .ProseMirror > * + * {
