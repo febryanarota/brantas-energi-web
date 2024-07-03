@@ -41,7 +41,7 @@ export function CMSContainer({
   ...props
 }: ContainerProps) {
   return (
-    <div className="w-full flex flex-col py-5">
+    <div className="w-full flex flex-col py-5 items-center">
       <div className={`w-full max-w-5xl px-[24px] ${className}`} {...props}>
         {children}
       </div>

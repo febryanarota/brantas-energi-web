@@ -47,7 +47,7 @@ export default async function Page() {
 
   const data: contentBlock[] = await getData();
   return (
-    <div>
+    <div className="w-full">
       <CMSContainer>
         <div className="flex flex-row justify-between items-center border-b-3 pb-2">
           <h1 className="text-3xl font-bold tracking-widerfle">Regulasi</h1>
