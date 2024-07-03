@@ -23,8 +23,6 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
     e.preventDefault(); // Prevent the default form submission
 
     if (content === "" || content === "<p></p>") {
-      console.log("Content is empty");
-      setError("Content cannot be empty");
       return;
     }
 
@@ -116,7 +114,7 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
           </Button>
         </div>
         {
-          error ? <p className="text-red-500 text-sm mt-4">{error}</p> : null
+          error ? <p className="text-slate-500 text-sm mt-4">{error}</p> : null
         }
       </form>
     </div>
