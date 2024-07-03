@@ -15,33 +15,43 @@ import { useEffect, useState } from "react";
 
 export const DeleteButton = ({
   id,
-  setStatus,
-  api,
+  type,
 }: {
   id: number;
-  setStatus: Function;
-  api: string;
+  type: string;
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleDelete = async () => {
-    const res = await fetch(api, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        id: id,
-      }),
-    });
+    setIsLoading(true); // Set loading state to true
 
-    if (!res.ok) {
-      throw new Error("Network response was not ok");
+    try {
+      const res = await fetch(`/api/${type}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          id: id,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorResponse = await res.text();
+        console.error("API Response Error:", errorResponse);
+        throw new Error(`Network response was not ok: ${res.status} ${res.statusText}`);
+      }
+
+      const result = await res.json();
+      if (result) window.location.reload();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false); // Set loading state to false
+      onOpenChange(); // Close the modal
     }
-
-    const result = await res.json();
-    if (result) setStatus("deleted");
   };
 
   return (
@@ -56,14 +66,14 @@ export const DeleteButton = ({
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
         <ModalContent>
           {(onClose) => (
-            <ModalBody className="flex items-center justify-center py-10">
+            <ModalBody className="flex flex-col items-center justify-center py-10">
               <p>Are you sure want to delete this?</p>
-              <div className="flex flex-row w-full items-center justify-center gap-5">
-                <Button className="w-md" onClick={onOpenChange}>
+              <div className="flex flex-row w-full items-center justify-center gap-5 mt-4">
+                <Button className="w-md" onClick={onOpenChange} disabled={isLoading}>
                   Cancel
                 </Button>
-                <Button className="w-md bg-red-300" onClick={handleDelete}>
-                  Delete
+                <Button className="w-md bg-red-300" onClick={handleDelete} disabled={isLoading}>
+                  {isLoading ? "Deleting..." : "Delete"}
                 </Button>
               </div>
             </ModalBody>

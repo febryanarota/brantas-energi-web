@@ -9,9 +9,9 @@ import {
   EditButton,
   updateButton,
 } from "./buttons";
-import {TextContent} from "./text-content";
+import { TextContent } from "./text-content";
 
-async function getData(content : contentBlock) {
+async function getData(content: contentBlock) {
   let response;
   let result;
   switch (content.blockType) {
@@ -36,7 +36,6 @@ async function getData(content : contentBlock) {
   }
 }
 
-
 export default function Content({
   type,
   block,
@@ -51,69 +50,7 @@ export default function Content({
   const [button, setButton] = useState<JSX.Element | null>(null);
   const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
 
-
   useEffect(() => {
-    // switch (status) {
-    //   case "createPending":
-    //     setBorder("border-emerald-400");
-    //     setButton(
-    //       <div className="flex flex-row">
-    //         <div>
-    //           {createButton(
-    //             block.id,
-    //             setStatus,
-    //             `${process.env.NEXT_PUBLIC_URL}/api/faq`,
-    //           )}
-    //         </div>
-    //         <div>{cancelButton(block.id)}</div>
-    //       </div>,
-    //     );
-    //     break;
-    //   case "updatePending":
-    //     setBorder("border-yellow-400");
-    //     setButton(
-    //       <div className="flex flex-row">
-    //         <div>{updateButton(block.id, setStatus)}</div>
-    //         <div>{cancelButton(block.id)}</div>
-    //       </div>,
-    //     );
-    //     break;
-    //   case "deletePending":
-    //     setBorder("border-red-400");
-    //     setButton(
-    //       <div className="flex flex-row">
-    //         <div>
-    //           <DeleteButton
-    //             id={block.id}
-    //             setStatus={setStatus}
-    //             api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}
-    //           />
-    //         </div>
-    //         <div>{cancelButton(block.id)}</div>
-    //       </div>,
-    //     );
-    //     break;
-    //   case "deleted":
-    //     deleteHandler(block.id);
-    //     break;
-    //   default:
-    //     setBorder("border-white");
-    //     setButton(
-    //       <div className="flex flex-row">
-    //         <div>
-    //           <EditButton id={block.id} setStatus={setStatus} type={type} />
-    //         </div>
-    //         <div>
-    //           <DeleteButton
-    //             id={block.id}
-    //             setStatus={setStatus}
-    //             api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}
-    //           />
-    //         </div>
-    //       </div>,
-    //     );
-    // }
-
     const fetchData = async () => {
       try {
         const data = await getData(block);
@@ -126,6 +63,65 @@ export default function Content({
             break;
           default:
             setRenderContent(<div>Content</div>);
+        }
+        switch (status) {
+          // case "createPending":
+          //   setBorder("border-emerald-400");
+          //   setButton(
+          //     <div className="flex flex-row">
+          //       <div>
+          //         {createButton(
+          //           block.id,
+          //           setStatus,
+          //           `${process.env.NEXT_PUBLIC_URL}/api/faq`,
+          //         )}
+          //       </div>
+          //       <div>{cancelButton(block.id)}</div>
+          //     </div>,
+          //   );
+          //   break;
+          // case "updatePending":
+          //   setBorder("border-yellow-400");
+          //   setButton(
+          //     <div className="flex flex-row">
+          //       <div>{updateButton(block.id, setStatus)}</div>
+          //       <div>{cancelButton(block.id)}</div>
+          //     </div>,
+          //   );
+          //   break;
+          // case "deletePending":
+          //   setBorder("border-red-400");
+          //   setButton(
+          //     <div className="flex flex-row">
+          //       <div>
+          //         <DeleteButton
+          //           id={block.id}
+          //           setStatus={setStatus}
+          //           api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}
+          //         />
+          //       </div>
+          //       <div>{cancelButton(block.id)}</div>
+          //     </div>,
+          //   );
+          //   break;
+          // case "deleted":
+          //   deleteHandler(block.id);
+          //   break;
+          default:
+            setBorder("border-white");
+            setButton(
+              <div className="flex flex-row">
+                <div>
+                  <EditButton id={block.id} setStatus={setStatus} type={type} />
+                </div>
+                <div>
+                  <DeleteButton
+                    id={data.id}
+                    type={type}
+                  />
+                </div>
+              </div>,
+            );
         }
       } catch (error) {
         console.error("Error fetching data:", error);

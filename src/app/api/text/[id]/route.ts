@@ -25,6 +25,27 @@ export async function GET(
   }
 }
 
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+  try {
+    const idCOnver = parseInt(context.params.id, 10);
+
+    const result = await prisma.text.delete({
+      where: {
+        id: idCOnver,
+      },
+    });
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error," },
+      { status: 500 },
+    );
+  }
+
+}
+
 // export async function PUT(
 //   req: NextRequest,
 //   context: { params: { id: string } },
