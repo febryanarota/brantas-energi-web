@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 
-export const TextEditModal = ({openChange, session, id} : {openChange?: () => void, session : any, id : number}) => {
+export const TextEditModal = ({openChange, session, id, blockId} : {openChange?: () => void, session : any, id : number, blockId : number}) => {
     const [content, setContent] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,6 +55,7 @@ export const TextEditModal = ({openChange, session, id} : {openChange?: () => vo
             },
             body: JSON.stringify({
                 content: content,
+                blockId: blockId,
             }),
         });
 
