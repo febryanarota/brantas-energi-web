@@ -11,6 +11,7 @@ import { Trash, Check, X, Pencil } from "lucide-react";
 import { FaqEditModal } from "../modals/faq-edit-modal";
 import { useEffect, useState } from "react";
 import { TextEditModal } from "../modals/text-edit-modal";
+import { contentBlock } from "@prisma/client";
 
 export const DeleteButton = ({
   id,
@@ -175,13 +176,11 @@ export const EditButton = ({
 };
 
 export const ConfirmButton = ({
-  id,
   setStatus,
   type,
   session,
   blockId,
 }: {
-  id: number;
   setStatus: Function;
   type: string;
   session: any;
@@ -196,7 +195,6 @@ export const ConfirmButton = ({
       },
       credentials: "include",
       body: JSON.stringify({
-        id: id,
         status: "verified",
       }),
     });
@@ -298,6 +296,61 @@ export const CancelDeleteButton = ({
 
     const result = await res.json();
     if (result && result.status) setStatus(result.status);
+  };
+
+  return (
+    <button onClick={handleCancel}>
+      <X
+        className="mt-1 hover:bg-gray-100 rounded-full p-1"
+        width={30}
+        height={30}
+      />
+    </button>
+  );
+}
+
+export const CancelEditButton = ({
+  id,
+  setStatus,
+  session,
+  block,
+}: {
+  id: number;
+  setStatus: Function;
+  session: any;
+  block: contentBlock;
+}) => {
+  const handleCancel = async () => {
+    const res = await fetch(`/api/content/${block.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        status: "verified",
+        editId: null,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const res2 = await fetch(`/api/${block.blockType}/${block.editId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Cookie": `session=${session}`,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        id: id,
+      }),
+    });
+
+    const result = await res2.json();
+    if (result) window.location.reload();
   };
 
   return (
