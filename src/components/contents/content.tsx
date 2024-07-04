@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   CancelButton,
   CancelDeleteButton,
+  CancelEditButton,
   ConfirmButton,
   DeleteButton,
   EditButton,
@@ -61,10 +62,10 @@ export default function Content({
         const data = await getData(block);
         switch (type) {
           case "faq":
-            setRenderContent(<FaqContent content={data as qna} />);
+            setRenderContent(<FaqContent content={data as qna}/>);
             break;
           case "text":
-            setRenderContent(<TextContent content={data as text} />);
+            setRenderContent(<TextContent content={data as text} editId={block.editId}/>);
             break;
           default:
             setRenderContent(<div>Content</div>);
@@ -77,7 +78,6 @@ export default function Content({
                 <div>
                   {role === "admin" ? (
                     <ConfirmButton
-                      id={data.id}
                       setStatus={setStatus}
                       type={type}
                       session={session}
@@ -104,7 +104,6 @@ export default function Content({
                 <div>
                   {role === "admin" ? (
                     <ConfirmButton
-                      id={data.id}
                       setStatus={setStatus}
                       type={type}
                       session={session}
@@ -113,12 +112,11 @@ export default function Content({
                   ) : null}
                 </div>
                 <div>
-                  <CancelButton
+                  <CancelEditButton
                     id={data.id}
                     setStatus={setStatus}
-                    type={type}
                     session={session}
-                    blockId={block.id}
+                    block={block}
                   />
                 </div>
               </div>,
@@ -192,7 +190,7 @@ export default function Content({
       className={`${border} bg-white shadow-sm w-full h-full border-2 p-5 rounded-md `}
     >
       <div className="flex flex-row justify-between items-start">
-        <div className="flex flex-col">{renderContent}</div>
+        <div className="flex flex-col grow mr-2">{renderContent}</div>
         {button}
       </div>
     </div>
