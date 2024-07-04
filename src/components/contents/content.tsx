@@ -3,11 +3,11 @@ import { contentBlock, qna, text } from "@prisma/client";
 import FaqContent from "./faq-content";
 import { useEffect, useState } from "react";
 import {
-  cancelButton,
-  createButton,
+  CancelButton,
+  CancelDeleteButton,
+  ConfirmButton,
   DeleteButton,
   EditButton,
-  updateButton,
 } from "./buttons";
 import { TextContent } from "./text-content";
 
@@ -40,12 +40,12 @@ export default function Content({
   type,
   block,
   deleteHandler,
-  session
+  session,
 }: {
   type: string;
   block: contentBlock;
   deleteHandler: Function;
-  session: any
+  session: any;
 }) {
   const [status, setStatus] = useState(block.status);
   const [border, setBorder] = useState("border-white");
@@ -54,6 +54,9 @@ export default function Content({
 
   useEffect(() => {
     const fetchData = async () => {
+      const role = session.role ? session.role : "user";
+      console.log("test", session, role);
+
       try {
         const data = await getData(block);
         switch (type) {
@@ -67,45 +70,87 @@ export default function Content({
             setRenderContent(<div>Content</div>);
         }
         switch (status) {
-          // case "createPending":
-          //   setBorder("border-emerald-400");
-          //   setButton(
-          //     <div className="flex flex-row">
-          //       <div>
-          //         {createButton(
-          //           block.id,
-          //           setStatus,
-          //           `${process.env.NEXT_PUBLIC_URL}/api/faq`,
-          //         )}
-          //       </div>
-          //       <div>{cancelButton(block.id)}</div>
-          //     </div>,
-          //   );
-          //   break;
-          // case "updatePending":
-          //   setBorder("border-yellow-400");
-          //   setButton(
-          //     <div className="flex flex-row">
-          //       <div>{updateButton(block.id, setStatus)}</div>
-          //       <div>{cancelButton(block.id)}</div>
-          //     </div>,
-          //   );
-          //   break;
-          // case "deletePending":
-          //   setBorder("border-red-400");
-          //   setButton(
-          //     <div className="flex flex-row">
-          //       <div>
-          //         <DeleteButton
-          //           id={block.id}
-          //           setStatus={setStatus}
-          //           api={`${process.env.NEXT_PUBLIC_URL}/api/faq`}
-          //         />
-          //       </div>
-          //       <div>{cancelButton(block.id)}</div>
-          //     </div>,
-          //   );
-          //   break;
+          case "createPending":
+            setBorder("border-emerald-400");
+            setButton(
+              <div className="flex flex-row">
+                <div>
+                  {role === "admin" ? (
+                    <ConfirmButton
+                      id={data.id}
+                      setStatus={setStatus}
+                      type={type}
+                      session={session}
+                      blockId={block.id}
+                    />
+                  ) : null}
+                </div>
+                <div>
+                  <CancelButton
+                    id={data.id}
+                    setStatus={setStatus}
+                    type={type}
+                    session={session}
+                    blockId={block.id}
+                  />
+                </div>
+              </div>,
+            );
+            break;
+          case "updatePending":
+            setBorder("border-yellow-400");
+            setButton(
+              <div className="flex flex-row">
+                <div>
+                  {role === "admin" ? (
+                    <ConfirmButton
+                      id={data.id}
+                      setStatus={setStatus}
+                      type={type}
+                      session={session}
+                      blockId={block.id}
+                    />
+                  ) : null}
+                </div>
+                <div>
+                  <CancelButton
+                    id={data.id}
+                    setStatus={setStatus}
+                    type={type}
+                    session={session}
+                    blockId={block.id}
+                  />
+                </div>
+              </div>,
+            );
+            break;
+          case "deletePending":
+            setBorder("border-red-400");
+            setButton(
+              <div className="flex flex-row">
+                <div>
+                  {role === "admin" ? (
+                    <DeleteButton
+                      id={data.id}
+                      setStatus={setStatus}
+                      type={type}
+                      session={session}
+                      blockId={block.id}
+                    />
+                  ) : null}
+                </div>
+                <div>
+                  <CancelDeleteButton
+                    id={data.id}
+                    setStatus={setStatus}
+                    type={type}
+                    session={session}
+                    blockId={block.id}
+                  />
+                </div>
+              </div>,
+            );
+            break;
           // case "deleted":
           //   deleteHandler(block.id);
           //   break;
@@ -114,12 +159,21 @@ export default function Content({
             setButton(
               <div className="flex flex-row">
                 <div>
-                  <EditButton id={data.id} setStatus={setStatus} type={type} session={session}/>
+                  <EditButton
+                    id={data.id}
+                    setStatus={setStatus}
+                    type={type}
+                    session={session}
+                    blockId={block.id}
+                  />
                 </div>
                 <div>
                   <DeleteButton
                     id={data.id}
+                    setStatus={setStatus}
                     type={type}
+                    session={session}
+                    blockId={block.id}
                   />
                 </div>
               </div>,
