@@ -46,6 +46,16 @@ export const TextEditModal = ({openChange, session, id, blockId} : {openChange?:
     }, [content]);
   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setIsLoading(true);
+      // prevent empty content
+      if (content === "" || content === "<p></p>") {
+        setError("Content cannot be empty");
+        setIsLoading(false);
+        return;
+      }
+
+
       try {
         const response = await fetch(`/api/text/${id}`, {
             method: "PUT",
@@ -65,9 +75,16 @@ export const TextEditModal = ({openChange, session, id, blockId} : {openChange?:
             throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
         }
 
+        window.location.reload();
+
       } catch (error) {
         console.error(error);
 
+      } finally {
+        setIsLoading(false);
+        if (openChange) {
+          openChange();
+        }
       }
     };
   
