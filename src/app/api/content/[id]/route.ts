@@ -45,6 +45,7 @@ export async function PATCH(
       },
       data: {
         status: body.status,
+        editId: body.editId,
       },
     });
 
