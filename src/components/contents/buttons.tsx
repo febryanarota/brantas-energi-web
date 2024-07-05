@@ -261,7 +261,7 @@ export const ConfirmEditButton = ({
       throw new Error("Network response was not ok");
     }
 
-    const res2 = await fetch(`/api/${block.blockType}/${block.editId}`, {
+    const res2 = await fetch(`/api/${block.blockType}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -288,7 +288,7 @@ export const ConfirmEditButton = ({
   );
 }
 
-export const  CancelButton = ({
+export const CancelButton = ({
   id,
   setStatus,
   type,

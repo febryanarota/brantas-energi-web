@@ -44,8 +44,7 @@ export async function PATCH(
         id: id,
       },
       data: {
-        status: body.status,
-        editId: body.editId,
+        ...body,
       },
     });
 
