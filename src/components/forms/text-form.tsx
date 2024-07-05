@@ -13,7 +13,6 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
 
   useEffect(() => { 
     if (content === "" || content === "<p></p>") {
-      console.log("Content is empty");
       setError("Content cannot be empty");
     } else {
       setError("");
@@ -34,7 +33,6 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
       content: content,
     };
 
-    console.log(formData);
 
     try {
       const response = await fetch("/api/text", {

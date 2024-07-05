@@ -187,7 +187,6 @@ export const ConfirmButton = ({
   blockId: number;
 }) => {
   const handleUpdate = async () => {
-    console.log("create");
     const res = await fetch(`/api/content/${blockId}`, {
       method: "PATCH",
       headers: {
@@ -303,7 +302,6 @@ export const  CancelButton = ({
   blockId: number;
 }) => {
   const handleCancel = async () => {
-    console.log("cancel");
     const res = await fetch(`/api/${type}/${id}`, {
       method: "DELETE",
       headers: {
@@ -349,7 +347,6 @@ export const CancelDeleteButton = ({
   blockId: number;
 }) => {
   const handleCancel = async () => {
-    console.log("cancel");
     const res = await fetch(`/api/content/${blockId}`, {
       method: "PATCH",
       headers: {

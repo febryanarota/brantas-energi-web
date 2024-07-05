@@ -15,6 +15,5 @@ export default async function Page() {
   });
 
   const data: qna[] = await res.json();
-  console.log(data);
   return <Faq data={data} />;
 }

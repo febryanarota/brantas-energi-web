@@ -36,7 +36,6 @@ export const TextEditModal = ({
         }
 
         const data = await response.json();
-        console.log(data);
         setContent(data.content);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -49,7 +48,6 @@ export const TextEditModal = ({
 
   useEffect(() => {
     if (content === "" || content === "<p></p>") {
-      console.log("Content is empty");
       setError("Content cannot be empty");
     } else {
       setError("");

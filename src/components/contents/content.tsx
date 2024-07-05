@@ -57,7 +57,6 @@ export default function Content({
   useEffect(() => {
     const fetchData = async () => {
       const role = session.role ? session.role : "user";
-      console.log("test", session, role);
 
       try {
         const data = await getData(block);

@@ -9,7 +9,6 @@ import { redirect } from "next/navigation";
 
 async function getData(): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
-  console.log("Session Cookie:", sessionCookie);
 
   try {
     // TO DO: retrive from content table
@@ -25,7 +24,6 @@ async function getData(): Promise<contentBlock[]> {
       },
     );
 
-    console.log("Response status:", res.status);
 
     if (!res.ok) {
       const errorResponse = await res.text();
