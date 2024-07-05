@@ -35,6 +35,7 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
 
 
     try {
+      // POST request to create a new text block
       const response = await fetch("/api/text", {
         method: "POST",
         headers: {
@@ -51,12 +52,11 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
 
       const result = await response.json();
 
+      // POST request to create a new content block
       let status = "createPending";
       if (session.role === "admin") {
         status = "verified";
       }
-
-      console.log(status)
 
       const contentResponse = await fetch("/api/content", {
         method: "POST",
@@ -77,6 +77,21 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
         console.error("API Response Error:", errorResponse);
         throw new Error(`Network response was not ok: ${contentResponse.status} ${contentResponse.statusText}`);
       }
+
+      const contentResult = await contentResponse.json();
+
+      const pageResponse = await fetch(`/api/page/${page}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": `session=${session}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          positions: [contentResult.id],
+        }),
+      });
+
 
       setIsLoading(false); // Set loading state to false after successful submission
       window.location.reload(); // Reload the page to see the changes

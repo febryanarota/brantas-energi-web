@@ -11,7 +11,21 @@ async function getData(): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
 
   try {
-    // TO DO: retrive from content table
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/page/regulasi`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": `session=${sessionCookie}`,
+        },
+        credentials: "include",
+      },
+    );
+
+    const posResp = await response.json();
+    const positions = posResp.positions;
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_URL}/api/content?page=regulasi&status=all`,
       {
@@ -31,7 +45,13 @@ async function getData(): Promise<contentBlock[]> {
       throw new Error(`Network response was not ok: ${res.status} ${res.statusText}`);
     }
 
-    const result: contentBlock[] = await res.json();
+    let result: contentBlock[] = await res.json();
+
+    // Sort the data based on the positions
+    result.sort((a, b) => {
+      return positions.indexOf(a.id) - positions.indexOf(b.id);
+    });
+
     return result;
   } catch (error) {
     console.error("Error fetching data:", error);
