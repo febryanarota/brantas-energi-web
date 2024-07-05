@@ -6,7 +6,6 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string } },
 ) {
-
   try {
     const id = parseInt(context.params.id, 10);
 
@@ -26,7 +25,10 @@ export async function GET(
   }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
   try {
     const idCOnver = parseInt(context.params.id, 10);
 
@@ -54,10 +56,7 @@ export async function PUT(
   const sessionExists = req.cookies.get("session");
 
   if (!sessionExists) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const session = await decrypt(sessionExists.value);
@@ -74,7 +73,6 @@ export async function PUT(
       },
     });
 
-    
     if (role !== "admin") {
       const res = await prisma.contentBlock.update({
         where: {
@@ -92,9 +90,8 @@ export async function PUT(
         );
       }
     }
-    
-    return NextResponse.json(result);
 
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error updating data:", error);
     return NextResponse.json(

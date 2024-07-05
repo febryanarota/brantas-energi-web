@@ -1,8 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "./prisma";
-import { redirect } from "next/navigation";
 
 // TODO: move the key to the env
 const secretKey = "secret";

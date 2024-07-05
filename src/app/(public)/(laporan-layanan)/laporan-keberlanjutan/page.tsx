@@ -1,6 +1,6 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
-import { DataItem, laporan } from "@/lib/dataType";
+import { laporan } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
 import Image from "next/image";
 import { Metadata } from "next";

@@ -36,7 +36,7 @@ export default function FormFaq() {
       });
 
       if (response.status === 200) {
-        // refresh the page
+        // refresh the page if the form is submitted successfully
         window.location.reload();
       } else {
         throw new Error("Failed to submit the form");

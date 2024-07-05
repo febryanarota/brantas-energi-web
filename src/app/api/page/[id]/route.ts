@@ -30,10 +30,7 @@ export async function PUT(
   const sessionExists = req.cookies.get("session");
 
   if (!sessionExists) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
@@ -64,10 +61,7 @@ export async function PATCH(
   const sessionExists = req.cookies.get("session");
 
   if (!sessionExists) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
@@ -82,10 +76,7 @@ export async function PATCH(
     });
 
     if (!currentData) {
-      return NextResponse.json(
-        { error: "Page not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Page not found" }, { status: 404 });
     }
 
     // Concatenate the current positions with the new ones

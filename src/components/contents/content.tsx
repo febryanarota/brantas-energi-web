@@ -62,10 +62,12 @@ export default function Content({
         const data = await getData(block);
         switch (type) {
           case "faq":
-            setRenderContent(<FaqContent content={data as qna}/>);
+            setRenderContent(<FaqContent content={data as qna} />);
             break;
           case "text":
-            setRenderContent(<TextContent content={data as text} editId={block.editId}/>);
+            setRenderContent(
+              <TextContent content={data as text} editId={block.editId} />,
+            );
             break;
           default:
             setRenderContent(<div>Content</div>);

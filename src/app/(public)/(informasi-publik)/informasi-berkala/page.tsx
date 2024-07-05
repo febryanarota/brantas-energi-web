@@ -1,7 +1,6 @@
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
 import { DataItem } from "@/lib/dataType";
-import { title } from "process";
 
 export default function Page() {
   const dataItem: DataItem[] = [

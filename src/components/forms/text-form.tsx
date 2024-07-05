@@ -5,13 +5,20 @@ import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
 
-export const TextForm = ({ openChange, page, session }: { openChange?: () => void, page : string, session : any }) => {
-
+export const TextForm = ({
+  openChange,
+  page,
+  session,
+}: {
+  openChange?: () => void;
+  page: string;
+  session: any;
+}) => {
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (content === "" || content === "<p></p>") {
       setError("Content cannot be empty");
     } else {
@@ -33,7 +40,6 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
       content: content,
     };
 
-
     try {
       // POST request to create a new text block
       const response = await fetch("/api/text", {
@@ -47,7 +53,9 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
       if (!response.ok) {
         const errorResponse = await response.text();
         console.error("API Response Error:", errorResponse);
-        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Network response was not ok: ${response.status} ${response.statusText}`,
+        );
       }
 
       const result = await response.json();
@@ -75,7 +83,9 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
       if (!contentResponse.ok) {
         const errorResponse = await contentResponse.text();
         console.error("API Response Error:", errorResponse);
-        throw new Error(`Network response was not ok: ${contentResponse.status} ${contentResponse.statusText}`);
+        throw new Error(
+          `Network response was not ok: ${contentResponse.status} ${contentResponse.statusText}`,
+        );
       }
 
       const contentResult = await contentResponse.json();
@@ -84,7 +94,7 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Cookie": `session=${session}`,
+          Cookie: `session=${session}`,
         },
         credentials: "include",
         body: JSON.stringify({
@@ -92,13 +102,11 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
         }),
       });
 
-
       setIsLoading(false); // Set loading state to false after successful submission
       window.location.reload(); // Reload the page to see the changes
       if (openChange) {
         openChange(); // Close the form
       }
-
     } catch (error) {
       console.error(error);
       setIsLoading(false); // Set loading state to false in case of error
@@ -124,13 +132,15 @@ export const TextForm = ({ openChange, page, session }: { openChange?: () => voi
           >
             Cancel
           </Button>
-          <Button type="submit" className="submit-btn self-end" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="submit-btn self-end"
+            disabled={isLoading}
+          >
             {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
-        {
-          error ? <p className="text-slate-500 text-sm mt-4">{error}</p> : null
-        }
+        {error ? <p className="text-slate-500 text-sm mt-4">{error}</p> : null}
       </form>
     </div>
   );

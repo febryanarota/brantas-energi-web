@@ -1,8 +1,6 @@
-import DraggableList from "@/components/draggableList/draggableList";
 import { CMSContainer } from "@/components/ui/container";
 import { getSession } from "@/lib/auth";
 import { profile } from "@prisma/client";
-import { Plus } from "lucide-react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

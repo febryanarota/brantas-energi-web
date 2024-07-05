@@ -12,6 +12,7 @@ export async function GET(
   }
 
   try {
+    // Get the id from the URL and convert it to a number
     const id = parseInt(context.params.id, 10);
 
     const result = await prisma.qna.findFirst({

@@ -86,8 +86,8 @@ export const TextEditModal = ({
           );
         }
 
-        let editId = await response.json()
-        editId = editId.id
+        let editId = await response.json();
+        editId = editId.id;
 
         const response2 = await fetch(`/api/content/${blockId}`, {
           method: "PATCH",
@@ -108,7 +108,6 @@ export const TextEditModal = ({
             `Network response was not ok: ${response.status} ${response.statusText}`,
           );
         }
-      
       } else {
         const response = await fetch(`/api/text/${id}`, {
           method: "PUT",

@@ -1,11 +1,23 @@
 "use client";
 
 import { useState, useEffect, ChangeEvent } from "react";
-import { Button, Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@nextui-org/react";
 import { Plus } from "lucide-react";
 import { TextForm } from "./text-form";
 
-export default function FormTrigger({page, session} : {page : string, session : any}) {
+export default function FormTrigger({
+  page,
+  session,
+}: {
+  page: string;
+  session: any;
+}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [type, setType] = useState("text");
   const [formBody, setFormBody] = useState<JSX.Element | null>(null);
@@ -13,13 +25,17 @@ export default function FormTrigger({page, session} : {page : string, session : 
   useEffect(() => {
     switch (type) {
       case "text":
-        setFormBody(<TextForm openChange={onOpenChange} page={page} session={session}/>);
+        setFormBody(
+          <TextForm openChange={onOpenChange} page={page} session={session} />,
+        );
         break;
       case "header":
         setFormBody(<Header />);
         break;
       default:
-        setFormBody(<TextForm openChange={onOpenChange} page={page} session={session}/>);
+        setFormBody(
+          <TextForm openChange={onOpenChange} page={page} session={session} />,
+        );
     }
   }, [type, onOpenChange]);
 
@@ -32,7 +48,7 @@ export default function FormTrigger({page, session} : {page : string, session : 
       <button className="bg-primaryYellow rounded-full p-1.5" onClick={onOpen}>
         <Plus />
       </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl" >
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
         <ModalContent className="max-h-[80vh]">
           {(onClose) => (
             <ModalBody className="py-10 px-7 flex flex-col items-center">

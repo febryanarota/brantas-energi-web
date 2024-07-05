@@ -6,7 +6,6 @@ import { cookies } from "next/headers";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-
 async function getData(): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
 
@@ -17,7 +16,7 @@ async function getData(): Promise<contentBlock[]> {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Cookie": `session=${sessionCookie}`,
+          Cookie: `session=${sessionCookie}`,
         },
         credentials: "include",
       },
@@ -32,17 +31,18 @@ async function getData(): Promise<contentBlock[]> {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Cookie": `session=${sessionCookie}`,
+          Cookie: `session=${sessionCookie}`,
         },
         credentials: "include",
       },
     );
 
-
     if (!res.ok) {
       const errorResponse = await res.text();
       console.error("API Response Error:", errorResponse);
-      throw new Error(`Network response was not ok: ${res.status} ${res.statusText}`);
+      throw new Error(
+        `Network response was not ok: ${res.status} ${res.statusText}`,
+      );
     }
 
     let result: contentBlock[] = await res.json();
@@ -60,6 +60,7 @@ async function getData(): Promise<contentBlock[]> {
 }
 
 export default async function Page() {
+  // Get the session and redirect to login if not found
   const session = await getSession();
   if (!session) redirect("/cms/login");
 
@@ -69,9 +70,9 @@ export default async function Page() {
       <CMSContainer>
         <div className="flex flex-row justify-between items-center border-b-3 pb-2">
           <h1 className="text-3xl font-bold tracking-widerfle">Regulasi</h1>
-          <FormTrigger page={"regulasi"} session={session}/>
+          <FormTrigger page={"regulasi"} session={session} />
         </div>
-        <DraggableList data={data} session={session}/>
+        <DraggableList data={data} session={session} />
       </CMSContainer>
     </div>
   );

@@ -5,17 +5,16 @@ import { useCallback, useState } from "react";
 import Content from "../contents/content";
 import { GripVertical } from "lucide-react";
 import { contentBlock } from "@prisma/client";
-import { set } from "date-fns";
 
 export default function DraggableList({
   data,
   session,
 }: {
   data: contentBlock[];
-  session : any;
+  session: any;
 }) {
   const [items, setItems] = useState(data);
-  const [position, setPosition] = useState(data.map((item) => item.id));  
+  const [position, setPosition] = useState(data.map((item) => item.id));
 
   const handleDragEnd = async (result: any) => {
     if (!result.destination) return;
@@ -26,18 +25,21 @@ export default function DraggableList({
 
     setItems(newItems);
 
-    // PATCH request to update the order of the blocks to page API
+    // Update the position of the items in the database
     try {
-      const newPosition = newItems.map((item) => item.id)
+      const newPosition = newItems.map((item) => item.id);
 
-      if (JSON.stringify(position) !== JSON.stringify(newPosition) && items.length !== 0) {
-        setPosition(newPosition)
+      if (
+        JSON.stringify(position) !== JSON.stringify(newPosition) &&
+        items.length !== 0
+      ) {
+        setPosition(newPosition);
 
         const res = await fetch(`/api/page/${items[0].page}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "Cookie": `session=${session}`,
+            Cookie: `session=${session}`,
           },
           credentials: "include",
           body: JSON.stringify({
@@ -48,13 +50,10 @@ export default function DraggableList({
         if (!res.ok) {
           throw new Error(res.statusText);
         }
-      };
-
+      }
     } catch (error) {
       console.error("Error updating data:", error);
     }
-
-
   };
 
   const handleDelete = useCallback((id: number) => {

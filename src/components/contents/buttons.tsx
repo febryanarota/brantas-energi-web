@@ -32,7 +32,7 @@ export const DeleteButton = ({
   const handleDelete = async () => {
     setIsLoading(true); // Set loading state to true
 
-    const role = session.role
+    const role = session.role;
 
     try {
       if (role === "admin") {
@@ -40,7 +40,7 @@ export const DeleteButton = ({
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            "Cookie": `session=${session}`,
+            Cookie: `session=${session}`,
           },
           credentials: "include",
           body: JSON.stringify({
@@ -74,7 +74,6 @@ export const DeleteButton = ({
       }
 
       window.location.reload();
-      
     } catch (error) {
       console.error(error);
     } finally {
@@ -214,7 +213,7 @@ export const ConfirmButton = ({
       />
     </button>
   );
-}
+};
 
 export const ConfirmEditButton = ({
   id,
@@ -231,20 +230,20 @@ export const ConfirmEditButton = ({
     let editIdKey;
 
     switch (block.blockType) {
-      case 'faq':
-        editIdKey = 'faqId';
+      case "faq":
+        editIdKey = "faqId";
         break;
-      case 'text':
-        editIdKey = 'textId';
+      case "text":
+        editIdKey = "textId";
         break;
       // Add more cases as needed
       default:
-        editIdKey = 'editId';
+        editIdKey = "editId";
     }
 
     let requestBody: { status: string; [key: string]: any } = {
-      status: 'verified',
-      editId : null
+      status: "verified",
+      editId: null,
     };
     requestBody[editIdKey] = block.editId;
 
@@ -265,7 +264,7 @@ export const ConfirmEditButton = ({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Cookie": `session=${session}`,
+        Cookie: `session=${session}`,
       },
       credentials: "include",
       body: JSON.stringify({
@@ -274,7 +273,7 @@ export const ConfirmEditButton = ({
     });
 
     const result = await res2.json();
-    if (result) window.location.reload()
+    if (result) window.location.reload();
   };
 
   return (
@@ -286,7 +285,7 @@ export const ConfirmEditButton = ({
       />
     </button>
   );
-}
+};
 
 export const CancelButton = ({
   id,
@@ -306,7 +305,7 @@ export const CancelButton = ({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Cookie": `session=${session}`,
+        Cookie: `session=${session}`,
       },
       credentials: "include",
       body: JSON.stringify({
@@ -331,7 +330,7 @@ export const CancelButton = ({
       />
     </button>
   );
-}
+};
 
 export const CancelDeleteButton = ({
   id,
@@ -376,7 +375,7 @@ export const CancelDeleteButton = ({
       />
     </button>
   );
-}
+};
 
 export const CancelEditButton = ({
   id,
@@ -410,7 +409,7 @@ export const CancelEditButton = ({
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Cookie": `session=${session}`,
+        Cookie: `session=${session}`,
       },
       credentials: "include",
       body: JSON.stringify({
@@ -431,4 +430,4 @@ export const CancelEditButton = ({
       />
     </button>
   );
-}
+};

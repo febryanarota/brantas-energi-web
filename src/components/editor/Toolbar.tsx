@@ -141,7 +141,6 @@ const Toolbar = ({ editor, content }: Props) => {
             <Redo className="w-5 h-5" />
           </button>
         </div>
-
       </div>
     </div>
   );
