@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import Content from "../contents/content";
 import { GripVertical } from "lucide-react";
 import { contentBlock } from "@prisma/client";
+import { set } from "date-fns";
 
 export default function DraggableList({
   data,
@@ -14,8 +15,9 @@ export default function DraggableList({
   session : any;
 }) {
   const [items, setItems] = useState(data);
+  const [position, setPosition] = useState(data.map((item) => item.id));  
 
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = async (result: any) => {
     if (!result.destination) return;
 
     const newItems = Array.from(items);
@@ -23,7 +25,36 @@ export default function DraggableList({
     newItems.splice(result.destination.index, 0, reorderedItem);
 
     setItems(newItems);
-    console.log(newItems);
+
+    // PATCH request to update the order of the blocks to page API
+    try {
+      const newPosition = newItems.map((item) => item.id)
+
+      if (JSON.stringify(position) !== JSON.stringify(newPosition) && items.length !== 0) {
+        setPosition(newPosition)
+
+        const res = await fetch(`/api/page/${items[0].page}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Cookie": `session=${session}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            positions: newPosition,
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+      };
+
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+
+
   };
 
   const handleDelete = useCallback((id: number) => {
