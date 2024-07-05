@@ -7,6 +7,7 @@ import {
   CancelDeleteButton,
   CancelEditButton,
   ConfirmButton,
+  ConfirmEditButton,
   DeleteButton,
   EditButton,
 } from "./buttons";
@@ -103,11 +104,11 @@ export default function Content({
               <div className="flex flex-row">
                 <div>
                   {role === "admin" ? (
-                    <ConfirmButton
+                    <ConfirmEditButton
+                      id={data.id}
                       setStatus={setStatus}
-                      type={type}
                       session={session}
-                      blockId={block.id}
+                      block={block}
                     />
                   ) : null}
                 </div>

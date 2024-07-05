@@ -217,6 +217,78 @@ export const ConfirmButton = ({
   );
 }
 
+export const ConfirmEditButton = ({
+  id,
+  setStatus,
+  session,
+  block,
+}: {
+  id: number;
+  setStatus: Function;
+  session: any;
+  block: contentBlock;
+}) => {
+  const handleUpdate = async () => {
+    let editIdKey;
+
+    switch (block.blockType) {
+      case 'faq':
+        editIdKey = 'faqId';
+        break;
+      case 'text':
+        editIdKey = 'textId';
+        break;
+      // Add more cases as needed
+      default:
+        editIdKey = 'editId';
+    }
+
+    let requestBody: { status: string; [key: string]: any } = {
+      status: 'verified',
+      editId : null
+    };
+    requestBody[editIdKey] = block.editId;
+
+    const res = await fetch(`/api/content/${block.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const res2 = await fetch(`/api/${block.blockType}/${block.editId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Cookie": `session=${session}`,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        id: id,
+      }),
+    });
+
+    const result = await res2.json();
+    if (result) window.location.reload()
+  };
+
+  return (
+    <button onClick={handleUpdate}>
+      <Check
+        className="mt-1 hover:bg-green-100 rounded-full p-1"
+        width={30}
+        height={30}
+      />
+    </button>
+  );
+}
+
 export const  CancelButton = ({
   id,
   setStatus,
