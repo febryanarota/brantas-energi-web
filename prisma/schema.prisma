@@ -47,6 +47,7 @@ model page {
   id                                   String         @id @db.VarChar
   header                               String?        @db.VarChar
   created_at                           DateTime       @default(now()) @db.Timestamptz(6)
+  positions                            Int[]
   contentBlock_contentBlock_pageTopage contentBlock[] @relation("contentBlock_pageTopage")
 }
 
