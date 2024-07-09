@@ -3,6 +3,7 @@
 import { contentBlock, page } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { ContentComponent } from "./content-component";
+import { CircularProgress, Skeleton } from "@nextui-org/react";
 
 async function getPosition(page: string) {
   try {
@@ -49,7 +50,9 @@ export default function ContentList({ page }: { page: string }) {
   return (
     <div>
       {loading ? (
-        <div>Loading...</div>
+        <div className="flex w-full justify-center items-center gap-3">
+            <CircularProgress aria-label="Loading..." color="primary" />
+        </div>
       ) : (
         data?.map((content) => {
           let id;

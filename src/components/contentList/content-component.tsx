@@ -1,16 +1,17 @@
-'use client'
+"use client";
 
+import { Skeleton } from "@nextui-org/react";
 import { text } from "@prisma/client";
 import { useEffect, useState } from "react";
 
-async function delay(ms : number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function getContent({
   type,
   contentID,
-  timeout = 10000,
+  timeout = 20000,
   retryDelay = 1000,
 }: {
   type: string;
@@ -24,7 +25,7 @@ async function getContent({
     try {
       const response = await fetch(`/api/${type}/${contentID}`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const result = await response.json();
       return result;
@@ -62,17 +63,23 @@ export function ContentComponent({
   return (
     <div>
       {loading ? (
-        <div>Loading...</div>
+        <div className="space-y-3 mt-5">
+          <Skeleton className="w-full rounded-lg">
+            <div className="h-3 w-full rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg">
+            <div className="h-3 w-full rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-3/5 rounded-lg">
+            <div className="h-3 w-3/5 rounded-lg bg-default-300"></div>
+          </Skeleton>
+        </div>
+      ) : !data ? (
+        <div className="my-10 text-gray-600">something went wrong, please refresh</div>
+      ) : type === "text" ? (
+        <TextContent data={data as text} />
       ) : (
-        !data ? (
-          <div>Data Empty</div>
-        ) : (
-          type === 'text' ? (
-            <TextContent data={data as text} />
-          ) : (
-            <div>Unknown content type</div>
-          )
-        )
+        <div>Unknown content type</div>
       )}
     </div>
   );
