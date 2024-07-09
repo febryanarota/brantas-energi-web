@@ -31,22 +31,42 @@ const extension = Prisma.defineExtension({
     },
     text: {
       async delete({ model, operation, args, query }) {
-        // Find related contentBlock IDs
         const contentBlocks = await prisma.contentBlock.findMany({
           where: {
             textId: args.where.id,
           },
         });
         const contentBlockIds = contentBlocks.map((cb) => cb.id);
-
-        // Perform the delete operation
         const result = await query(args);
-
-        // Update positions array in the page model
         await updatePositions(contentBlockIds);
-
         return result;
       },
+    },
+    heading1: {
+      async delete({ model, operation, args, query }) {
+        const contentBlocks = await prisma.contentBlock.findMany({
+          where: {
+            heading1Id: args.where.id,
+          },
+        });
+        const contentBlockIds = contentBlocks.map((cb) => cb.id);
+        const result = await query(args);
+        await updatePositions(contentBlockIds);
+        return result;
+      }
+    },
+    heading2: {
+      async delete({ model, operation, args, query }) {
+        const contentBlocks = await prisma.contentBlock.findMany({
+          where: {
+            heading2Id: args.where.id,
+          },
+        });
+        const contentBlockIds = contentBlocks.map((cb) => cb.id);
+        const result = await query(args);
+        await updatePositions(contentBlockIds);
+        return result;
+      }
     },
   },
 });
