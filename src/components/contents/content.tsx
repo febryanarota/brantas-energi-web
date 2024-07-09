@@ -1,5 +1,5 @@
 "use client";
-import { contentBlock, qna, text } from "@prisma/client";
+import { contentBlock, heading1, heading2, qna, text } from "@prisma/client";
 import FaqContent from "./faq-content";
 import { useEffect, useState } from "react";
 import {
@@ -12,6 +12,7 @@ import {
   EditButton,
 } from "./buttons";
 import { TextContent } from "./text-content";
+import { Heading1Content, Heading2Content } from "./heading-content";
 
 async function getData(content: contentBlock) {
   let response;
@@ -35,6 +36,24 @@ async function getData(content: contentBlock) {
       });
       result = await response.json();
       return result as text;
+    case "heading1":
+      response = await fetch(`/api/heading1/${content.heading1Id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      result = await response.json();
+      return result as heading1; 
+    case "heading2":
+      response = await fetch(`/api/heading2/${content.heading2Id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      result = await response.json();
+      return result as heading2; 
   }
 }
 
@@ -60,6 +79,11 @@ export default function Content({
 
       try {
         const data = await getData(block);
+
+        if (!data) {
+          throw new Error("Failed to fetch data");
+        }
+
         switch (type) {
           case "faq":
             setRenderContent(<FaqContent content={data as qna} />);
@@ -68,6 +92,12 @@ export default function Content({
             setRenderContent(
               <TextContent content={data as text} editId={block.editId} />,
             );
+            break;
+          case "heading1":
+            setRenderContent(<Heading1Content content={data as heading1} editId={block.editId}/>);
+            break;
+          case "heading2":
+            setRenderContent(<Heading2Content content={data as heading2} editId={block.editId}/>);
             break;
           default:
             setRenderContent(<div>Content</div>);
