@@ -76,6 +76,8 @@ export async function POST(req: NextRequest) {
         position: body.position,
         faqId: body.faqId,
         textId: body.textId,
+        heading1Id: body.heading1Id,
+        heading2Id: body.heading2Id,
       },
     });
     return NextResponse.json(result);
