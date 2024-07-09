@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/react";
 import { Plus } from "lucide-react";
 import { TextForm } from "./text-form";
+import { Heading1Form } from "./heading1-form";
+import { Heading2Form } from "./heading2-form";
 
 export default function FormTrigger({
   page,
@@ -29,8 +31,15 @@ export default function FormTrigger({
           <TextForm openChange={onOpenChange} page={page} session={session} />,
         );
         break;
-      case "header":
-        setFormBody(<Header />);
+      case "heading1":
+        setFormBody(
+          <Heading1Form openChange={onOpenChange} page={page} session={session} />,
+        );
+        break;
+      case "heading2":
+        setFormBody(
+          <Heading2Form openChange={onOpenChange} page={page} session={session} />,
+        );
         break;
       default:
         setFormBody(
@@ -65,7 +74,8 @@ export default function FormTrigger({
                   <option value="text" defaultChecked>
                     Text
                   </option>
-                  <option value="header">Header</option>
+                  <option value="heading1">Heading 1</option>
+                  <option value="heading2">Heading 2</option>
                 </select>
               </div>
               {formBody}
@@ -76,7 +86,3 @@ export default function FormTrigger({
     </>
   );
 }
-
-const Header = () => {
-  return <div>Header Form</div>;
-};
