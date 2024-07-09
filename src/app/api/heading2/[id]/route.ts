@@ -25,28 +25,28 @@ export async function GET(
   }
 }
 
-// export async function DELETE(
-//   req: NextRequest,
-//   context: { params: { id: string } },
-// ) {
-//   try {
-//     const idCOnver = parseInt(context.params.id, 10);
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
+  try {
+    const id = parseInt(context.params.id, 10);
 
-//     const result = await prisma.text.delete({
-//       where: {
-//         id: idCOnver,
-//       },
-//     });
+    const result = await prisma.heading2.delete({
+      where: {
+        id: id,
+      },
+    });
 
-//     return NextResponse.json(result);
-//   } catch (error) {
-//     console.error("Error deleting data:", error);
-//     return NextResponse.json(
-//       { error: "Internal Server Error," },
-//       { status: 500 },
-//     );
-//   }
-// }
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error," },
+      { status: 500 },
+    );
+  }
+}
 
 // export async function PUT(
 //   req: NextRequest,
