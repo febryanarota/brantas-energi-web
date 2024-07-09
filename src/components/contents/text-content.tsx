@@ -39,6 +39,7 @@ export const TextContent = ({
 
   return (
     <div className="w-full">
+      <p className="text-sm font-bold text-primaryBlue mb-2">Text</p>
       {content.content ? (
         <div
           className="ProseMirror whitespace-pre-line text-sm text-justify"

@@ -78,7 +78,7 @@ export default function DraggableList({
                     {...provided.dragHandleProps}
                     className="my-5 rounded-md flex flex-row"
                   >
-                    <GripVertical className="mt-2 text-slate-500" />
+                    <GripVertical className="mt-5 text-slate-500" />
                     <Content
                       block={item}
                       type={item.blockType}
