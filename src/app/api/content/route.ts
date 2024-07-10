@@ -35,7 +35,10 @@ export async function GET(req: NextRequest) {
     } else {
       query.status = "verified" as status;
       result = await prisma.contentBlock.findMany({
-        where: query,
+        where: {
+          page: query.page,
+          status: { in: ["deletePending", "verified", "updatePending"] },
+        },
         orderBy: {
           position: "asc",
         },
