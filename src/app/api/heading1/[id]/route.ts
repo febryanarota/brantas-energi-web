@@ -48,55 +48,56 @@ export async function DELETE(
   }
 }
 
-// export async function PUT(
-//   req: NextRequest,
-//   context: { params: { id: string } },
-// ) {
-//   const body = await req.json();
-//   const sessionExists = req.cookies.get("session");
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
+  const body = await req.json();
+  const sessionExists = req.cookies.get("session");
 
-//   if (!sessionExists) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
+  if (!sessionExists) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-//   const session = await decrypt(sessionExists.value);
-//   const role = session.role;
+  const session = await decrypt(sessionExists.value);
+  const role = session.role;
 
-//   try {
-//     const id = parseInt(context.params.id, 10);
-//     const result = await prisma.text.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         content: body.content,
-//       },
-//     });
+  try {
+    const id = parseInt(context.params.id, 10);
+    const result = await prisma.heading1.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: body.title,
+        description: body.description,
+      },
+    });
 
-//     if (role !== "admin") {
-//       const res = await prisma.contentBlock.update({
-//         where: {
-//           id: body.blockId,
-//         },
-//         data: {
-//           status: "updatePending",
-//         },
-//       });
+    if (role !== "admin") {
+      const res = await prisma.contentBlock.update({
+        where: {
+          id: body.blockId,
+        },
+        data: {
+          status: "updatePending",
+        },
+      });
 
-//       if (!res) {
-//         return NextResponse.json(
-//           { error: "Failed to update content block status" },
-//           { status: 500 },
-//         );
-//       }
-//     }
+      if (!res) {
+        return NextResponse.json(
+          { error: "Failed to update content block status" },
+          { status: 500 },
+        );
+      }
+    }
 
-//     return NextResponse.json(result);
-//   } catch (error) {
-//     console.error("Error updating data:", error);
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 },
-//     );
-//   }
-// }
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}
