@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 import { status } from "@prisma/client";
+import { delay } from "@/lib/utils";
 
 export const TextEditModal = ({
   openChange,
@@ -19,9 +20,14 @@ export const TextEditModal = ({
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      const startTime = Date.now();
+      const timeout = 20000;
+      const retryDelay = 1000;
+
       try {
         const response = await fetch(`/api/text/${id}`, {
           method: "GET",
@@ -39,11 +45,15 @@ export const TextEditModal = ({
         setContent(data.content);
       } catch (error) {
         console.error("Error fetching data:", error);
-        // TO DO: Handle error appropriately (e.g. show error message)
+        if (Date.now() - startTime < timeout) {
+          await delay(retryDelay);
+          return fetchData();
+        }
       }
     };
 
     fetchData();
+    setIsFetching(false);
   }, [id]);
 
   useEffect(() => {

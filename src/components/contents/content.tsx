@@ -13,47 +13,53 @@ import {
 } from "./buttons";
 import { TextContent } from "./text-content";
 import { Heading1Content, Heading2Content } from "./heading-content";
+import { delay } from "@/lib/utils";
+
+async function fetchData(url: string) {
+  const startTime = Date.now();
+  const timeout = 20000;
+  const retryDelay = 1000;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return await response.json();
+    
+  } catch (error) {
+    console.error(error);
+      if (Date.now() - startTime < timeout) {
+        await delay(retryDelay);
+        return fetchData(url);
+      } else {
+        throw new Error("Request timed out");
+      }
+  }
+}
 
 async function getData(content: contentBlock) {
-  let response;
   let result;
   switch (content.blockType) {
     case "faq":
-      response = await fetch(`/api/faq/${content.faqId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      result = await response.json();
+      result = await fetchData(`/api/faq/${content.faqId}`);
       return result as qna;
     case "text":
-      response = await fetch(`/api/text/${content.textId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      result = await response.json();
+      result = await fetchData(`/api/text/${content.textId}`);
       return result as text;
     case "heading1":
-      response = await fetch(`/api/heading1/${content.heading1Id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      result = await response.json();
-      return result as heading1; 
+      result = await fetchData(`/api/heading1/${content.heading1Id}`);
+      return result as heading1;
     case "heading2":
-      response = await fetch(`/api/heading2/${content.heading2Id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      result = await response.json();
-      return result as heading2; 
+      result = await fetchData(`/api/heading2/${content.heading2Id}`);
+      return result as heading2;
   }
 }
 
@@ -102,6 +108,9 @@ export default function Content({
           default:
             setRenderContent(<div>Content</div>);
         }
+
+        console.log(type)
+
         switch (status) {
           case "createPending":
             setBorder("border-emerald-400");
@@ -181,9 +190,6 @@ export default function Content({
               </div>,
             );
             break;
-          // case "deleted":
-          //   deleteHandler(block.id);
-          //   break;
           default:
             setBorder("border-white");
             setButton(

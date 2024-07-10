@@ -1,12 +1,9 @@
 "use client";
 
+import { delay } from "@/lib/utils";
 import { Skeleton } from "@nextui-org/react";
 import { text } from "@prisma/client";
 import { useEffect, useState } from "react";
-
-async function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 async function getContent({
   type,
