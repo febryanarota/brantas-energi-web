@@ -60,6 +60,12 @@ export default function ContentList({ page }: { page: string }) {
             case "text":
               id = content.textId;
               break;
+            case "heading1":
+              id = content.heading1Id;
+              break;
+            case "heading2":
+              id = content.heading2Id;
+              break;
             // add more
 
             default:

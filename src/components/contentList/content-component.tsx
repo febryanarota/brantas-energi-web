@@ -2,7 +2,7 @@
 
 import { delay } from "@/lib/utils";
 import { Skeleton } from "@nextui-org/react";
-import { text } from "@prisma/client";
+import { heading1, heading2, text } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 async function getContent({
@@ -47,11 +47,35 @@ export function ContentComponent({
   type: string;
   contentID: number;
 }) {
-  const [data, setData] = useState<text | undefined>(undefined);
+  const [data, setData] = useState<text | heading1 | heading2 | undefined>(
+    undefined,
+  );
   const [loading, setLoading] = useState<boolean>(true);
+  const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
     getContent({ type, contentID }).then((result) => {
+
+      if (!result) {
+        setData(undefined);
+        setLoading(false);
+        return;
+      }
+
+      switch (type) {
+        case "text":
+          setRenderContent(<TextContent data={result as text} />);
+          break;
+        case "heading1":
+          setRenderContent(<Heading1 data={result as heading1}/>);
+          break;
+        case "heading2":
+          setRenderContent(<Heading2 data={result as heading2}/>);
+          break;
+        default:
+          setRenderContent(null);
+      }
+
       setData(result);
       setLoading(false);
     });
@@ -72,11 +96,11 @@ export function ContentComponent({
           </Skeleton>
         </div>
       ) : !data ? (
-        <div className="my-10 text-gray-600">something went wrong, please refresh</div>
-      ) : type === "text" ? (
-        <TextContent data={data as text} />
+        <div className="my-10 text-gray-600">
+          something went wrong, please refresh
+        </div>
       ) : (
-        <div>Unknown content type</div>
+        renderContent
       )}
     </div>
   );
@@ -98,16 +122,28 @@ export function TextContent({ data }: { data: text }) {
   );
 }
 
-export function Heading1() {
+export function Heading1({data}:{data : heading1}) {
   return (
     <div className="mt-16 mb-5">
-      <h2 className="text-3xl">
-        Peraturan Mengenai <br />
-        Keterbukaan Informasi Publik
-      </h2>
-      <div className="w-[10rem] mt-3 border-t-2 border-primaryYellow"></div>
+      <div className="border-l-primaryYellow border-l-2 pl-5 ">
+
+        <h2 className="text-3xl font-medium">
+          {
+            data.title
+          }
+        </h2>
+        <p className="text-sm">{data.description}</p>
+      </div>
     </div>
   );
 }
 
-export function Heading2() {}
+export function Heading2({data}:{data : heading2}) {
+  return (
+    <div className="flex flex-col mt-10 mb-4">
+      <h3 className="text-2xl font-medium">{data.title}</h3>
+      <p className="text-sm">{data.description}</p>
+      <div className="w-[10rem] mt-1 border-t-2 border-primaryYellow"></div>
+    </div>
+  )
+}
