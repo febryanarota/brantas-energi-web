@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
-import { status } from "@prisma/client";
 import { delay } from "@/lib/utils";
 
 export const TextEditModal = ({
@@ -23,7 +22,7 @@ export const TextEditModal = ({
   const [isFetching, setIsFetching] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () : Promise<void> => {
       const startTime = Date.now();
       const timeout = 20000;
       const retryDelay = 1000;
@@ -54,7 +53,7 @@ export const TextEditModal = ({
 
     fetchData();
     setIsFetching(false);
-  }, [id]);
+  }, [id, session]);
 
   useEffect(() => {
     if (content === "" || content === "<p></p>") {

@@ -46,7 +46,7 @@ export default function FormTrigger({
           <TextForm openChange={onOpenChange} page={page} session={session} />,
         );
     }
-  }, [type, onOpenChange]);
+  }, [type, onOpenChange, page, session]);
 
   const handleSelection = (event: ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value);

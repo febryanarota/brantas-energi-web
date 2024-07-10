@@ -45,7 +45,7 @@ export default function ContentList({ page }: { page: string }) {
       setData(result);
       setLoading(false);
     });
-  }, []);
+  }, [page]);
 
   return (
     <div>

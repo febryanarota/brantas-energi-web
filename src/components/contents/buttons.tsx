@@ -176,7 +176,7 @@ export const EditButton = ({
       default:
         setModal(null);
     }
-  }, [type]);
+  }, [type, blockId, id, onOpenChange, session]);
 
   return (
     <>

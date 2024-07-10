@@ -221,7 +221,7 @@ export default function Content({
     };
 
     fetchData();
-  }, [status, type, block, deleteHandler]);
+  }, [status, type, block, deleteHandler, session]);
 
   return (
     <div

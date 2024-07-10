@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 import { heading1 } from "@prisma/client";
 import { delay } from "@/lib/utils";
@@ -23,7 +22,7 @@ export const Heading1EditModal = ({
   const [isFetching, setIsFetching] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       const startTime = Date.now();
       const timeout = 20000;
       const retryDelay = 1000;
@@ -54,7 +53,7 @@ export const Heading1EditModal = ({
     };
 
     fetchData();
-  }, [id]);
+  }, [id, session]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
