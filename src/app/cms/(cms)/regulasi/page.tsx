@@ -5,9 +5,13 @@ import { contentBlock } from "@prisma/client";
 import { cookies } from "next/headers";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { delay } from "@/lib/utils";
 
 async function getData(): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
+  const timeout = 20000;
+  const retryDelay = 1000;
+  const startTime = Date.now();
 
   try {
     const response = await fetch(
@@ -54,8 +58,14 @@ async function getData(): Promise<contentBlock[]> {
 
     return result;
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return []; // Return an empty array in case of error
+    if (Date.now() - startTime < timeout) {
+      await delay(retryDelay);
+      return getData();
+    } else {
+      console.error("Error fetching data:", error);
+      return []; // Return an empty array in case of error
+    }
+
   }
 }
 
@@ -73,6 +83,12 @@ export default async function Page() {
           <FormTrigger page={"regulasi"} session={session} />
         </div>
         <DraggableList data={data} session={session} />
+        {
+          data.length < 1 &&
+          <div>
+            Empty content, refresh or insert some new contents.
+          </div>
+        }
       </CMSContainer>
     </div>
   );

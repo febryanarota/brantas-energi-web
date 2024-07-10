@@ -12,6 +12,8 @@ import { FaqEditModal } from "../modals/faq-edit-modal";
 import { useEffect, useState } from "react";
 import { TextEditModal } from "../modals/text-edit-modal";
 import { contentBlock } from "@prisma/client";
+import { Heading1EditModal } from "../modals/heading1-edit-modal";
+import { Heading2EditModal } from "../modals/heading2-edit-modal";
 
 export const DeleteButton = ({
   id,
@@ -144,6 +146,26 @@ export const EditButton = ({
       case "text":
         setModal(
           <TextEditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
+        break;
+      case "heading1":
+        setModal(
+          <Heading1EditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
+        break;
+      case "heading2":
+        setModal(
+          <Heading2EditModal
             openChange={onOpenChange}
             session={session}
             id={id}
