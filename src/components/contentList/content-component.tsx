@@ -124,7 +124,7 @@ export function TextContent({ data }: { data: text }) {
 
 export function Heading1({data}:{data : heading1}) {
   return (
-    <div className="mt-16 mb-5">
+    <div className="mt-10 mb-5">
       <div className="border-l-primaryYellow border-l-2 pl-5 ">
 
         <h2 className="text-3xl font-medium">
@@ -140,7 +140,7 @@ export function Heading1({data}:{data : heading1}) {
 
 export function Heading2({data}:{data : heading2}) {
   return (
-    <div className="flex flex-col mt-10 mb-4">
+    <div className="flex flex-col mt-7 mb-4">
       <h3 className="text-2xl font-medium">{data.title}</h3>
       <p className="text-sm">{data.description}</p>
       <div className="w-[10rem] mt-1 border-t-2 border-primaryYellow"></div>

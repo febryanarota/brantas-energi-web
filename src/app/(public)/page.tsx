@@ -46,7 +46,7 @@ export default function Home() {
 
       {/* Tentang Kami */}
       <div className="flex flex-col items-center pb-24">
-        <Container className="flex flex-col sm:flex-row sm:mt-20 mt-10">
+        <Container className="flex flex-col sm:flex-row sm:mt-20 mt-10 items-center">
           <div className="relative sm:w-1/2 h-fit">
             <div className="relative w-[90%] h-[200px] sm:h-[350px] rounded-md overflow-hidden">
               <Image
