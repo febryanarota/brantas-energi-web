@@ -258,7 +258,12 @@ export const ConfirmEditButton = ({
       case "text":
         editIdKey = "textId";
         break;
-      // Add more cases as needed
+      case "heading1":
+        editIdKey = "heading1Id";
+        break;
+      case "heading2":
+        editIdKey = "heading2Id";
+        break;
       default:
         editIdKey = "editId";
     }

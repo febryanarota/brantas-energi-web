@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { heading2 } from "@prisma/client";
 import { delay } from "@/lib/utils";
+import { title } from "process";
 
 export const Heading2EditModal = ({
   openChange,
@@ -83,7 +84,8 @@ export const Heading2EditModal = ({
             Cookie: `session=${session}`,
           },
           body: JSON.stringify({
-            content: content,
+            title: content?.title,
+            description: content?.description,
           }),
         });
 

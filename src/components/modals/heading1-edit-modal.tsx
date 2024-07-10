@@ -83,7 +83,8 @@ export const Heading1EditModal = ({
             Cookie: `session=${session}`,
           },
           body: JSON.stringify({
-            content: content,
+            title: content?.title,
+            description: content?.description,
           }),
         });
 
