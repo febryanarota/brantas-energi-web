@@ -68,6 +68,19 @@ const extension = Prisma.defineExtension({
         return result;
       },
     },
+    image: {
+      async delete({ model, operation, args, query }) {
+        const contentBlocks = await prisma.contentBlock.findMany({
+          where: {
+            imageId: args.where.id,
+          },
+        });
+        const contentBlockIds = contentBlocks.map((cb) => cb.id);
+        const result = await query(args);
+        await updatePositions(contentBlockIds);
+        return result;
+      },
+    },
   },
 });
 
