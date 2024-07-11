@@ -1,5 +1,6 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -25,28 +26,36 @@ export async function GET(
   }
 }
 
-// export async function DELETE(
-//   req: NextRequest,
-//   context: { params: { id: string } },
-// ) {
-//   try {
-//     const id = parseInt(context.params.id, 10);
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
+  try {
+    const id = parseInt(context.params.id, 10);
 
-//     const result = await prisma.heading2.delete({
-//       where: {
-//         id: id,
-//       },
-//     });
+    const result = await prisma.image.delete({
+      where: {
+        id: id,
+      },
+    });
 
-//     return NextResponse.json(result);
-//   } catch (error) {
-//     console.error("Error deleting data:", error);
-//     return NextResponse.json(
-//       { error: "Internal Server Error," },
-//       { status: 500 },
-//     );
-//   }
-// }
+    if (result) {
+      const image = "public/" + result.shadowId.split('/').pop();
+      await storage.image.delete(image as string).catch((error) => {
+        console.error("Error deleting image:", error);
+        throw new Error("Error deleting image");
+      })
+    }
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error," },
+      { status: 500 },
+    );
+  }
+}
 
 // export async function PUT(
 //   req: NextRequest,
