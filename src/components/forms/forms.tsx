@@ -12,6 +12,7 @@ import { Plus } from "lucide-react";
 import { TextForm } from "./text-form";
 import { Heading1Form } from "./heading1-form";
 import { Heading2Form } from "./heading2-form";
+import { ImageForm } from "./image-form";
 
 export default function FormTrigger({
   page,
@@ -41,6 +42,11 @@ export default function FormTrigger({
           <Heading2Form openChange={onOpenChange} page={page} session={session} />,
         );
         break;
+      case "image":
+        setFormBody(
+          <ImageForm openChange={onOpenChange} page={page} session={session} />,
+        )
+        break
       default:
         setFormBody(
           <TextForm openChange={onOpenChange} page={page} session={session} />,
@@ -58,9 +64,9 @@ export default function FormTrigger({
         <Plus />
       </button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-        <ModalContent className="max-h-[80vh]">
+        <ModalContent className="">
           {(onClose) => (
-            <ModalBody className="py-10 px-7 flex flex-col items-center">
+            <ModalBody className="py-10 px-7 flex flex-col items-center max-h-[80vh] overflow-auto">
               <div className="w-full flex flex-col max-w-2xl">
                 <label htmlFor="type" className="label">
                   Block Type
@@ -76,6 +82,7 @@ export default function FormTrigger({
                   </option>
                   <option value="heading1">Heading 1</option>
                   <option value="heading2">Heading 2</option>
+                  <option value="image">Image</option>
                 </select>
               </div>
               {formBody}
