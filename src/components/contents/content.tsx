@@ -1,5 +1,5 @@
 "use client";
-import { contentBlock, heading1, heading2, qna, text } from "@prisma/client";
+import { contentBlock, heading1, heading2, image, qna, text } from "@prisma/client";
 import FaqContent from "./faq-content";
 import { useEffect, useState } from "react";
 import {
@@ -14,6 +14,7 @@ import {
 import { TextContent } from "./text-content";
 import { Heading1Content, Heading2Content } from "./heading-content";
 import { delay } from "@/lib/utils";
+import { ImageContent } from "./image-content";
 
 async function fetchData(url: string) {
   const startTime = Date.now();
@@ -59,6 +60,9 @@ async function getData(content: contentBlock) {
     case "heading2":
       result = await fetchData(`/api/heading2/${content.heading2Id}`);
       return result as heading2;
+    case "image":
+      result = await fetchData(`/api/image/${content.imageId}`);
+      return result as image;
   }
 }
 
@@ -114,7 +118,13 @@ export default function Content({
               />,
             );
             break;
+          case "image":
+            setRenderContent(
+              <ImageContent content={data as image} editId={block.editId} />
+            )
+            break;
           default:
+            // make sure to use break on every case
             setRenderContent(<div>Content</div>);
         }
 
