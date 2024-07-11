@@ -2,8 +2,9 @@
 
 import { delay } from "@/lib/utils";
 import { Skeleton } from "@nextui-org/react";
-import { heading1, heading2, text } from "@prisma/client";
+import { heading1, heading2, image, text } from "@prisma/client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 async function getContent({
   type,
@@ -47,9 +48,9 @@ export function ContentComponent({
   type: string;
   contentID: number;
 }) {
-  const [data, setData] = useState<text | heading1 | heading2 | undefined>(
-    undefined,
-  );
+  const [data, setData] = useState<
+    text | heading1 | heading2 | image | undefined
+  >(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
 
@@ -66,10 +67,13 @@ export function ContentComponent({
           setRenderContent(<TextContent data={result as text} />);
           break;
         case "heading1":
-          setRenderContent(<Heading1 data={result as heading1} />);
+          setRenderContent(<Heading1Content data={result as heading1} />);
           break;
         case "heading2":
-          setRenderContent(<Heading2 data={result as heading2} />);
+          setRenderContent(<Heading2Content data={result as heading2} />);
+          break;
+        case "image":
+          setRenderContent(<ImageContent data={result as image} />);
           break;
         default:
           setRenderContent(null);
@@ -121,7 +125,7 @@ export function TextContent({ data }: { data: text }) {
   );
 }
 
-export function Heading1({ data }: { data: heading1 }) {
+export function Heading1Content({ data }: { data: heading1 }) {
   return (
     <div className="mt-10 mb-5">
       <div className="border-l-primaryYellow border-l-2 pl-5 ">
@@ -132,12 +136,33 @@ export function Heading1({ data }: { data: heading1 }) {
   );
 }
 
-export function Heading2({ data }: { data: heading2 }) {
+export function Heading2Content({ data }: { data: heading2 }) {
   return (
     <div className="flex flex-col mt-7 mb-4">
       <h3 className="text-2xl font-medium">{data.title}</h3>
       <p className="text-sm">{data.description}</p>
       <div className="w-[10rem] mt-1 border-t-2 border-primaryYellow"></div>
+    </div>
+  );
+}
+
+export function ImageContent({ data }: { data: image }) {
+  return (
+    <div className="w-full py-8">
+      <a
+        href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`}
+        target="_blank"
+      >
+        <div className="max-h-[70vh] flex justify-center items-center">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`}
+            alt={data.alt ? data.alt : "image"}
+            width={2000}
+            height={2000}
+            className="hover:cursor-pointer hover:opacity-60 transition-transform duration-300 ease-in-out max-h-[70vh] w-full h-auto object-contain rounded-lg"
+          />
+        </div>
+      </a>
     </div>
   );
 }

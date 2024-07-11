@@ -66,6 +66,9 @@ export default function ContentList({ page }: { page: string }) {
             case "heading2":
               id = content.heading2Id;
               break;
+            case "image":
+              id = content.imageId;
+              break;
             // add more
 
             default:
