@@ -38,9 +38,11 @@ model contentBlock {
   editId                       Int?
   heading1Id                   Int?
   heading2Id                   Int?
+  imageId                      Int?
   qna                          qna?      @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading1                     heading1? @relation(fields: [heading1Id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading2                     heading2? @relation(fields: [heading2Id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "contentBlock_heading2Id_fkey1")
+  image                        image?    @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   page_contentBlock_pageTopage page      @relation("contentBlock_pageTopage", fields: [page], references: [id], onDelete: Cascade, onUpdate: NoAction)
   text                         text?     @relation(fields: [textId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
@@ -91,6 +93,14 @@ model heading2 {
   contentBlock contentBlock[]
 }
 
+model image {
+  id           Int            @id @default(autoincrement())
+  created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  shadowId     String         @db.VarChar
+  alt          String?        @db.VarChar
+  contentBlock contentBlock[]
+}
+
 enum status {
   verified
   createPending
@@ -108,4 +118,6 @@ enum blockType {
   text
   heading1
   heading2
+  image
+  file
 }
