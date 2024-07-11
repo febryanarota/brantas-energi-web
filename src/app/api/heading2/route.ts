@@ -30,8 +30,8 @@ export async function POST(req: NextRequest) {
   try {
     const result = await prisma.heading2.create({
       data: {
-        title : body.title,
-        description : body.description,
+        title: body.title,
+        description: body.description,
       },
     });
     return NextResponse.json(result);

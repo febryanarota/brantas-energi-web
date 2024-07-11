@@ -23,7 +23,7 @@ export const Heading2EditModal = ({
   const [isFetching, setIsFetching] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () : Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       const startTime = Date.now();
       const timeout = 20000;
       const retryDelay = 1000;
@@ -56,12 +56,17 @@ export const Heading2EditModal = ({
     fetchData();
   }, [id, session]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setContent(prevContent => ({
-      ...prevContent,
-      [name]: value,
-    } as heading2));
+    setContent(
+      (prevContent) =>
+        ({
+          ...prevContent,
+          [name]: value,
+        }) as heading2,
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

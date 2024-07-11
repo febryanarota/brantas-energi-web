@@ -16,20 +16,18 @@ export const Heading2Form = ({
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    title: '',
-    description: ''
+    title: "",
+    description: "",
   });
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission
 
     if (formData.title === "") {
-        setError("Title is required");
-        return;
+      setError("Title is required");
+      return;
     }
     setIsLoading(true); // Set loading state to true while the form is submitting
-
 
     try {
       // POST request to create a new text block
@@ -104,11 +102,11 @@ export const Heading2Form = ({
     }
   };
 
-  const handleChange = (e : any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -119,25 +117,29 @@ export const Heading2Form = ({
         className="max-w-3xl w-full grid place-items-center mx-auto pt-4 mb-10 px-5"
       >
         <div className="flex flex-col w-full gap-5">
-            <div className="flex flex-col justify-center w-full">
-                <label htmlFor="title" className="label">Title</label>
-                <input
-                type="text"
-                placeholder="required"
-                name="title"
-                className="field"
-                onChange={handleChange}
-                />
-            </div>
-            <div className="flex flex-col justify-center w-full">
-                <label htmlFor="description" className="label">Description</label>
-                <textarea
-                placeholder="optional"
-                name="description"
-                className="field h-[10rem] resize-none"
-                onChange={handleChange}
-                />
-            </div>
+          <div className="flex flex-col justify-center w-full">
+            <label htmlFor="title" className="label">
+              Title
+            </label>
+            <input
+              type="text"
+              placeholder="required"
+              name="title"
+              className="field"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col justify-center w-full">
+            <label htmlFor="description" className="label">
+              Description
+            </label>
+            <textarea
+              placeholder="optional"
+              name="description"
+              className="field h-[10rem] resize-none"
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         <div className="flex flex-row items-center justify-center gap-5">

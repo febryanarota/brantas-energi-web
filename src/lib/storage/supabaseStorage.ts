@@ -1,7 +1,6 @@
 import supabase from "@/server/supabase";
 import Storage from "./type";
 
-
 const SupabaseStorage = (bucket: string): Storage => {
   return {
     async get(filename: string): Promise<string> {
@@ -25,4 +24,4 @@ const SupabaseStorage = (bucket: string): Storage => {
   };
 };
 
-export default SupabaseStorage; 
+export default SupabaseStorage;

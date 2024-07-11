@@ -34,19 +34,27 @@ export default function FormTrigger({
         break;
       case "heading1":
         setFormBody(
-          <Heading1Form openChange={onOpenChange} page={page} session={session} />,
+          <Heading1Form
+            openChange={onOpenChange}
+            page={page}
+            session={session}
+          />,
         );
         break;
       case "heading2":
         setFormBody(
-          <Heading2Form openChange={onOpenChange} page={page} session={session} />,
+          <Heading2Form
+            openChange={onOpenChange}
+            page={page}
+            session={session}
+          />,
         );
         break;
       case "image":
         setFormBody(
           <ImageForm openChange={onOpenChange} page={page} session={session} />,
-        )
-        break
+        );
+        break;
       default:
         setFormBody(
           <TextForm openChange={onOpenChange} page={page} session={session} />,

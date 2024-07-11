@@ -21,8 +21,8 @@ export const ImageForm = ({
   const [imagePreview, setImagePreview] = useState<string>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
-    setIsLoading(true); 
+    e.preventDefault();
+    setIsLoading(true);
 
     if (!file) {
       setError("No file selected");
@@ -48,9 +48,8 @@ export const ImageForm = ({
         );
       }
 
-
       const result = await response.json();
-      
+
       // POST request to create a new content block
       let status = "createPending";
       if (session.role === "admin") {
@@ -99,44 +98,43 @@ export const ImageForm = ({
         throw new Error(
           `Network response was not ok: ${pageResponse.status} ${pageResponse.statusText}`,
         );
-      } 
+      }
 
-      setIsLoading(false); 
+      setIsLoading(false);
       window.location.reload();
       if (openChange) {
-        openChange(); 
+        openChange();
       }
     } catch (error) {
       console.error(error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
-
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       // Validate MIME type
       if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-        setError('Invalid file type. Only JPEG, JPG, and PNG are allowed.');
-        setFileName('No file chosen');
+        setError("Invalid file type. Only JPEG, JPG, and PNG are allowed.");
+        setFileName("No file chosen");
         return;
       }
 
       // Validate file size
       if (file.size > MAX_FILE_SIZE) {
-        setError('File size exceeds the maximum limit of 5MB.');
-        setFileName('No file chosen');
+        setError("File size exceeds the maximum limit of 5MB.");
+        setFileName("No file chosen");
         return;
       }
 
       setFile(file);
-      setError('');
+      setError("");
       setFileName(file.name);
       const imageURL = URL.createObjectURL(file);
       setImagePreview(imageURL);
     } else {
-      setFileName('No file chosen');
+      setFileName("No file chosen");
     }
   };
 
@@ -170,16 +168,25 @@ export const ImageForm = ({
                 className="absolute opacity-0 cursor-pointer"
                 onChange={handleFileChange}
               />
-              <label htmlFor="file" className="hover:bg-sky-900 hover:cursor-pointer hover:text-white border-1 border-slate-400 px-3 text-sm rounded-lg items-center justify-center py-2  transition-all duration-300 ease-in-out">choose a file</label>
+              <label
+                htmlFor="file"
+                className="hover:bg-sky-900 hover:cursor-pointer hover:text-white border-1 border-slate-400 px-3 text-sm rounded-lg items-center justify-center py-2  transition-all duration-300 ease-in-out"
+              >
+                choose a file
+              </label>
             </div>
           </div>
-          {imagePreview && 
+          {imagePreview && (
             <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
               <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
-                <img src={imagePreview} alt="Preview" className="h-full w-fit" />
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="h-full w-fit"
+                />
               </div>
             </div>
-          }
+          )}
         </div>
 
         <div className="flex flex-row items-center justify-center gap-5">

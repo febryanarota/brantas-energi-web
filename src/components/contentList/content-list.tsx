@@ -51,7 +51,7 @@ export default function ContentList({ page }: { page: string }) {
     <div>
       {loading ? (
         <div className="flex w-full justify-center items-center gap-3">
-            <CircularProgress aria-label="Loading..." color="primary" />
+          <CircularProgress aria-label="Loading..." color="primary" />
         </div>
       ) : (
         data?.map((content) => {

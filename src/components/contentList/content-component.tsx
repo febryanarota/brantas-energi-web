@@ -55,7 +55,6 @@ export function ContentComponent({
 
   useEffect(() => {
     getContent({ type, contentID }).then((result) => {
-
       if (!result) {
         setData(undefined);
         setLoading(false);
@@ -67,10 +66,10 @@ export function ContentComponent({
           setRenderContent(<TextContent data={result as text} />);
           break;
         case "heading1":
-          setRenderContent(<Heading1 data={result as heading1}/>);
+          setRenderContent(<Heading1 data={result as heading1} />);
           break;
         case "heading2":
-          setRenderContent(<Heading2 data={result as heading2}/>);
+          setRenderContent(<Heading2 data={result as heading2} />);
           break;
         default:
           setRenderContent(null);
@@ -122,28 +121,23 @@ export function TextContent({ data }: { data: text }) {
   );
 }
 
-export function Heading1({data}:{data : heading1}) {
+export function Heading1({ data }: { data: heading1 }) {
   return (
     <div className="mt-10 mb-5">
       <div className="border-l-primaryYellow border-l-2 pl-5 ">
-
-        <h2 className="text-3xl font-medium">
-          {
-            data.title
-          }
-        </h2>
+        <h2 className="text-3xl font-medium">{data.title}</h2>
         <p className="text-sm">{data.description}</p>
       </div>
     </div>
   );
 }
 
-export function Heading2({data}:{data : heading2}) {
+export function Heading2({ data }: { data: heading2 }) {
   return (
     <div className="flex flex-col mt-7 mb-4">
       <h3 className="text-2xl font-medium">{data.title}</h3>
       <p className="text-sm">{data.description}</p>
       <div className="w-[10rem] mt-1 border-t-2 border-primaryYellow"></div>
     </div>
-  )
+  );
 }

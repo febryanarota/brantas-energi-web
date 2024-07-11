@@ -65,7 +65,6 @@ async function getData(): Promise<contentBlock[]> {
       console.error("Error fetching data:", error);
       return []; // Return an empty array in case of error
     }
-
   }
 }
 
@@ -83,12 +82,9 @@ export default async function Page() {
           <FormTrigger page={"regulasi"} session={session} />
         </div>
         <DraggableList data={data} session={session} />
-        {
-          data.length < 1 &&
-          <div>
-            Empty content, refresh or insert some new contents.
-          </div>
-        }
+        {data.length < 1 && (
+          <div>Empty content, refresh or insert some new contents.</div>
+        )}
       </CMSContainer>
     </div>
   );

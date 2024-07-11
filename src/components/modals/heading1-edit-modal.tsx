@@ -55,12 +55,17 @@ export const Heading1EditModal = ({
     fetchData();
   }, [id, session]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setContent(prevContent => ({
-      ...prevContent,
-      [name]: value,
-    } as heading1));
+    setContent(
+      (prevContent) =>
+        ({
+          ...prevContent,
+          [name]: value,
+        }) as heading1,
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

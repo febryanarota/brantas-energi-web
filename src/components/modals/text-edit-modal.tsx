@@ -22,7 +22,7 @@ export const TextEditModal = ({
   const [isFetching, setIsFetching] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () : Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       const startTime = Date.now();
       const timeout = 20000;
       const retryDelay = 1000;

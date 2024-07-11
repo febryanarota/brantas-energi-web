@@ -33,15 +33,14 @@ async function fetchData(url: string) {
     }
 
     return await response.json();
-    
   } catch (error) {
     console.error(error);
-      if (Date.now() - startTime < timeout) {
-        await delay(retryDelay);
-        return fetchData(url);
-      } else {
-        throw new Error("Request timed out");
-      }
+    if (Date.now() - startTime < timeout) {
+      await delay(retryDelay);
+      return fetchData(url);
+    } else {
+      throw new Error("Request timed out");
+    }
   }
 }
 
@@ -100,16 +99,26 @@ export default function Content({
             );
             break;
           case "heading1":
-            setRenderContent(<Heading1Content content={data as heading1} editId={block.editId}/>);
+            setRenderContent(
+              <Heading1Content
+                content={data as heading1}
+                editId={block.editId}
+              />,
+            );
             break;
           case "heading2":
-            setRenderContent(<Heading2Content content={data as heading2} editId={block.editId}/>);
+            setRenderContent(
+              <Heading2Content
+                content={data as heading2}
+                editId={block.editId}
+              />,
+            );
             break;
           default:
             setRenderContent(<div>Content</div>);
         }
 
-        console.log(type)
+        console.log(type);
 
         switch (status) {
           case "createPending":

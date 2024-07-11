@@ -53,7 +53,7 @@ const extension = Prisma.defineExtension({
         const result = await query(args);
         await updatePositions(contentBlockIds);
         return result;
-      }
+      },
     },
     heading2: {
       async delete({ model, operation, args, query }) {
@@ -66,7 +66,7 @@ const extension = Prisma.defineExtension({
         const result = await query(args);
         await updatePositions(contentBlockIds);
         return result;
-      }
+      },
     },
   },
 });

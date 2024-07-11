@@ -9,14 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  
-
   return (
     <div className="pb-20 min-h-screen">
       <Header title={"Regulasi Informasi Publik"} />
       <div className="flex flex-col items-center">
         <Container>
-          <ContentList page='regulasi'/>
+          <ContentList page="regulasi" />
         </Container>
       </div>
     </div>
