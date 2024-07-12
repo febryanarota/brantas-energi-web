@@ -268,6 +268,11 @@ export const ConfirmEditButton = ({
       case "heading2":
         editIdKey = "heading2Id";
         break;
+      case "image":
+        editIdKey = "imageId";
+        break;
+      case "file":
+        editIdKey = "fileId";
       default:
         editIdKey = "editId";
     }

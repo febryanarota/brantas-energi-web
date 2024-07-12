@@ -68,15 +68,25 @@ export const ImageContent = ({
       )}
       {editId !== null && editData && (
         <div className="w-full bg-slate-100 rounded-md p-2 pb-5 mt-3">
-          <p className="text-xs font-medium text-gray-500 mb-3">New Content</p>
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-row space-x-5">
             <div className="flex flex-col">
-              <p className="font-semibold text-slate-500">Title</p>
-              {/* <p>{editData.title}</p> */}
+              <p className="font-semibold text-slate-500">Image</p>
+              <a
+                href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${editData.shadowId}`}
+                target="_blank"
+              >
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${editData.shadowId}`}
+                  alt={editData.alt ? editData.alt : "image"}
+                  width={100}
+                  height={100}
+                  className="hover:cursor-pointer hover:opacity-60 transition-transform duration-300 ease-in-out"
+                />
+              </a>
             </div>
             <div className="flex flex-col">
-              <p className="font-semibold text-slate-500">Description</p>
-              {/* <p>{editData.description ? editData.description : "-"}</p> */}
+              <p className="font-semibold text-slate-500">Alt</p>
+              <p>{editData.alt ? editData.alt : "-"}</p>
             </div>
           </div>
         </div>
