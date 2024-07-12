@@ -127,10 +127,14 @@ export function TextContent({ data }: { data: text }) {
 
 export function Heading1Content({ data }: { data: heading1 }) {
   return (
-    <div className="mt-10 mb-5">
-      <div className="border-l-primaryYellow border-l-2 pl-5 ">
-        <h2 className="text-3xl font-medium">{data.title}</h2>
+    <div className="">
+      <div className="mt-10 mb-5 border-l-primaryYellow border-l-2 pl-5 hidden md:block">
+        <h2 className="text-3xl font-semibold">{data.title}</h2>
         <p className="text-sm">{data.description}</p>
+      </div>
+      <div className="mt-2 mb-2 md:hidden">
+        <h2 className="border-l-primaryYellow border-l-2 pl-5 text-2xl font-semibold">{data.title}</h2>
+        <p className="text-xs mt-2">{data.description}</p>
       </div>
     </div>
   );
@@ -139,7 +143,7 @@ export function Heading1Content({ data }: { data: heading1 }) {
 export function Heading2Content({ data }: { data: heading2 }) {
   return (
     <div className="flex flex-col mt-7 mb-4">
-      <h3 className="text-2xl font-medium">{data.title}</h3>
+      <h3 className="md:text-2xl text-xl font-semibold">{data.title}</h3>
       <p className="text-sm">{data.description}</p>
       <div className="w-[10rem] mt-1 border-t-2 border-primaryYellow"></div>
     </div>
@@ -148,7 +152,7 @@ export function Heading2Content({ data }: { data: heading2 }) {
 
 export function ImageContent({ data }: { data: image }) {
   return (
-    <div className="w-full py-8">
+    <div className="w-full md:py-8 py-4">
       <a
         href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`}
         target="_blank"
