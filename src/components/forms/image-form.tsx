@@ -118,6 +118,8 @@ export const ImageForm = ({
       if (!ALLOWED_MIME_TYPES.includes(file.type)) {
         setError("Invalid file type. Only JPEG, JPG, and PNG are allowed.");
         setFileName("No file chosen");
+        setFile(null);
+        setImagePreview(undefined);
         return;
       }
 
@@ -125,6 +127,8 @@ export const ImageForm = ({
       if (file.size > MAX_FILE_SIZE) {
         setError("File size exceeds the maximum limit of 5MB.");
         setFileName("No file chosen");
+        setFile(null);
+        setImagePreview(undefined);
         return;
       }
 
