@@ -21,6 +21,18 @@ const SupabaseStorage = (bucket: string): Storage => {
       const { error } = await supabase.storage.from(bucket).remove([filename]);
       if (error) throw error;
     },
+
+    async update(filename: string, file: File): Promise<string> {
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .update(filename, file, {
+          cacheControl : '3600',
+          upsert: true,
+        });
+      if (error) throw error;
+
+      return data.path;
+    }
   };
 };
 
