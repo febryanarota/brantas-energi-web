@@ -15,6 +15,7 @@ import { contentBlock } from "@prisma/client";
 import { Heading1EditModal } from "../modals/heading1-edit-modal";
 import { Heading2EditModal } from "../modals/heading2-edit-modal";
 import { ImageEditModal } from "../modals/image-edit-modal";
+import { FileEditModal } from "../modals/file-edit-modal";
 
 export const DeleteButton = ({
   id,
@@ -176,6 +177,9 @@ export const EditButton = ({
         break;
       case "image":
         setModal(<ImageEditModal openChange={onOpenChange} session={session} id={id} blockId={blockId} />);
+        break;
+      case "file":
+        setModal(<FileEditModal openChange={onOpenChange} session={session} id={id} blockId={blockId} />);
         break;
       default:
         setModal(null);

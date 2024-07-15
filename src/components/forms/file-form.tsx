@@ -20,12 +20,19 @@ export const FileForm = ({
   const [fileName, setFileName] = useState("No file chosen");
   const [file, setFile] = useState<File | null>(null);
   const [link, setLink] = useState<string | null>(null);
+  const [display, setDisplay] = useState<string | null>("")
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+
+    if (display === "") {
+      setError("Required display text");
+      setIsLoading(false);
+      return;
+    }
 
     if (!file && !link) {
       setError("Required file or link as attachment");
@@ -242,6 +249,10 @@ export const FileForm = ({
     setLink(e.target.value);
   };
 
+  const handleDisplayChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setDisplay(e.target.value);
+  };
+
   return (
     <div className="w-full">
       <form
@@ -258,6 +269,7 @@ export const FileForm = ({
               placeholder="required"
               name="display"
               className="field"
+              onChange={handleDisplayChange}
             />
           </div>
           <div>
