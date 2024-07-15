@@ -34,18 +34,22 @@ export async function DELETE(
   try {
     const id = parseInt(context.params.id, 10);
 
-    const result = await prisma.image.delete({
+    const result = await prisma.file.delete({
       where: {
         id: id,
       },
     });
 
-    if (result) {
-      const image = "public/" + result.shadowId.split('/').pop();
-      await storage.image.delete(image as string).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      })
+    if (result.isFile) {
+      if (result.link) {
+        const file = "public/" + result.link.split('/').pop();
+        await storage.file.delete(file as string).catch((error) => {
+          console.error("Error deleting file:", error);
+          throw new Error("Error deleting file");
+        })
+      } else {
+        throw new Error("Link not found");
+      }
     }
 
     return NextResponse.json(result);
