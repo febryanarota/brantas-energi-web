@@ -14,7 +14,7 @@ export const FileContent = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/image/${editId}`, {
+        const response = await fetch(`/api/file/${editId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

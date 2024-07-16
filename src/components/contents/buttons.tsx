@@ -277,6 +277,7 @@ export const ConfirmEditButton = ({
         break;
       case "file":
         editIdKey = "fileId";
+        break;
       default:
         editIdKey = "editId";
     }

@@ -2,7 +2,7 @@
 
 import { delay } from "@/lib/utils";
 import { Skeleton } from "@nextui-org/react";
-import { heading1, heading2, image, text } from "@prisma/client";
+import { file, heading1, heading2, image, text } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -49,7 +49,7 @@ export function ContentComponent({
   contentID: number;
 }) {
   const [data, setData] = useState<
-    text | heading1 | heading2 | image | undefined
+    text | heading1 | heading2 | image | file | undefined
   >(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
@@ -74,6 +74,9 @@ export function ContentComponent({
           break;
         case "image":
           setRenderContent(<ImageContent data={result as image} />);
+          break;
+        case "file":
+          setRenderContent(<FileLinkContent data={result as file} />);
           break;
         default:
           setRenderContent(null);
@@ -133,7 +136,9 @@ export function Heading1Content({ data }: { data: heading1 }) {
         <p className="text-sm">{data.description}</p>
       </div>
       <div className="mt-2 mb-2 md:hidden">
-        <h2 className="border-l-primaryYellow border-l-2 pl-5 text-2xl font-semibold">{data.title}</h2>
+        <h2 className="border-l-primaryYellow border-l-2 pl-5 text-2xl font-semibold">
+          {data.title}
+        </h2>
         <p className="text-xs mt-2">{data.description}</p>
       </div>
     </div>
@@ -166,6 +171,24 @@ export function ImageContent({ data }: { data: image }) {
             className="hover:cursor-pointer hover:opacity-60 transition-transform duration-300 ease-in-out max-h-[70vh] w-full h-auto object-contain rounded-lg"
           />
         </div>
+      </a>
+    </div>
+  );
+}
+
+export function FileLinkContent({ data }: { data: file }) {
+  return (
+    <div className="w-full py-2">
+      <a
+        href={
+          data.isFile
+            ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${data.link}`
+            : (data.link as string)
+        }
+        target="_blank"
+        className="text-md underline font-semibold hover:text-primaryYellow transition-colors duration-200 ease-in-out"
+      >
+        {data.display}
       </a>
     </div>
   );
