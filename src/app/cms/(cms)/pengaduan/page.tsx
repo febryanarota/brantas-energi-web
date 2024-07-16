@@ -1,7 +1,3 @@
 export default function Pengaduan() {
-    return (
-        <div>
-            Pengaduan
-        </div>
-    )
-};
+  return <div>Pengaduan</div>;
+}

@@ -82,8 +82,7 @@ export async function POST(req: NextRequest) {
         heading1Id: body.heading1Id,
         heading2Id: body.heading2Id,
         imageId: body.imageId,
-        fileId: body.fileId
-        
+        fileId: body.fileId,
       },
     });
     return NextResponse.json(result);

@@ -1,7 +1,3 @@
 export default function Page() {
-    return (
-        <div>
-            Permohonan Informasi
-        </div>
-    )
-};
+  return <div>Permohonan Informasi</div>;
+}

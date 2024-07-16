@@ -26,7 +26,6 @@ export const FileEditModal = ({
   const [link, setLink] = useState<string>("");
   const [display, setDisplay] = useState<string>("");
 
-
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const startTime = Date.now();
@@ -46,14 +45,13 @@ export const FileEditModal = ({
           throw new Error("Failed to fetch data");
         }
 
-        const data: file = await response.json();        
+        const data: file = await response.json();
 
         if (!data.isFile) {
-          setLink(data.link as string)
-        } 
+          setLink(data.link as string);
+        }
 
-        setDisplay(data.display)
-
+        setDisplay(data.display);
 
         setIsFetching(false);
       } catch (error) {
@@ -95,8 +93,7 @@ export const FileEditModal = ({
     }
   };
 
-
-  const handleDisplayChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleDisplayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplay(e.target.value);
   };
 
@@ -104,109 +101,109 @@ export const FileEditModal = ({
     setLink(e.target.value);
   };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setIsLoading(true);
-      setError("");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
-      if (display === "") {
-        setError("Required display text");
-        setIsLoading(false);
-        return;
-      }
-  
-      if (!file && !link) {
-        setError("Required file or link as attachment");
-        setIsLoading(false);
-        return;
-      }
-  
-      if (file && link) {
-          setError("Please fill only one field between file or link as attachment")
-          setIsLoading(false);
-          return
-      }
+    if (display === "") {
+      setError("Required display text");
+      setIsLoading(false);
+      return;
+    }
 
-      const formData = new FormData();
-      if (file) {
-        formData.append("file", file);
-        formData.append("isFile", "true")
+    if (!file && !link) {
+      setError("Required file or link as attachment");
+      setIsLoading(false);
+      return;
+    }
+
+    if (file && link) {
+      setError("Please fill only one field between file or link as attachment");
+      setIsLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file);
+      formData.append("isFile", "true");
+    } else {
+      formData.append("link", link as string);
+      formData.append("isFile", "false");
+    }
+    formData.append("display", display as string);
+    formData.append("blockId", blockId.toString());
+
+    const role = session.role;
+    try {
+      if (role !== "admin") {
+        const response = await fetch(`/api/file`, {
+          method: "POST",
+          headers: {
+            Cookie: `session=${session}`,
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        let editId = await response.json();
+        editId = editId.id;
+
+        const response2 = await fetch(`/api/content/${blockId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            editId: editId,
+            status: "updatePending",
+          }),
+        });
+
+        if (!response2.ok) {
+          const errorResponse = await response2.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response2.status} ${response2.statusText}`,
+          );
+        }
       } else {
-        formData.append("link", link as string);
-        formData.append("isFile", "false")
-      }
-      formData.append("display", display as string);
-      formData.append("blockId", blockId.toString());
+        const response = await fetch(`/api/file/${id}`, {
+          method: "PUT",
+          headers: {
+            Cookie: `session=${session}`,
+          },
+          credentials: "include",
+          body: formData,
+        });
 
-      const role = session.role;
-      try {
-        if (role !== "admin") {
-          const response = await fetch(`/api/file`, {
-            method: "POST",
-            headers: {
-              Cookie: `session=${session}`,
-            },
-            body: formData,
-          });
-
-          if (!response.ok) {
-            const errorResponse = await response.text();
-            console.error("API Response Error:", errorResponse);
-            throw new Error(
-              `Network response was not ok: ${response.status} ${response.statusText}`,
-            );
-          }
-
-          let editId = await response.json();
-          editId = editId.id;
-
-          const response2 = await fetch(`/api/content/${blockId}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              editId: editId,
-              status: "updatePending",
-            }),
-          });
-
-          if (!response2.ok) {
-            const errorResponse = await response2.text();
-            console.error("API Response Error:", errorResponse);
-            throw new Error(
-              `Network response was not ok: ${response2.status} ${response2.statusText}`,
-            );
-          }
-        } else {
-          const response = await fetch(`/api/file/${id}`, {
-            method: "PUT",
-            headers: {
-              Cookie: `session=${session}`,
-            },
-            credentials: "include",
-            body: formData
-          });
-
-          if (!response.ok) {
-            const errorResponse = await response.text();
-            console.error("API Response Error:", errorResponse);
-            throw new Error(
-              `Network response was not ok: ${response.status} ${response.statusText}`,
-            );
-          }
-        }
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-        if (openChange) {
-          openChange();
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`,
+          );
         }
       }
-    };
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+      if (openChange) {
+        openChange();
+      }
+    }
+  };
 
   return (
     <div className="w-full">
@@ -241,7 +238,7 @@ export const FileEditModal = ({
                 className="absolute opacity-0 cursor-pointer"
                 onChange={handleFileChange}
               />
-              {fileName === "No file chosen"  ? (
+              {fileName === "No file chosen" ? (
                 <label
                   htmlFor="file"
                   className="hover:bg-sky-900 hover:cursor-pointer hover:text-white border-1 border-slate-400 px-3 text-sm rounded-lg items-center justify-center py-2  transition-all duration-300 ease-in-out"
@@ -250,7 +247,7 @@ export const FileEditModal = ({
                 </label>
               ) : (
                 <button
-                  onClick={(e : any) => {
+                  onClick={(e: any) => {
                     e.preventDefault();
                     setFile(null);
                     setFileName("No file chosen");
@@ -267,7 +264,7 @@ export const FileEditModal = ({
             </label>
             <input
               type="text"
-              placeholder={isFetching? "fetching..." : "Attachment link"}
+              placeholder={isFetching ? "fetching..." : "Attachment link"}
               name="link"
               className="field"
               disabled={isFetching}

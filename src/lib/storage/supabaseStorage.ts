@@ -26,13 +26,13 @@ const SupabaseStorage = (bucket: string): Storage => {
       const { data, error } = await supabase.storage
         .from(bucket)
         .update(filename, file, {
-          cacheControl : '3600',
+          cacheControl: "3600",
           upsert: true,
         });
       if (error) throw error;
 
       return data.path;
-    }
+    },
   };
 };
 

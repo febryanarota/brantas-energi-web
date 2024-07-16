@@ -46,7 +46,9 @@ export const ImageEditModal = ({
 
         const data: image = await response.json();
         setContent(data);
-        setImagePreview(`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`);
+        setImagePreview(
+          `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`,
+        );
         setFileName(data.shadowId);
         setIsFetching(false);
       } catch (error) {
@@ -107,7 +109,6 @@ export const ImageEditModal = ({
     formData.append("alt", e.currentTarget.alt.value);
     formData.append("blockId", blockId.toString());
 
-
     const role = session.role;
     try {
       if (role !== "admin") {
@@ -115,7 +116,7 @@ export const ImageEditModal = ({
           method: "POST",
           body: formData,
         });
-  
+
         if (!response.ok) {
           const errorResponse = await response.text();
           console.error("API Response Error:", errorResponse);
@@ -123,7 +124,6 @@ export const ImageEditModal = ({
             `Network response was not ok: ${response.status} ${response.statusText}`,
           );
         }
-  
 
         let editId = await response.json();
         editId = editId.id;
@@ -214,20 +214,15 @@ export const ImageEditModal = ({
               </label>
             </div>
           </div>
-          
         </div>
 
         {imagePreview && (
-            <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
-              <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="h-full w-fit"
-                />
-              </div>
+          <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
+            <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
+              <img src={imagePreview} alt="Preview" className="h-full w-fit" />
             </div>
-          )}
+          </div>
+        )}
 
         <div className="flex flex-row items-center justify-center gap-5">
           <Button

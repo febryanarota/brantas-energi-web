@@ -59,7 +59,7 @@ export default function FormTrigger({
       case "file":
         setFormBody(
           <FileForm openChange={onOpenChange} page={page} session={session} />,
-        )
+        );
         break;
       default:
         setFormBody(

@@ -20,8 +20,7 @@ export const FileForm = ({
   const [fileName, setFileName] = useState("No file chosen");
   const [file, setFile] = useState<File | null>(null);
   const [link, setLink] = useState<string | null>(null);
-  const [display, setDisplay] = useState<string | null>("")
-
+  const [display, setDisplay] = useState<string | null>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,23 +40,23 @@ export const FileForm = ({
     }
 
     if (file && link) {
-        setError("Please fill only one field between file or link as attachment")
-        setIsLoading(false);
-        return
+      setError("Please fill only one field between file or link as attachment");
+      setIsLoading(false);
+      return;
     }
 
     if (file) {
-        submitFile(file, e.currentTarget.display.value);
+      submitFile(file, e.currentTarget.display.value);
     } else if (link) {
-        submitLink(link, e.currentTarget.display.value)
+      submitLink(link, e.currentTarget.display.value);
     }
   };
 
-  const submitFile = async (file: File, display : string) => {
+  const submitFile = async (file: File, display: string) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("display", display);
-    formData.append("isFile", 'true')
+    formData.append("isFile", "true");
 
     try {
       const response = await fetch("/api/file", {
@@ -73,7 +72,7 @@ export const FileForm = ({
         );
       }
 
-      const result = await response.json();;
+      const result = await response.json();
 
       // POST request to create a new content block
       let status = "createPending";
@@ -134,12 +133,12 @@ export const FileForm = ({
       console.error(error);
       setIsLoading(false);
     }
-  }
-  const submitLink = async (link: string, display : string) => {
+  };
+  const submitLink = async (link: string, display: string) => {
     const formData = new FormData();
     formData.append("link", link);
     formData.append("display", display);
-    formData.append("isFile", 'false')
+    formData.append("isFile", "false");
 
     try {
       const response = await fetch("/api/file", {
@@ -155,7 +154,7 @@ export const FileForm = ({
         );
       }
 
-      const result = await response.json();;
+      const result = await response.json();
 
       // POST request to create a new content block
       let status = "createPending";
@@ -216,7 +215,7 @@ export const FileForm = ({
       console.error(error);
       setIsLoading(false);
     }
-  }
+  };
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -249,7 +248,7 @@ export const FileForm = ({
     setLink(e.target.value);
   };
 
-  const handleDisplayChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleDisplayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplay(e.target.value);
   };
 

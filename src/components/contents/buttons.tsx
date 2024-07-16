@@ -176,10 +176,24 @@ export const EditButton = ({
         );
         break;
       case "image":
-        setModal(<ImageEditModal openChange={onOpenChange} session={session} id={id} blockId={blockId} />);
+        setModal(
+          <ImageEditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
         break;
       case "file":
-        setModal(<FileEditModal openChange={onOpenChange} session={session} id={id} blockId={blockId} />);
+        setModal(
+          <FileEditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
         break;
       default:
         setModal(null);

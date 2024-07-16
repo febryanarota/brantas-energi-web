@@ -1,5 +1,13 @@
 "use client";
-import { contentBlock, file, heading1, heading2, image, qna, text } from "@prisma/client";
+import {
+  contentBlock,
+  file,
+  heading1,
+  heading2,
+  image,
+  qna,
+  text,
+} from "@prisma/client";
 import FaqContent from "./faq-content";
 import { useEffect, useState } from "react";
 import {
@@ -124,13 +132,13 @@ export default function Content({
             break;
           case "image":
             setRenderContent(
-              <ImageContent content={data as image} editId={block.editId} />
-            )
+              <ImageContent content={data as image} editId={block.editId} />,
+            );
             break;
           case "file":
             setRenderContent(
-              <FileContent content={data as file} editId={block.editId} />
-            )
+              <FileContent content={data as file} editId={block.editId} />,
+            );
             break;
           default:
             // make sure to use break on every case

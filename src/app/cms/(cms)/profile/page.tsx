@@ -36,9 +36,7 @@ export default async function Page() {
     <div>
       <CMSContainer>
         <div className="flex flex-row justify-between items-center border-b-3 pb-2">
-          <h1 className="text-3xl font-bold tracking-widerfle">
-            Profile
-          </h1>
+          <h1 className="text-3xl font-bold tracking-widerfle">Profile</h1>
         </div>
       </CMSContainer>
     </div>
