@@ -7,7 +7,7 @@ import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { delay } from "@/lib/utils";
 
-async function getData(): Promise<contentBlock[]> {
+async function getData(page: string): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
   const timeout = 20000;
   const retryDelay = 1000;
@@ -15,7 +15,7 @@ async function getData(): Promise<contentBlock[]> {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/page/regulasi`,
+      `${process.env.NEXT_PUBLIC_URL}/api/page/${page}`,
       {
         method: "GET",
         headers: {
@@ -30,7 +30,7 @@ async function getData(): Promise<contentBlock[]> {
     const positions = posResp.positions;
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/content?page=regulasi&status=all`,
+      `${process.env.NEXT_PUBLIC_URL}/api/content?page=${page}&status=all`,
       {
         method: "GET",
         headers: {
@@ -60,7 +60,7 @@ async function getData(): Promise<contentBlock[]> {
   } catch (error) {
     if (Date.now() - startTime < timeout) {
       await delay(retryDelay);
-      return getData();
+      return getData(page);
     } else {
       console.error("Error fetching data:", error);
       return []; // Return an empty array in case of error
@@ -68,18 +68,18 @@ async function getData(): Promise<contentBlock[]> {
   }
 }
 
-export default async function Page() {
+export default async function Page(context: { params: { page: string } }) {
   // Get the session and redirect to login if not found
   const session = await getSession();
   if (!session) redirect("/cms/login");
-
-  const data: contentBlock[] = await getData();
+  const page = context.params.page as string;
+  const data: contentBlock[] = await getData(page);
   return (
     <div className="w-full">
       <CMSContainer>
         <div className="flex flex-row justify-between items-center border-b-3 pb-2">
-          <h1 className="text-3xl font-bold tracking-widerfle">Regulasi</h1>
-          <FormTrigger page={"regulasi"} session={session} />
+          <h1 className="text-3xl font-bold tracking-widerfle">{page}</h1>
+          <FormTrigger page={page} session={session} />
         </div>
         <DraggableList data={data} session={session} />
         {data.length < 1 && (
