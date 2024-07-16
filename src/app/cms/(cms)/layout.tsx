@@ -16,10 +16,10 @@ export default function CmsLayout({
 }>) {
   return (
     <div
-      className={`${inter.className} min-w-screen w-full max-w-screen  flex flex-row relative`}
+      className={`${inter.className} min-w-screen w-full max-w-screen max-h-screen overflow-hidden flex flex-row relative`}
     >
       <Sidebar />
-      <div className="bg-slate-100 grow  h-full min-h-screen max-h-screen overflow-auto py-10 flex justify-center">
+      <div className="bg-slate-100 grow h-full min-h-screen max-h-screen overflow-auto py-10 flex justify-center">
         {children}
       </div>
     </div>
