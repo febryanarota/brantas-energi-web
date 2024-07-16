@@ -178,7 +178,7 @@ export function ImageContent({ data }: { data: image }) {
 
 export function FileLinkContent({ data }: { data: file }) {
   return (
-    <div className="w-full py-2">
+    <div className="w-full pb-4">
       <a
         href={
           data.isFile
