@@ -22,6 +22,12 @@ export interface FormValues {
   answer: string;
 }
 
+export interface imageData {
+  image: File;
+  name: string;
+  display: string;
+}
+
 export const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png"];
 export const ALLOWED_FILE_TYPES = [
   "image/jpeg",
