@@ -28,23 +28,14 @@ export async function PUT(req: NextRequest) {
   const role = session.role;
 
   try {
-    let currData;
-    if (role === "admin") {
-      currData = await prisma.home.findFirst({
-        where: {
-          status: "verified",
-        },
-      });
-    } else {
-      currData = await prisma.home.findFirst({
-        where: {
-          status: "updatePending",
-        },
-      });
-    }
 
     if (image) {
       if (role === "admin") {
+        const currData = await prisma.home.findFirst({
+          where: {
+            status: "verified",
+          },
+        });
         const deleteImage = "public/" + currData?.image1.split("/").pop();
         await storage.image.delete(deleteImage).catch((error) => {
           console.error("Error deleting image:", error);
@@ -58,10 +49,14 @@ export async function PUT(req: NextRequest) {
           console.error("Error uploading image:", error);
           throw new Error("Error uploading image");
         });
-
-      const result = await prisma.home.update({
+      
+        let result;
+      if (role === "admin") {
+        result = await prisma.home.updateMany({
         where: {
-          id: currData?.id,
+          status: {
+            in: ["verified", "updatePending"],
+          },
         },
         data: {
           image1: `/public/${uuid}.${fileExtension}`,
@@ -69,6 +64,20 @@ export async function PUT(req: NextRequest) {
           description1: description1,
         },
       });
+
+      } else {
+        result = await prisma.home.updateMany({
+          where: {
+            status: "updatePending",
+          },
+          data: {
+            image1: `/public/${uuid}.${fileExtension}`,
+            heading1: heading1,
+            description1: description1,
+          },
+        });
+      }
+      
 
       if (!result) {
         return NextResponse.json(
