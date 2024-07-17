@@ -112,6 +112,30 @@ model file {
   contentBlock contentBlock[]
 }
 
+model card {
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  title       String   @db.VarChar
+  description String?  @db.VarChar
+  link        String?  @db.VarChar
+  image       String?  @db.VarChar
+}
+
+model home {
+  id           Int      @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  heading1     String   @db.VarChar
+  description1 String?  @db.VarChar
+  subheading2  String   @db.VarChar
+  heading2     String   @db.VarChar
+  description2 String?  @db.VarChar
+  subheading3  String   @db.VarChar
+  heading3     String   @db.VarChar
+  image1       String   @db.VarChar
+  status       status
+  image2       String   @default("") @db.VarChar
+}
+
 enum status {
   verified
   createPending
