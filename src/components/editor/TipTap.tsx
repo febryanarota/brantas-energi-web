@@ -34,7 +34,7 @@ const Tiptap = ({
   }, [content, editor]);
 
   return (
-    <div className="w-full px-4">
+    <div className="w-full">
       <Toolbar editor={editor} content={content} />
       <EditorContent style={{ whiteSpace: "pre-line" }} editor={editor} />
     </div>

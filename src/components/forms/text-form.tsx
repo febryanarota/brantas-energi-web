@@ -117,7 +117,7 @@ export const TextForm = ({
     <div className="w-full">
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl w-full grid place-items-center mx-auto pt-10 mb-10"
+        className="max-w-3xl w-full grid place-items-center mx-auto pt-4 px-3  mb-10"
       >
         <Editor content={content} setContent={setContent} />
         <div className="flex flex-row items-center justify-center gap-5">
