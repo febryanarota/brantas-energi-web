@@ -1,18 +1,45 @@
 "use client"
 
 import { Editor } from "@/components/editor/Editor";
-import { ALLOWED_FILE_TYPES, ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
+import { ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
+import { home } from "@prisma/client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
-export default function FormSection1() {
-  const [description1, setDescription1] = useState<string>("");
+export default function FormSection1({verified, pending} : {verified : home, pending : home}) {
+  const [description1, setDescription1] = useState<string>(verified.description1 || "");
+  const [heading1, setHeading1] = useState<string>(verified.heading1 || "");
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [image, setImage] = useState<imageData>();
   const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    if (verified) {
+
+      const fetchImage = async () => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image1}`);
+          const blob = await response.blob();
+          const file = new File([blob], verified.image1, { type: blob.type });
+
+          setImage({
+            image: file,
+            name: verified.image1,
+            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image1}`,
+          });
+        } catch (error) {
+          console.error("Error fetching image:", error);
+          setError("Failed to fetch image");
+        }
+      };
+
+      fetchImage();
+    }
+  }, [verified]);
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,7 +119,7 @@ export default function FormSection1() {
         <label htmlFor="heading1" className="label text-sm">
           Heading
         </label>
-        <input type="text" name="heading1" className="field" />
+        <input type="text" name="heading1" className="field" onChange={(e) => setHeading1(e.target.value)} value={heading1}/>
       </div>
       <div className="flex flex-col justify-center w-full">
         <label htmlFor="description1" className="label text-sm">

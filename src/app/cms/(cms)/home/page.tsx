@@ -3,8 +3,29 @@ import { Button } from "@nextui-org/button";
 import FormSection1 from "./form-section-1";
 import FormSection2 from "./form-section-2";
 import FormSection3 from "./form-section-3";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { home } from "@prisma/client";
 
-export default function Page() {
+async function getData() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
+    method: "GET",
+  });
+  
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  
+  const data: { verified: home; pending: home } = await response.json();
+  return data;
+}
+
+export default async function Page() {
+
+  const session = await getSession();
+  if (!session) redirect("/cms/login");
+  const data = await getData();
+
   return (
     <div className="w-full">
       <CMSContainer>
@@ -15,7 +36,7 @@ export default function Page() {
         <div className="flex flex-col mb-5 rounded-md">
           <div className="flex flex-col gap-5 ">
             
-            <FormSection1/>
+            <FormSection1 verified={data.verified} pending={data.pending}/>
             
             <FormSection2/>
 
