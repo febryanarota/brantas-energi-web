@@ -313,7 +313,7 @@ export default function FormSection1({
                   <input
                     type="file"
                     id="image1"
-                    className="absolute opacity-0 cursor-pointer"
+                    className="absolute opacity-0 cursor-pointer hidden"
                     onChange={handleFileChange}
                   />
                   <label
