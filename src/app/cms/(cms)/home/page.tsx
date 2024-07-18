@@ -23,6 +23,8 @@ async function getData() {
 export default async function Page() {
 
   const session = await getSession();
+  const role = session?.role;
+
   if (!session) redirect("/cms/login");
   const data = await getData();
 
@@ -36,7 +38,7 @@ export default async function Page() {
         <div className="flex flex-col mb-5 rounded-md">
           <div className="flex flex-col gap-5 ">
             
-            <FormSection1 verified={data.verified} pending={data.pending}/>
+            <FormSection1 verified={data.verified} pending={data.pending} role={role}/>
             
             <FormSection2/>
 
