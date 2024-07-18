@@ -40,7 +40,7 @@ export default async function Page() {
             
             <FormSection1 verified={data.verified} pending={data.pending} role={role}/>
             
-            <FormSection2/>
+            <FormSection2 verified={data.verified} pending={data.pending} role={role}/>
 
             <FormSection3/>
             
