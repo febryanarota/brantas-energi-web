@@ -11,6 +11,7 @@ export default function Home({ data }: { data: home }) {
     loop: true,
   };
 
+
   const SLIDES = Array.from(Array(5).keys());
   return (
     <div className="flex flex-col">

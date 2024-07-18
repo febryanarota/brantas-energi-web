@@ -4,6 +4,10 @@ import { home } from "@prisma/client";
 async function getData() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
     method: "GET",
+    headers: {
+      'Cache-Control': 'no-store',
+    },
+    cache: 'no-store',
   });
   
   if (!response.ok) {
