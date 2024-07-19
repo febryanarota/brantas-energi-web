@@ -20,7 +20,9 @@ async function getData() {
   return data;
 }
 
-async function getCardData() {
+async function getCardData(
+  {verifiedCardId, pendingCardId} : {verifiedCardId: number[], pendingCardId: number[]}
+) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card`, {
     method: "GET",
   });
@@ -30,7 +32,12 @@ async function getCardData() {
   }
   
   const data : card[] = await response.json();
-  return data;
+
+  // Filter out the cards that are not in the verifiedCardId and pendingCardId
+  const verified = data.filter((card) => verifiedCardId.includes(card.id));
+  const pending = data.filter((card) => pendingCardId.includes(card.id));
+  
+  return {verified, pending}; 
 }
 
 export default async function Page() {
@@ -40,7 +47,10 @@ export default async function Page() {
 
   if (!session) redirect("/cms/login");
   const data = await getData();
-  const card = await getCardData();
+  const card = await getCardData({
+    verifiedCardId: data.verified.cards,
+    pendingCardId: data.pending.cards,
+  });
 
   return (
     <div className="w-full">
@@ -56,7 +66,7 @@ export default async function Page() {
             
             <FormSection2 verified={data.verified} pending={data.pending} role={role}/>
 
-            <FormSection3 verified={data.verified} pending={data.pending} role={role} cards={card}/>
+            <FormSection3 verified={data.verified} pending={data.pending} role={role} verifiedCards={card.verified} pendingCards={card.pending}/>
             
           </div>
         </div>

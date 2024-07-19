@@ -14,34 +14,37 @@ import { Pencil, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import CreateCardModal from "./modal/createCardModal";
+import { openSync } from "fs";
 
 export default function FormSection3({
   verified,
   pending,
   role,
-  cards,
+  verifiedCards,
+  pendingCards,
 }: {
   verified: home;
   pending: home;
   role: string;
-  cards: card[];
+  verifiedCards: card[];
+  pendingCards: card[];
 }) {
   const [isPending, setIsPending] = useState(false);
-
-  console.log(cards);
 
   return (
     <div className="flex flex-col p-5 bg-white rounded-md shadow-sm">
       <p className="font-bold text-primaryBlue mb-4">Section 3</p>
 
-      {isPending ? <RequestPending /> : <CardForm cards={cards} />}
+      {isPending ? <RequestPending /> : <CardForm cards={verifiedCards} />}
     </div>
   );
 }
 
 const CardForm = ({ cards }: { cards: card[] }) => {
-  const [description3, setDescription3] = useState("");
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [description, setDescription] = useState("");
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const [cardsData, setCardsData] = useState<card[]>(cards);
 
@@ -50,8 +53,13 @@ const CardForm = ({ cards }: { cards: card[] }) => {
     onOpen();
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(cardsData)
+  }
+
   return (
-    <form className="flex flex-col gap-3">
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <div className="flex flex-col justify-center w-full">
         <label htmlFor="Heading3" className="label text-sm">
           Heading
@@ -68,7 +76,7 @@ const CardForm = ({ cards }: { cards: card[] }) => {
         <label htmlFor="description3" className="label text-sm">
           Description
         </label>
-        <Editor content={description3} setContent={setDescription3} />
+        <Editor content={description} setContent={setDescription} />
       </div>
       <div className="flex flex-col justify-center w-full">
         <div className="flex flex-row justify-between items-center py-2">
@@ -82,8 +90,8 @@ const CardForm = ({ cards }: { cards: card[] }) => {
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
             <ModalContent>
               {(onClose) => (
-                <ModalBody>
-                  <CreateCardModal />
+                <ModalBody className="max-h-[80vh] overflow-auto pt-5 pb-16">
+                  <CreateCardModal onClose={onClose}/>
                 </ModalBody>
               )}
             </ModalContent>
@@ -96,7 +104,7 @@ const CardForm = ({ cards }: { cards: card[] }) => {
         </div>
 
         <Button
-          // type="submit"
+          type="submit"
           className="submit-btn self-end mt-0 mr-2"
           // disabled={isSaving || isAccepting || isRejecting}
         >
