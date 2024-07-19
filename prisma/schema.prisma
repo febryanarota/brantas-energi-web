@@ -134,6 +134,7 @@ model home {
   image1       String   @db.VarChar
   status       status
   image2       String   @default("") @db.VarChar
+  cards        Int[]
 }
 
 enum status {
