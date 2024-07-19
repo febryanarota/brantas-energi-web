@@ -5,7 +5,7 @@ import FormSection2 from "./form-section-2";
 import FormSection3 from "./form-section-3";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { home } from "@prisma/client";
+import { card, home } from "@prisma/client";
 
 async function getData() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
@@ -20,6 +20,19 @@ async function getData() {
   return data;
 }
 
+async function getCardData() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card`, {
+    method: "GET",
+  });
+  
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  
+  const data : card[] = await response.json();
+  return data;
+}
+
 export default async function Page() {
 
   const session = await getSession();
@@ -27,6 +40,7 @@ export default async function Page() {
 
   if (!session) redirect("/cms/login");
   const data = await getData();
+  const card = await getCardData();
 
   return (
     <div className="w-full">
@@ -42,7 +56,7 @@ export default async function Page() {
             
             <FormSection2 verified={data.verified} pending={data.pending} role={role}/>
 
-            <FormSection3/>
+            <FormSection3 verified={data.verified} pending={data.pending} role={role} cards={card}/>
             
           </div>
         </div>
