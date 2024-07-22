@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   const link = body.get("link") as string;
   const description = body.get("description") as string;
 
-  const imagePath = `/public/card/${uuid}.${fileExtension}`;
+  const imagePath = `public/card/${uuid}.${fileExtension}`;
 
   try {
     // store the image
