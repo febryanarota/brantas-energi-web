@@ -6,6 +6,7 @@ import FormSection3 from "./form-section-3";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { card, home } from "@prisma/client";
+import FormSection4 from "./form-section-4";
 
 async function getData() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
@@ -68,6 +69,7 @@ export default async function Page() {
 
             <FormSection3 verified={data.verified} pending={data.pending} role={role} verifiedCards={card.verified} pendingCards={card.pending}/>
             
+            <FormSection4 verified={data.verified} pending={data.pending} role={role}/>
           </div>
         </div>
       </CMSContainer>
