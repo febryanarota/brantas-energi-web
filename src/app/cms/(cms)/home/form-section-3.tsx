@@ -62,7 +62,15 @@ export default function FormSection3({
   );
 }
 
-const CardForm = ({ cards,verified, role }: { cards: card[]; verified: home; role: string }) => {
+const CardForm = ({
+  cards,
+  verified,
+  role,
+}: {
+  cards: card[];
+  verified: home;
+  role: string;
+}) => {
   const [description, setDescription] = useState(verified.subheading3);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [heading3, setHeading3] = useState(verified.heading3);
@@ -75,26 +83,25 @@ const CardForm = ({ cards,verified, role }: { cards: card[]; verified: home; rol
     onOpen();
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("heading3", heading3);
     formData.append("subheading3", subHeading3);
 
-    fetch("/api/home/section3", {
+    await fetch("/api/home/section3", {
       method: "PATCH",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-
+    window.location.reload();
   };
 
   return (
@@ -123,7 +130,7 @@ const CardForm = ({ cards,verified, role }: { cards: card[]; verified: home; rol
           value={subHeading3}
         />
       </div>
-      
+
       <div className="flex flex-col justify-center w-full">
         <div className="flex flex-row justify-between items-center py-2">
           <p className="label text-sm">Carousel</p>
@@ -161,8 +168,6 @@ const CardForm = ({ cards,verified, role }: { cards: card[]; verified: home; rol
     </form>
   );
 };
-
-
 
 const RequestPending = ({
   pending,

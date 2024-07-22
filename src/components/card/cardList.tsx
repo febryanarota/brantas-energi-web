@@ -11,6 +11,17 @@ export const ListComponent = ({
     isRequest?: boolean;
     role: string;
   }) => {
+
+    const handleDelete = async () => {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card/${card.id}`, {
+          method: "DELETE",
+        });
+      } catch (error) {
+        console.error("Error deleting data:", error);
+      }
+    }
+
     return (
       <div className="w-full bg-slate-100 rounded-md p-2 flex flex-row">
         <div className="w-[5rem] h-[5rem] bg-slate-300 rounded-md overflow-hidden">
@@ -45,6 +56,7 @@ export const ListComponent = ({
                 className="mt-1 hover:bg-red-100 rounded-full p-1"
                 width={30}
                 height={30}
+                onClick={handleDelete}
               />
             </button>
           )}
