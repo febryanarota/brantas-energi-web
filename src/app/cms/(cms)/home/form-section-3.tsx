@@ -10,7 +10,7 @@ import {
 import { card, home } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import CreateCardModal from "./modal/createCardModal";
+import CreateCardModal from "../../../../components/modals/createCardModal";
 import { isArraysEq } from "@/lib/utils";
 import { ListComponent } from "@/components/card/cardList";
 
