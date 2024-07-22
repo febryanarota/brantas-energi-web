@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   const link = body.get("link") as string;
   const description = body.get("description") as string;
 
-  const imagePath = `/public/${uuid}.${fileExtension}`;
+  const imagePath = `/public/card/${uuid}.${fileExtension}`;
 
   try {
     // store the image
@@ -57,29 +57,49 @@ export async function POST(req: NextRequest) {
 
     // store the id in home based on role, admin or user
     const id = response.id;
-    const editStatus: "verified" | "updatePending" =
-      role === "admin" ? "verified" : "updatePending";
 
-    // Fetch the existing cards array
-    const home = await prisma.home.findFirst({
-      where: { status: editStatus },
-    });
-
-    if (!home) {
-      throw new Error("Home entry not found");
+    // if admin then update both verified and updatePending
+    if (role === "admin") {
+      const homeAdmin = await prisma.home.findFirst({
+        where: { status: "verified" },
+      });
+      const updateCardsAdmin = [...(homeAdmin?.cards as number[]), id];
+      const idResponseAdmin = await prisma.home.updateMany({
+        where: {
+          status: { in: ["verified", "updatePending"] },
+        },
+        data: {
+          cards: updateCardsAdmin,
+        },
+      });
+      return NextResponse.json(
+        {
+          message: "Card created and appended successfully",
+          data: idResponseAdmin,
+        },
+        { status: 201 },
+      );
+    } else {
+      const homeUser = await prisma.home.findFirst({
+        where: { status: "updatePending" },
+      });
+      const updateCardsUser = [...(homeUser?.cards as number[]), id];
+      const idResponseUser = await prisma.home.updateMany({
+        where: {
+          status: "updatePending",
+        },
+        data: {
+          cards: updateCardsUser,
+        },
+      });
+      return NextResponse.json(
+        {
+          message: "Card created and appended successfully",
+          data: idResponseUser,
+        },
+        { status: 201 },
+      );
     }
-
-    const updatedCards = [...home.cards, id];
-    const idResponse = await prisma.home.updateMany({
-      where: {
-        status: editStatus,
-      },
-      data: {
-        cards: updatedCards,
-      },
-    });
-
-    return NextResponse.json({ message: "Card created and appended successfully", data: idResponse }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
