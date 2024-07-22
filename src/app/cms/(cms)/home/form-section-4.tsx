@@ -1,6 +1,5 @@
 "use client";
 
-import { Editor } from "@/components/editor/Editor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
@@ -81,13 +80,42 @@ export default function FormSection4({
             setIsPending(true);
           }
 
-          if (verified.description1 !== pending.description1) {
+          if (verified.name !== pending.name) {
             setIsPending(true);
           }
 
-          if (verified.heading1 !== pending.heading1) {
+          if (verified.address !== pending.address) {
             setIsPending(true);
           }
+
+          if (verified.phone !== pending.phone) {
+            setIsPending(true);
+          }
+
+          if (verified.email !== pending.email) {
+            setIsPending(true);
+          }
+
+          if (verified.youtube !== pending.youtube) {
+            setIsPending(true);
+          }
+
+          if (verified.instagram !== pending.instagram) {
+            setIsPending(true);
+          } 
+
+          if (verified.facebook !== pending.facebook) {
+            setIsPending(true);
+          }
+
+          if (verified.twitter !== pending.twitter) {
+            setIsPending(true);
+          }
+
+          if (verified.linkedin !== pending.linkedin) {
+            setIsPending(true);
+          }
+
         } catch (error) {
           console.error("Error fetching image:", error);
           setError("Failed to fetch image");
@@ -106,22 +134,33 @@ export default function FormSection4({
     setIsSaving(true);
 
     const formData = new FormData();
-    const heading1 = e.currentTarget.heading1.value;
-    if (!heading1) {
-      setError("Heading is required");
-    }
 
     if (!image?.image) {
-      setError("Image is required");
+      setError("Please upload an image");
+      setIsSaving(false);
+      return;
     }
 
-    formData.append("heading1", e.currentTarget.heading1.value);
+    if (!name || !address || !phone || !email) {
+      setError("Please fill in all required fields");
+      setIsSaving(false);
+      return;
+    }
+
     formData.append("logo", image?.image as File);
-    formData.append("description1", description1);
+    formData.append("name", name);
+    formData.append("address", address);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("youtube", youtube);
+    formData.append("instagram", instagram);
+    formData.append("facebook", facebook);
+    formData.append("twitter", twitter);
+    formData.append("linkedin", linkedin);
 
     try {
       // POST request to create a new text block
-      const response = await fetch("/api/home/section1", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home/section4`, {
         method: "PUT",
         body: formData,
       });
