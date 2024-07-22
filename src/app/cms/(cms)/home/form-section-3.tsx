@@ -59,13 +59,13 @@ export default function FormSection3({
           role={role}
         />
       ) : (
-        <CardForm cards={verifiedCards} />
+        <CardForm cards={verifiedCards} role={role} />
       )}
     </div>
   );
 }
 
-const CardForm = ({ cards }: { cards: card[] }) => {
+const CardForm = ({ cards, role }: { cards: card[]; role: string }) => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
@@ -124,7 +124,7 @@ const CardForm = ({ cards }: { cards: card[] }) => {
         </div>
         <div className="w-full border-1 border-slate-200 rounded-md p-2 space-y-2">
           {cardsData.map((card, index) => (
-            <ListComponent key={index} card={card} />
+            <ListComponent key={index} card={card} role={role} />
           ))}
         </div>
 
@@ -144,9 +144,11 @@ const CardForm = ({ cards }: { cards: card[] }) => {
 const ListComponent = ({
   card,
   isRequest,
+  role,
 }: {
   card: card;
   isRequest?: boolean;
+  role: string;
 }) => {
   return (
     <div className="w-full bg-slate-100 rounded-md p-2 flex flex-row">
@@ -176,13 +178,15 @@ const ListComponent = ({
         />
       </div>
       <div className="ml-auto">
-        <button>
-          <Trash
-            className="mt-1 hover:bg-red-100 rounded-full p-1"
-            width={30}
-            height={30}
-          />
-        </button>
+        {!(role === "admin" && isRequest) && (
+          <button>
+            <Trash
+              className="mt-1 hover:bg-red-100 rounded-full p-1"
+              width={30}
+              height={30}
+            />
+          </button>
+        )}
       </div>
     </div>
   );
@@ -245,25 +249,29 @@ const RequestPending = ({
       </div>
       <div className="flex flex-row justify-between items-center text-sm">
         <p className="font-semibold">Carousel</p>
-        <button
-          className="hover:bg-slate-300 rounded-full p-1 bg-slate-200"
-          onClick={handleOpen}
-        >
-          <Plus width={20} height={20} />
-        </button>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-          <ModalContent>
-            {(onClose) => (
-              <ModalBody className="max-h-[80vh] overflow-auto pt-5 pb-16">
-                <CreateCardModal onClose={onClose} />
-              </ModalBody>
-            )}
-          </ModalContent>
-        </Modal>
+        {role === "user" && (
+          <div>
+            <button
+              className="hover:bg-slate-300 rounded-full p-1 bg-slate-200"
+              onClick={handleOpen}
+            >
+              <Plus width={20} height={20} />
+            </button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
+              <ModalContent>
+                {(onClose) => (
+                  <ModalBody className="max-h-[80vh] overflow-auto pt-5 pb-16">
+                    <CreateCardModal onClose={onClose} />
+                  </ModalBody>
+                )}
+              </ModalContent>
+            </Modal>
+          </div>
+        )}
       </div>
       <div className="text-sm space-y-5">
         {pendingCards.map((card, index) => (
-          <ListComponent key={index} card={card} isRequest={true} />
+          <ListComponent key={index} card={card} isRequest={true} role={role} />
         ))}
       </div>
       <div className="space-x-5 self-end place-self-end">
@@ -280,7 +288,7 @@ const RequestPending = ({
         </Button>
         {role === "admin" && (
           <Button
-            // disabled={isSaving || isAccepting || isRejecting}
+            disabled={isAccepting || isRejecting}
             className="submit-btn"
             onClick={handleAccept}
           >
