@@ -90,18 +90,14 @@ const CardForm = ({
     formData.append("heading3", heading3);
     formData.append("subheading3", subHeading3);
 
-    await fetch("/api/home/section3", {
+    const response = await fetch("/api/home/section3", {
       method: "PATCH",
       body: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    window.location.reload();
+
+    if (response) {
+      window.location.reload();
+    }
   };
 
   return (
@@ -213,6 +209,33 @@ const RequestPending = ({
     }
   };
 
+  const handleCancel = async (e: any) => {
+    e.preventDefault();
+
+    setIsRejecting(true);
+
+    try {
+      // POST request to create a new text block
+      const response = await fetch("/api/home/section3/reject", {
+        method: "PUT",
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.text();
+        console.error("API Response Error:", errorResponse);
+        throw new Error(
+          `Network response was not ok: ${response.status} ${response.statusText}`,
+        );
+      }
+
+      setIsRejecting(false); // Set loading state to false
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+      setIsRejecting(false); // Set loading state to false
+    }
+  }
+
   return (
     <div className="space-y-4 border-2 p-2 rounded-md flex flex-col">
       <p className="text-sm  text-gray-500">Request Content</p>
@@ -255,7 +278,7 @@ const RequestPending = ({
         <Button
           // disabled={isSaving || isAccepting || isRejecting}
           className="px-[1rem] py-[0.5rem] border-1 border-primaryBlue bg-transparent rounded-[0.5rem]"
-          // onClick={handleReject}
+          onClick={handleCancel}
         >
           {isRejecting
             ? "Processing..."
