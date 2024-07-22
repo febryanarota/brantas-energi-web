@@ -135,6 +135,16 @@ model home {
   status       status
   image2       String   @default("") @db.VarChar
   cards        Int[]
+  name         String   @default("") @db.VarChar
+  address      String   @default("") @db.VarChar
+  phone        String   @default("") @db.VarChar
+  email        String   @default("") @db.VarChar
+  instagram    String?  @default("") @db.VarChar
+  youtube      String?  @db.VarChar
+  twitter      String?  @db.VarChar
+  facebook     String?  @db.VarChar
+  linkedin     String?  @db.VarChar
+  logo         String   @default("") @db.VarChar
 }
 
 enum status {
