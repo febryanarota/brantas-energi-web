@@ -1,7 +1,6 @@
 "use client";
 
 import { Editor } from "@/components/editor/Editor";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@nextui-org/button";
 import {
   Modal,
@@ -10,13 +9,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { card, home } from "@prisma/client";
-import { Pencil, Plus, Trash } from "lucide-react";
-import Image from "next/image";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import CreateCardModal from "./modal/createCardModal";
-import { openSync } from "fs";
 import { isArraysEq } from "@/lib/utils";
-import Home from "@/components/home/home";
+import { ListComponent } from "@/components/card/cardList";
 
 export default function FormSection3({
   verified,
@@ -59,17 +56,17 @@ export default function FormSection3({
           role={role}
         />
       ) : (
-        <CardForm cards={verifiedCards} role={role} />
+        <CardForm verified={verified} cards={verifiedCards} role={role} />
       )}
     </div>
   );
 }
 
-const CardForm = ({ cards, role }: { cards: card[]; role: string }) => {
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
-  const [description, setDescription] = useState("");
+const CardForm = ({ cards,verified, role }: { cards: card[]; verified: home; role: string }) => {
+  const [description, setDescription] = useState(verified.subheading3);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [heading3, setHeading3] = useState(verified.heading3);
+  const [subHeading3, setSubHeading3] = useState(verified.subheading3);
 
   const [cardsData, setCardsData] = useState<card[]>(cards);
 
@@ -80,7 +77,24 @@ const CardForm = ({ cards, role }: { cards: card[]; role: string }) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(cardsData);
+
+    const formData = new FormData();
+    formData.append("heading3", heading3);
+    formData.append("subheading3", subHeading3);
+
+    fetch("/api/home/section3", {
+      method: "PATCH",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
   };
 
   return (
@@ -93,16 +107,23 @@ const CardForm = ({ cards, role }: { cards: card[]; role: string }) => {
           type="text"
           name="heading3"
           className="field"
-          // onChange={(e) => setSubHeading3(e.target.value)}
-          // value={heading3}
+          onChange={(e) => setHeading3(e.target.value)}
+          value={heading3}
         />
       </div>
       <div className="flex flex-col justify-center w-full">
-        <label htmlFor="description3" className="label text-sm">
-          Description
+        <label htmlFor="Subheading3" className="label text-sm">
+          Subheading
         </label>
-        <Editor content={description} setContent={setDescription} />
+        <input
+          type="text"
+          name="Subheading3"
+          className="field"
+          onChange={(e) => setSubHeading3(e.target.value)}
+          value={subHeading3}
+        />
       </div>
+      
       <div className="flex flex-col justify-center w-full">
         <div className="flex flex-row justify-between items-center py-2">
           <p className="label text-sm">Carousel</p>
@@ -141,56 +162,7 @@ const CardForm = ({ cards, role }: { cards: card[]; role: string }) => {
   );
 };
 
-const ListComponent = ({
-  card,
-  isRequest,
-  role,
-}: {
-  card: card;
-  isRequest?: boolean;
-  role: string;
-}) => {
-  return (
-    <div className="w-full bg-slate-100 rounded-md p-2 flex flex-row">
-      <div className="w-[5rem] h-[5rem] bg-slate-300 rounded-md overflow-hidden">
-        <a
-          href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${card.image}`}
-          target="_blank"
-        >
-          <Image
-            src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${card.image}`}
-            width={100}
-            height={100}
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </a>
-      </div>
-      <div className="flex flex-col text-sm ml-3 flex-1">
-        <a className="font-semibold" href={card.link as string}>
-          {card.title}
-        </a>
-        {/* make description elipsis... */}
-        <div
-          className="ProseMirror whitespace-pre-line text-sm text-justify"
-          style={{ whiteSpace: "pre-line" }}
-          dangerouslySetInnerHTML={{ __html: card.description as string }}
-        />
-      </div>
-      <div className="ml-auto">
-        {!(role === "admin" && isRequest) && (
-          <button>
-            <Trash
-              className="mt-1 hover:bg-red-100 rounded-full p-1"
-              width={30}
-              height={30}
-            />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};
+
 
 const RequestPending = ({
   pending,
@@ -216,7 +188,7 @@ const RequestPending = ({
 
     try {
       // POST request to create a new text block
-      const response = await fetch("/api/home/section3", {
+      const response = await fetch("/api/home/section3/accept", {
         method: "PUT",
       });
 
