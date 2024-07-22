@@ -15,10 +15,12 @@ export default function CreateCardModal({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setIsSaving(true);
 
     // Validate input fields
     if (!title || !link || !description || !image) {
       setError("All fields are required");
+      setIsSaving(false);
       return;
     }
 
@@ -42,10 +44,11 @@ export default function CreateCardModal({ onClose }: { onClose: () => void }) {
         throw new Error(
           errorData.message || "An error occurred while submitting the form",
         );
+      } else {
+        window.location.reload();
+        onClose();
       }
 
-      window.location.reload();
-      onClose();
     } catch (error) {
       console.error("Error submitting new card: ", error);
     }

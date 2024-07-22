@@ -1,6 +1,5 @@
 "use client";
 
-import { Editor } from "@/components/editor/Editor";
 import { Button } from "@nextui-org/button";
 import {
   Modal,
@@ -77,6 +76,8 @@ const CardForm = ({
   const [subHeading3, setSubHeading3] = useState(verified.subheading3);
 
   const [cardsData, setCardsData] = useState<card[]>(cards);
+  const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleOpen = (event: any) => {
     event.preventDefault();
@@ -85,6 +86,15 @@ const CardForm = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setError("");
+    setIsSaving(true);
+
+
+    if (!heading3 || !subHeading3) {
+      setError("Please fill in all fields");
+      setIsSaving(false);
+      return;
+    }
 
     const formData = new FormData();
     formData.append("heading3", heading3);
@@ -95,6 +105,7 @@ const CardForm = ({
       body: formData,
     })
 
+    setIsSaving(false);
     if (response) {
       window.location.reload();
     }
@@ -155,11 +166,14 @@ const CardForm = ({
         <Button
           type="submit"
           className="submit-btn self-end mt-0 mr-2"
-          // disabled={isSaving || isAccepting || isRejecting}
+          disabled={isSaving}
         >
-          {/* {isSaving ? "Saving..." : "Save"} */}
-          Save
+          {isSaving ? "Saving..." : "Save"}
         </Button>
+        {
+          error && 
+          <p className="self-end mr-2 mt-2 text-gray-500">{error}</p>
+        }
       </div>
     </form>
   );
