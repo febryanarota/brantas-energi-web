@@ -18,8 +18,9 @@ import {
 } from "@nextui-org/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
+import { home } from "@prisma/client";
 
-export default function NavigationBar() {
+export default function NavigationBar({data} : {data : home}) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = React.useState(false);
   const [isInformasiPublikOpen, setIsInformasiPublikOpen] =
@@ -49,7 +50,7 @@ export default function NavigationBar() {
         <NavbarBrand>
           <a href="/">
             <Image
-              src={"/images/logo.png"}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.logo}`}
               width={40}
               height={40}
               alt="Logo PT Brantas Energi "
@@ -67,7 +68,7 @@ export default function NavigationBar() {
         <NavbarBrand>
           <a href="/">
             <Image
-              src={"/images/logo.png"}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.logo}`}
               width={75}
               height={75}
               alt="Logo PT Brantas Energi "

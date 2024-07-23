@@ -17,6 +17,7 @@ async function getData() {
   const data: { verified: home; pending: home } = await response.json();
   return data.verified;
 }
+
 export default async function Page() {
   const data = await getData();
   return (

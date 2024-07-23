@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Facebook,
   Instagram,
@@ -8,34 +10,71 @@ import {
   Youtube,
 } from "lucide-react";
 import { Container } from "../ui/container";
+import { home } from "@prisma/client";
+import { useEffect, useState } from "react";
 
-export default function Footer() {
+export default function Footer({data} : {data : home}) {
+  // const [data, setData] = useState<home | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Cache-Control": "no-store",
+  //         },
+  //         cache: "no-store",
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
+
+  //       const data: { verified: home; pending: home } = await response.json();
+
+  //       console.log(data.verified)
+  //       setData(data.verified);
+  //     } catch (error) {
+  //       setError(error as string);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // if (error) {
+  //   return <div className="text-red-500">Error: {error}</div>;
+  // }
+
+  // if (!data) {
+  //   return <div>Loading...</div>;
+  // }
+
   return (
-    <div className="w-full text-white  bg-gradient-to-b from-sky-800 to-sky-900 flex justify-center">
+    <div className="w-full text-white bg-gradient-to-b from-sky-800 to-sky-900 flex justify-center">
       <Container className="flex flex-col">
-        <p className="text-lg font-bold my-5">BRANTAS ENERGI</p>
+        <p className="text-lg font-bold my-5">{data.name}</p>
         <div>
           <ul className="flex flex-col gap-5">
             <li className="flex flex-row items-center gap-5">
               <div className="flex-none">
                 <Map width={20} height={20} />
               </div>
-              <p className="text-sm">
-                Gedung Sapta Taruna, Jl. DI. Panjaitan No.Kav. 12, Jakarta Timur
-                13340
-              </p>
+              <p className="text-sm">{data.address}</p>
             </li>
             <li className="flex flex-row items-center gap-5">
               <div className="flex-none">
                 <Phone width={20} height={20} />
               </div>
-              <p className="text-sm">(021) 29613918</p>
+              <p className="text-sm">{data.phone}</p>
             </li>
             <li className="flex flex-row items-center gap-5">
               <div className="flex-none">
                 <Mails width={20} height={20} />
               </div>
-              <p className="text-sm">corporate@brantasenergi.co.id</p>
+              <p className="text-sm">{data.email}</p>
             </li>
           </ul>
         </div>
@@ -44,30 +83,38 @@ export default function Footer() {
             © Copyright PT Brantas Energi (Persero) 2024. All Rights Reserved.
           </p>
           <div className="flex flex-row gap-5 ">
-            <a
-              href=""
-              className="p-2 rounded-full hover:bg-primaryYellow transition-colors duration-400 ease-in-out"
-            >
-              <Instagram width={20} height={20} />
-            </a>
-            <a
-              href=""
-              className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
-            >
-              <Youtube width={20} height={20} />
-            </a>
-            <a
-              href=""
-              className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
-            >
-              <Twitter width={20} height={20} />
-            </a>
-            <a
-              href=""
-              className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
-            >
-              <Facebook width={20} height={20} />
-            </a>
+            {data.instagram && (
+              <a
+                href={data.instagram}
+                className="p-2 rounded-full hover:bg-primaryYellow transition-colors duration-400 ease-in-out"
+              >
+                <Instagram width={20} height={20} />
+              </a>
+            )}
+            {data.youtube && (
+              <a
+                href={data.youtube}
+                className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
+              >
+                <Youtube width={20} height={20} />
+              </a>
+            )}
+            {data.twitter && (
+              <a
+                href={data.twitter}
+                className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
+              >
+                <Twitter width={20} height={20} />
+              </a>
+            )}
+            {data.facebook && (
+              <a
+                href={data.facebook}
+                className="hover:bg-primaryYellow p-2 rounded-full transition-colors duration-400 ease-in-out"
+              >
+                <Facebook width={20} height={20} />
+              </a>
+            )}
           </div>
         </div>
       </Container>
