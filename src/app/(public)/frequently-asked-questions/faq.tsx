@@ -2,10 +2,10 @@
 
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
-import { qna } from "@/lib/dataType";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import { faq } from "@prisma/client";
 
-export default function Faq({ data }: { data: qna[] }) {
+export default function Faq({ data }: { data: faq[] }) {
   return (
     <div className="mb-10">
       <Header title="Frequently Asked Questions" />

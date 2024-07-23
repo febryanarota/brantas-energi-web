@@ -1,4 +1,4 @@
-import { qna } from "@prisma/client";
+import { faq } from "@prisma/client";
 import Faq from "./faq";
 import { cookies } from "next/headers";
 
@@ -14,6 +14,6 @@ export default async function Page() {
     credentials: "include",
   });
 
-  const data: qna[] = await res.json();
+  const data: faq[] = await res.json();
   return <Faq data={data} />;
 }

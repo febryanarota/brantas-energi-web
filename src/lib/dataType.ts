@@ -9,14 +9,6 @@ export interface laporan {
   thumbnail: string;
 }
 
-export interface qna {
-  id: number;
-  question: string;
-  answer: string;
-  position: number;
-  created_at: Date;
-}
-
 export interface FormValues {
   question: string;
   answer: string;

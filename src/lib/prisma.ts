@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== "production")
 const extension = Prisma.defineExtension({
   name: "CascadeDelete",
   query: {
-    qna: {
+    faq: {
       async delete({ model, operation, args, query }) {
         // Find related contentBlock IDs
         const contentBlocks = await prisma.contentBlock.findMany({

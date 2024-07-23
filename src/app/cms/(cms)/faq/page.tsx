@@ -1,11 +1,11 @@
 import { CMSContainer } from "@/components/ui/container";
 import { getSession } from "@/lib/auth";
-import { qna } from "@prisma/client";
+import { faq } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import FormFaq from "./form-faq";
 
-async function getData(): Promise<qna[]> {
+async function getData(): Promise<faq[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_URL}/api/faq?status=all`,
@@ -23,7 +23,7 @@ async function getData(): Promise<qna[]> {
       throw new Error("Network response was not ok");
     }
 
-    const result: qna[] = await res.json();
+    const result: faq[] = await res.json();
     return result;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -35,7 +35,7 @@ export default async function Page() {
   const session = await getSession();
   if (!session) redirect("/cms/login");
 
-  const data: qna[] = await getData();
+  const data: faq[] = await getData();
 
   return (
     <div>
