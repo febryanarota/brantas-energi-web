@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model qna {
-  id           Int           @id @default(autoincrement())
-  question     String
-  answer       String
-  position     Int           @default(autoincrement()) @db.SmallInt
-  created_at   DateTime      @default(now()) @db.Timestamptz(6)
-  status       status?       @default(createPending)
-  contentBlock contentBlock?
-}
-
 model account {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   username   String   @unique @default("") @db.VarChar
@@ -40,7 +29,7 @@ model contentBlock {
   heading2Id                   Int?
   imageId                      Int?
   fileId                       Int?
-  qna                          qna?      @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  qna                          faq?      @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   file                         file?     @relation(fields: [fileId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading1                     heading1? @relation(fields: [heading1Id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading2                     heading2? @relation(fields: [heading2Id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "contentBlock_heading2Id_fkey1")
@@ -145,6 +134,14 @@ model home {
   facebook     String?  @db.VarChar
   linkedin     String?  @db.VarChar
   logo         String   @default("") @db.VarChar
+}
+
+model faq {
+  id           Int           @id @default(autoincrement())
+  created_at   DateTime      @default(now()) @db.Timestamptz(6)
+  question     String        @default("") @db.VarChar
+  answer       String        @default("") @db.VarChar
+  contentBlock contentBlock?
 }
 
 enum status {
