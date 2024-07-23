@@ -1,14 +1,13 @@
 "use client";
 import {
   contentBlock,
+  faq,
   file,
   heading1,
   heading2,
   image,
-  qna,
   text,
 } from "@prisma/client";
-import FaqContent from "./faq-content";
 import { useEffect, useState } from "react";
 import {
   CancelButton,
@@ -24,6 +23,7 @@ import { Heading1Content, Heading2Content } from "./heading-content";
 import { delay } from "@/lib/utils";
 import { ImageContent } from "./image-content";
 import { FileContent } from "./file-content";
+import { FaqContent } from "./faq-content";
 
 async function fetchData(url: string) {
   const startTime = Date.now();
@@ -59,7 +59,7 @@ async function getData(content: contentBlock) {
   switch (content.blockType) {
     case "faq":
       result = await fetchData(`/api/faq/${content.faqId}`);
-      return result as qna;
+      return result as faq;
     case "text":
       result = await fetchData(`/api/text/${content.textId}`);
       return result as text;
@@ -107,7 +107,7 @@ export default function Content({
 
         switch (type) {
           case "faq":
-            setRenderContent(<FaqContent content={data as qna} />);
+            setRenderContent(<FaqContent content={data as faq} editId={block.editId}/>);
             break;
           case "text":
             setRenderContent(
