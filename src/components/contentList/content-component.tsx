@@ -1,8 +1,8 @@
 "use client";
 
 import { delay } from "@/lib/utils";
-import { Skeleton } from "@nextui-org/react";
-import { file, heading1, heading2, image, text } from "@prisma/client";
+import { Accordion, AccordionItem, Skeleton } from "@nextui-org/react";
+import { faq, file, heading1, heading2, image, text } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -49,7 +49,7 @@ export function ContentComponent({
   contentID: number;
 }) {
   const [data, setData] = useState<
-    text | heading1 | heading2 | image | file | undefined
+    text | heading1 | heading2 | image | file | faq | undefined
   >(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [renderContent, setRenderContent] = useState<JSX.Element | null>(null);
@@ -77,6 +77,9 @@ export function ContentComponent({
           break;
         case "file":
           setRenderContent(<FileLinkContent data={result as file} />);
+          break;
+        case "faq":
+          setRenderContent(<FaqContent data={result as faq} />);
           break;
         default:
           setRenderContent(null);
@@ -190,6 +193,22 @@ export function FileLinkContent({ data }: { data: file }) {
       >
         {data.display}
       </a>
+    </div>
+  );
+}
+
+export function FaqContent({ data }: { data: faq }) {
+  return (
+    <div className="mb-10">
+      <Accordion variant="light" className="border-b-1 border-slate-200">
+        <AccordionItem title={data.question} className="font-medium text-md">
+          <div
+            className="ProseMirror whitespace-pre-line text-justify mb-5"
+            style={{ whiteSpace: "pre-line" }}
+            dangerouslySetInnerHTML={{ __html: data.answer }}
+          />
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
