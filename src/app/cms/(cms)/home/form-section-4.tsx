@@ -255,9 +255,9 @@ export default function FormSection4({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/home/section1`,
+        `${process.env.NEXT_PUBLIC_URL}/api/home/section4/reject`,
         {
-          method: "DELETE",
+          method: "PUT",
         },
       );
       if (!response.ok) {
@@ -305,23 +305,23 @@ export default function FormSection4({
               </div>
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Youtube</p>
-                <p>{youtubePending}</p>
+                <p>{youtubePending || "-"}</p>
               </div>
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Instagram</p>
-                <p>{instagramPending}</p>
+                <p>{instagramPending || "-"}</p>
               </div>
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Facebook</p>
-                <p>{facebookPending}</p>
+                <p>{facebookPending || "-"}</p>
               </div>
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Twitter</p>
-                <p>{twitterPending}</p>
+                <p>{twitterPending || "-"}</p>
               </div>
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Linkedin</p>
-                <p>{linkedinPending}</p>
+                <p>{linkedinPending || "-"}</p>
               </div>
               
               <div className="flex flex-col">
