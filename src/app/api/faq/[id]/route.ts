@@ -57,3 +57,27 @@ export async function PUT(
     );
   }
 }
+
+
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } },
+) {
+  try {
+    const id = parseInt(context.params.id, 10);
+
+    const result = await prisma.faq.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error," },
+      { status: 500 },
+    );
+  }
+}
