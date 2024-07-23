@@ -5,17 +5,11 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string } },
 ) {
-  const sessionExists = req.headers.get("cookie")?.valueOf();
-
-  if (!sessionExists) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   try {
-    // Get the id from the URL and convert it to a number
     const id = parseInt(context.params.id, 10);
 
-    const result = await prisma.qna.findFirst({
+    const result = await prisma.faq.findFirst({
       where: {
         id: id,
       },
@@ -44,7 +38,7 @@ export async function PUT(
 
   try {
     const id = parseInt(context.params.id, 10);
-    const result = await prisma.qna.update({
+    const result = await prisma.faq.update({
       where: {
         id: id,
       },
