@@ -8,7 +8,7 @@ export const FaqContent = ({
   content: faq;
   editId: number | null;
 }) => {
-  const [editData, setEditData] = useState<faq | null>(null);
+  const [editData, setEditData] = useState<faq>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,14 +57,23 @@ export const FaqContent = ({
       ) : (
         <div className="invalid-feedback">something went wrong</div>
       )}
-      {editData !== null && (
+      {editData && (
         <div className="w-full bg-slate-100 rounded-md p-2 pb-5 mt-3">
           <p className="text-xs font-medium text-gray-500 mb-3">New Content</p>
-          <div
-            className="ProseMirror whitespace-pre-line text-sm text-justify"
-            style={{ whiteSpace: "pre-line" }}
-            dangerouslySetInnerHTML={{ __html: editData }}
-          />
+          <div className="flex flex-col gap-2 mt-4">
+            <div className="flex flex-col">
+              <p className="font-semibold text-slate-500">Question</p>
+              <p>{editData?.question}</p>
+            </div>
+            <div className="flex flex-col">
+              <p className="font-semibold text-slate-500">Answer</p>
+              <div
+                className="ProseMirror whitespace-pre-line text-md text-justify"
+                style={{ whiteSpace: "pre-line" }}
+                dangerouslySetInnerHTML={{ __html: editData?.answer }}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -29,8 +29,14 @@ export async function PUT(
   req: NextRequest,
   context: { params: { id: string } },
 ) {
-  const sessionExists = req.headers.get("cookie")?.valueOf();
-  const body = await req.json();
+
+  const sessionExists = req.cookies.get("session");
+
+
+  const body = await req.formData();
+  const question = body.get("question") as string;
+  const answer = body.get("answer") as string;
+
 
   if (!sessionExists) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -43,8 +49,8 @@ export async function PUT(
         id: id,
       },
       data: {
-        question: body.question,
-        answer: body.answer,
+        question: question,
+        answer: answer,
       },
     });
 

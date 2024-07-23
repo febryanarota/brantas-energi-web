@@ -143,7 +143,14 @@ export const EditButton = ({
   useEffect(() => {
     switch (type) {
       case "faq":
-        setModal(<FaqEditModal id={id} />);
+        setModal(
+          <FaqEditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
         break;
       case "text":
         setModal(

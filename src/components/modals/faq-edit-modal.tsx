@@ -1,16 +1,24 @@
-import { FormValues } from "@/lib/dataType";
-import { FaqSchema } from "@/lib/validation";
 import { Button } from "@nextui-org/button";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
+import { Editor } from "../editor/Editor";
 
 // get current data and display it on the form
 
-export const FaqEditModal = ({ id }: { id: number }) => {
-  const [initialValues, setInitialValues] = useState<FormValues>({
-    question: "",
-    answer: "",
-  });
+export const FaqEditModal = ({
+  openChange,
+  session,
+  id,
+  blockId,
+}: {
+  openChange?: () => void;
+  session: any;
+  id: number;
+  blockId: number;
+}) => {
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +35,8 @@ export const FaqEditModal = ({ id }: { id: number }) => {
         }
 
         const data = await response.json();
-        setInitialValues({
-          question: data.question,
-          answer: data.answer,
-        });
+        setAnswer(data.answer);
+        setQuestion(data.question);
       } catch (error) {
         console.error("Error fetching data:", error);
         // TO DO: Handle error appropriately (e.g. show error message)
@@ -40,98 +46,140 @@ export const FaqEditModal = ({ id }: { id: number }) => {
     fetchData();
   }, [id]);
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting, resetForm }: FormikHelpers<FormValues>,
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (question === "") {
+      setError("Question must not be empty");
+      setIsLoading(false);
+      return;
+    }
+
+    if (answer === "") {
+      setError("Answer must not be empty");
+      setIsLoading(false);
+      return;
+    }
+
+    const role = session.role;
+
+    const formData = new FormData();
+    formData.append("question", question);
+    formData.append("answer", answer);
+
     try {
-      // Prepare form data
-      const formData = {
-        question: values.question,
-        answer: values.answer,
-      };
+      if (role !== "admin") {
+        const response = await fetch(`/api/faq`, {
+          method: "POST",
+          body: formData,
+        });
 
-      // Send PUT request
-      const response = await fetch(`/api/faq/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`,
+          );
+        }
 
-      if (response.status === 200) {
-        // refresh the page
-        window.location.reload();
+        let editId = await response.json();
+        editId = editId.id;
+
+        const response2 = await fetch(`/api/content/${blockId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            editId: editId,
+            status: "updatePending",
+          }),
+        });
+
+        if (!response2.ok) {
+          const errorResponse = await response2.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response2.status} ${response2.statusText}`,
+          );
+        }
       } else {
-        throw new Error("Failed to submit the form");
+        const response = await fetch(`/api/faq/${id}`, {
+          method: "PUT",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`,
+          );
+        }
       }
+      window.location.reload();
     } catch (error) {
-      console.error("Error submitting the form:", error);
-      // Show error message
-      alert("Failed to submit the form");
+      console.error(error);
     } finally {
-      setSubmitting(false);
+      setIsLoading(false);
+      if (openChange) {
+        openChange();
+      }
     }
   };
 
   return (
     <div>
-      <Formik<FormValues>
-        initialValues={initialValues}
-        validationSchema={FaqSchema}
-        enableReinitialize
+      <form
         onSubmit={handleSubmit}
+        className="max-w-3xl w-full grid place-items-center mx-auto pt-4 mb-10 px-5"
       >
-        {(props) => (
-          <div>
-            <Form className="flex flex-col items-center gap-3">
-              <div className="form-group">
-                <label htmlFor="question" className="label">
-                  Question
-                </label>
-                <Field
-                  as="textarea"
-                  name="question"
-                  placeholder="Enter Question"
-                  autoComplete="off"
-                  className="field"
-                />
-                <ErrorMessage
-                  component="div"
-                  name="question"
-                  className="invalid-feedback"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="answer" className="label">
-                  Answer
-                </label>
-                <Field
-                  as="textarea"
-                  name="answer"
-                  placeholder="Enter answer"
-                  className="field"
-                />
-                <ErrorMessage
-                  component="div"
-                  name="answer"
-                  className="invalid-feedback"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="submit-btn"
-                disabled={props.isSubmitting}
-              >
-                {props.isSubmitting ? "Submitting..." : "Submit"}
-              </Button>
-            </Form>
+        <div className="flex flex-col w-full gap-5">
+          <div className="flex flex-col justify-center w-full">
+            <label htmlFor="question" className="label">
+              Question
+            </label>
+            <input
+              type="text"
+              className="field"
+              name="question"
+              id="question"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+            />
           </div>
-        )}
-      </Formik>
+          <div className="flex flex-col justify-center w-full">
+            <label htmlFor="answer" className="label">
+              Answer
+            </label>
+            <Editor content={answer} setContent={setAnswer} />
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center justify-center gap-5">
+          <Button
+            type="button"
+            className="cancel-btn"
+            onClick={() => {
+              if (openChange) {
+                openChange();
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            className="submit-btn self-end"
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Save"}
+          </Button>
+        </div>
+        {error ? <p className="text-slate-500 text-sm mt-4">{error}</p> : null}
+      </form>
     </div>
   );
 };
