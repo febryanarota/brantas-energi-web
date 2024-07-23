@@ -28,16 +28,31 @@ export default function FormSection4({
   const [facebook, setFacebook] = useState<string>(verified.facebook || "");
   const [twitter, setTwitter] = useState<string>(verified.twitter || "");
   const [linkedin, setLinkedin] = useState<string>(verified.linkedin || "");
-
   const [image, setImage] = useState<imageData>();
 
-  const [descriptionPending, setDescriptionPending] = useState<string>(
-    pending.description1 || "",
+  const [namePending, setNamePending] = useState<string>(pending.name || "");
+  const [addressPending, setAddressPending] = useState<string>(
+    pending.address || "",
   );
-  const [headingPending, setHeadingPending] = useState<string>(
-    pending.heading1 || "",
+  const [phonePending, setPhonePending] = useState<string>(pending.phone || "");
+  const [emailPending, setEmailPending] = useState<string>(pending.email || "");
+  const [youtubePending, setYoutubePending] = useState<string>(
+    pending.youtube || "",
+  );
+  const [instagramPending, setInstagramPending] = useState<string>(
+    pending.instagram || "",
+  );
+  const [facebookPending, setFacebookPending] = useState<string>(
+    pending.facebook || "",
+  );
+  const [twitterPending, setTwitterPending] = useState<string>(
+    pending.twitter || "",
+  );
+  const [linkedinPending, setLinkedinPending] = useState<string>(
+    pending.linkedin || "",
   );
   const [imagePending, setImagePending] = useState<imageData>();
+
   const [isPending, setIsPending] = useState<boolean>(false);
 
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -102,7 +117,7 @@ export default function FormSection4({
 
           if (verified.instagram !== pending.instagram) {
             setIsPending(true);
-          } 
+          }
 
           if (verified.facebook !== pending.facebook) {
             setIsPending(true);
@@ -115,7 +130,6 @@ export default function FormSection4({
           if (verified.linkedin !== pending.linkedin) {
             setIsPending(true);
           }
-
         } catch (error) {
           console.error("Error fetching image:", error);
           setError("Failed to fetch image");
@@ -160,10 +174,13 @@ export default function FormSection4({
 
     try {
       // POST request to create a new text block
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home/section4`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/home/section4`,
+        {
+          method: "PUT",
+          body: formData,
+        },
+      );
 
       if (!response.ok) {
         const errorResponse = await response.text();
@@ -210,18 +227,12 @@ export default function FormSection4({
   const handleAccept = async () => {
     setIsAccepting(true);
 
-    const formData = new FormData();
-    formData.append("heading1", headingPending);
-    formData.append("description1", descriptionPending);
-    if (imagePending?.image) {
-      formData.append("logo", imagePending.image);
-    }
+  
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/home/section1`,
+        `${process.env.NEXT_PUBLIC_URL}/api/home/section4/accept`,
         {
-          method: "PATCH",
-          body: formData,
+          method: "PUT",
         },
       );
       if (!response.ok) {
@@ -277,19 +288,42 @@ export default function FormSection4({
             <p className="text-xs font-medium text-gray-500">Content Request</p>
             <div className="flex flex-col gap-2 mt-4">
               <div className="flex flex-col">
-                <p className="font-semibold text-slate-500 text-sm">Heading</p>
-                <p>{headingPending}</p>
+                <p className="font-semibold text-slate-500 text-sm">Company Name</p>
+                <p>{namePending}</p>
               </div>
               <div className="flex flex-col">
-                <p className="font-semibold text-slate-500 text-sm">
-                  Description
-                </p>
-                <div
-                  className="ProseMirror whitespace-pre-line text-sm text-justify"
-                  style={{ whiteSpace: "pre-line" }}
-                  dangerouslySetInnerHTML={{ __html: descriptionPending }}
-                />
+                <p className="font-semibold text-slate-500 text-sm">Address</p>
+                <p>{addressPending}</p>
               </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Phone</p>
+                <p>{phonePending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Email</p>
+                <p>{emailPending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Youtube</p>
+                <p>{youtubePending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Instagram</p>
+                <p>{instagramPending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Facebook</p>
+                <p>{facebookPending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Twitter</p>
+                <p>{twitterPending}</p>
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-slate-500 text-sm">Linkedin</p>
+                <p>{linkedinPending}</p>
+              </div>
+              
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Image</p>
                 {imagePending?.display && (
@@ -434,7 +468,9 @@ export default function FormSection4({
               )}
 
               <div className="border-1 border-slate-200 p-2 rounded-md space-y-5">
-                <p className="text-sm font-semibold text-primaryBlue">Social Media</p>
+                <p className="text-sm font-semibold text-primaryBlue">
+                  Social Media
+                </p>
                 <div className="flex flex-col justify-center w-full">
                   <label htmlFor="youtube" className="label text-sm">
                     Youtube
