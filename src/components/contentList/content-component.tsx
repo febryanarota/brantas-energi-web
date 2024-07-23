@@ -200,10 +200,22 @@ export function FileLinkContent({ data }: { data: file }) {
 export function FaqContent({ data }: { data: faq }) {
   return (
     <div className="mb-10">
-      <Accordion variant="light" className="border-b-1 border-slate-200">
-        <AccordionItem title={data.question} className="font-medium text-md">
+      <Accordion
+        className="border-b-1.5 border-slate-200"
+        itemClasses={{
+          base: "pb-5",
+          trigger:
+            "px-0 py-0 data-[hover=true]:bg-default-100 rounded-lg h-14 flex items-center mx-0 p-0 font-semibold",
+          indicator: "text-medium px-0 mx-0 p-0",
+          content: "text-small mt-3",
+        }}
+      >
+        <AccordionItem
+          title={data.question}
+          className="font-semibold text-md mx-0"
+        >
           <div
-            className="ProseMirror whitespace-pre-line text-justify mb-5"
+            className="ProseMirror whitespace-pre-line text-justify font-normal"
             style={{ whiteSpace: "pre-line" }}
             dangerouslySetInnerHTML={{ __html: data.answer }}
           />
