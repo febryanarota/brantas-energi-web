@@ -4,13 +4,36 @@ import Image from "next/image";
 import { EmblaOptionsType } from "embla-carousel";
 import Layanan from "@/components/carousel/layanan-carousel";
 import { Container } from "@/components/ui/container";
-import { home } from "@prisma/client";
+import { card, home } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 export default function Home({ data }: { data: home }) {
   const OPTIONS: EmblaOptionsType = {
     loop: true,
   };
 
+  const [slides, setSlides] = useState<card[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card`, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-store",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data: card[] = await response.json();
+      setSlides(data);
+    };
+
+    fetchData();
+  }, []);
 
   const SLIDES = Array.from(Array(5).keys());
   return (
@@ -86,13 +109,13 @@ export default function Home({ data }: { data: home }) {
         <Container className="flex flex-col">
           <div className="flex flex-col items-center">
             <p className="border-b-2 border-primaryYellow font-semibold mt-10 text-slate-800">
-              LAYANAN KAMI
+              {data.subheading3}
             </p>
             <p className="text-4xl font-semibold my-5 mb-10 md:text-left text-center">
-              Daftar Informasi Publik Brantas Energi
+              {data.heading3}
             </p>
           </div>
-          <Layanan slides={SLIDES} options={OPTIONS} />
+          <Layanan slides={slides} options={OPTIONS} />
         </Container>
       </div>
     </div>

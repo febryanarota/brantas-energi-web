@@ -5,9 +5,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import "./embla.css";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
+import { card } from "@prisma/client";
 
 type PropType = {
-  slides: number[];
+  slides: card[];
   options?: EmblaOptionsType;
 };
 
@@ -25,13 +26,13 @@ const Layanan: React.FC<PropType> = (props) => {
       <div className="">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
-            {slides.map((index) => (
+            {slides.map((slide, index) => (
               <div className="embla__slide py-2" key={index}>
-                <div className="relative w-full h-[500px]  items-center justify-center flex ">
-                  <div className="w-full ">
-                    <div className="w-[90%] rounded-md overflow-hidden md:block hidden">
+                <div className="relative w-full h-[500px]  items-center justify-center flex px-2">
+                  <div className="w-full h-[90%] py-5">
+                    <div className="w-[75%] h-full rounded-md overflow-hidden md:block hidden max-w-[75%]">
                       <Image
-                        src="/images/tol-cisumdawu.jpg"
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${slide.image}`}
                         width={1000}
                         height={1000}
                         alt=""
@@ -42,22 +43,24 @@ const Layanan: React.FC<PropType> = (props) => {
                   <div className="absolute md:w-1/2 w-full h-[90%] bg-white z-[100] right-0 rounded-lg shadow-md p-10">
                     <div className="flex flex-col w-full h-full">
                       <a
-                        href="#"
-                        className="text-3xl font-semibold pb-7 hover:text-primaryYellow transition-colors duration-500 ease-in-out"
+                        href={slide.link || "#"}
+                        className="line-clamp-2 text-3xl font-semibold hover:text-primaryYellow transition-colors duration-500 ease-in-out"
                       >
-                        Informasi Serta Merta
+                        {slide.title}
                       </a>
-                      <p className="text-justify">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Mollitia blanditiis reiciendis doloribus minus enim.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Non cupiditate exercitationem magni commodi omnis
-                        assumenda dicta possimus fugit, vitae provident, dolore
-                        error consectetur. Illo.
-                      </p>
-                      <Button className="bg-primaryYellow font-semibold text-slate-800 w-fit self-end mt-10">
-                        Read More
-                      </Button>
+                      <div
+                        className="ProseMirror whitespace-pre-line text-sm text-justify line-clamp-[10] mt-5"
+                        style={{ whiteSpace: "pre-line" }}
+                        dangerouslySetInnerHTML={{
+                          __html: slide.description as string,
+                        }}
+                      />
+                      <div className="flex-grow"></div>
+                      <a href={slide.link || "#"} className="self-end mt-10">
+                        <Button className="bg-primaryYellow font-semibold text-slate-800 w-fit">
+                          Read More
+                        </Button>
+                      </a>
                     </div>
                   </div>
                 </div>
