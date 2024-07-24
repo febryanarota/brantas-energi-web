@@ -20,6 +20,17 @@ export interface imageData {
   display: string;
 }
 
+export interface createFileImage {
+  link: string | null;  
+  file: File | null;
+  image: File;
+  title: string;
+  id: number;
+  fileName: string | null;
+  imageName: string | null;
+  imagePreview: string | undefined;
+}
+
 export const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png"];
 export const ALLOWED_FILE_TYPES = [
   "image/jpeg",
