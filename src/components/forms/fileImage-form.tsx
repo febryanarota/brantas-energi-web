@@ -1,0 +1,308 @@
+import { Button } from "@nextui-org/button";
+import { useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import { GripVertical, X } from "lucide-react";
+import {
+  ALLOWED_FILE_TYPES,
+  ALLOWED_MIME_TYPES,
+  createFileImage,
+  MAX_FILE_SIZE,
+} from "@/lib/dataType";
+import FileImageList from "../list/FileImageList";
+import Image from "next/image";
+
+export default function FileImageForm({
+  openChange,
+  page,
+  session,
+}: {
+  openChange?: () => void;
+  page: string;
+  session: any;
+}) {
+  const [items, setItems] = useState<createFileImage[]>([]);
+  const [tempId, setTempId] = useState(0);
+  const [errorAdd, setErrorAdd] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>();
+  
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [link, setLink] = useState<string | null>(null);
+
+  const handleAddCard = () => {
+    if (title === "") {
+      setErrorAdd("Please fill in the title");
+      return;
+    }
+
+    if (!image) {
+      setErrorAdd("Please choose an image");
+      return;
+    }
+
+    if (file === null && link === null) {
+      setErrorAdd("Please insert a file or link");
+      return;
+    }
+
+    if (file && link) {
+      setErrorAdd("Please fill only one field between file or link as attachment");
+      return;
+    }
+
+    const newFileImage: createFileImage = {
+      id: tempId,
+      title: title,
+      image: image,
+      link: link,
+      file: file,
+      fileName: fileName,
+      imageName: imageName,
+      imagePreview: imagePreview,
+    };
+
+    setItems([
+      ...items,
+      newFileImage,
+    ]); 
+    setTempId(tempId + 1);
+    clearForm();
+  };
+
+  const handleDragEnd = async (result: any) => {
+    if (!result.destination) return;
+
+    const newItems = Array.from(items);
+    const [reorderedItem] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, reorderedItem);
+
+    setItems(newItems);
+  };
+
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate MIME type
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        setErrorAdd("Invalid file type");
+        setFileName(null);
+        setFile(null);
+        return;
+      }
+
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        setErrorAdd("File size exceeds the maximum limit of 5MB.");
+        setFileName(null);
+        setFile(null);
+        return;
+      }
+
+      setFile(file);
+      setErrorAdd("");
+      setFileName(file.name);
+    } else {
+      setFileName(null);
+    }
+  };
+
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate MIME type
+      if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+        setErrorAdd("Invalid file type. Only JPEG, JPG, and PNG are allowed.");
+        setImageName(null);
+        setImage(null);
+        setImagePreview(undefined);
+        return;
+      }
+
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        setErrorAdd("File size exceeds the maximum limit of 5MB.");
+        setImageName(null);
+        setImage(null);
+        setImagePreview(undefined);
+        return;
+      }
+
+      setImage(file);
+      setErrorAdd("");
+      setImageName(file.name);
+      const imageURL = URL.createObjectURL(file);
+      setImagePreview(imageURL);
+    } else {
+      setImageName(null);
+    }
+  };
+
+  const clearForm = () => {
+    setTitle("");
+    setFile(null);
+    setImage(null);
+    setLink(null);
+    setFileName(null);
+    setImageName(null);
+    setImagePreview(undefined);
+  }
+
+  return (
+    <div className="w-full">
+      <div className="max-w-3xl w-full grid mb-10 px-5">
+        {/* form */}
+        <div className="border-2 bordet-slate-200 rounded-md p-2">
+          <div>
+            <div className="flex flex-col w-full gap-5">
+              <div className="flex flex-col justify-center w-full">
+                <label htmlFor="display" className="label">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="required"
+                  name="title"
+                  className="field"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="image" className="label">
+                  Image
+                </label>
+                <div className="field w-full flex flex-row items-center">
+                  <span className="grow">{imageName ? imageName : "No image chosen"}</span>
+                  <input
+                    type="file"
+                    id="image"
+                    className="absolute opacity-0 cursor-pointer"
+                    onChange={handleImageChange}
+                  />
+                  {image === null ? (
+                    <label
+                      htmlFor="image"
+                      className="hover:bg-sky-900 hover:cursor-pointer hover:text-white border-1 border-slate-400 px-3 text-sm rounded-lg items-center justify-center py-2  transition-all duration-300 ease-in-out"
+                    >
+                      choose an image
+                    </label>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setImage(null);
+                        setImageName(null);
+                        setImagePreview(undefined);
+                      }}
+                    >
+                      <X />
+                    </button>
+                  )}
+                </div>
+                {imagePreview && (
+                  <Image
+                    src={imagePreview}
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="rounded-md mt-2"
+                  />
+                )}
+              </div>
+              <div>
+                <label htmlFor="file" className="label">
+                  File
+                </label>
+                <div className="field w-full flex flex-row items-center">
+                  <span className="grow">{fileName ? fileName : "No file chosen"}</span>
+                  <input
+                    type="file"
+                    id="file"
+                    className="absolute opacity-0 cursor-pointer"
+                    onChange={handleFileChange}
+                  />
+                  {file === null ? (
+                    <label
+                      htmlFor="file"
+                      className="hover:bg-sky-900 hover:cursor-pointer hover:text-white border-1 border-slate-400 px-3 text-sm rounded-lg items-center justify-center py-2  transition-all duration-300 ease-in-out"
+                    >
+                      choose a file
+                    </label>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setFile(null);
+                        setFileName(null);
+                      }}
+                    >
+                      <X />
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col justify-center w-full">
+                <label htmlFor="display" className="label">
+                  Link
+                </label>
+                <input
+                  type="text"
+                  placeholder="Attachment link"
+                  name="link"
+                  className="field"
+                  value={link ? link : ""}
+                  onChange={(e) => setLink(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          {errorAdd ? <p className="text-slate-500 text-sm mt-4">{errorAdd}</p> : null}
+          <Button onClick={handleAddCard} className="submit-btn">
+            <p>Add</p>
+          </Button>
+        </div>
+        <div className="w-full bg-slate-100 mt-5 px-2 pr-5 py-5 pb-10 rounded-md">
+        
+
+        {
+          items.length > 0 ?
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {items.map((item, index) => (
+                    <Draggable
+                      key={index}
+                      draggableId={index.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="my-5 rounded-md flex flex-row w-full"
+                        >
+                          <GripVertical className="mt-5 text-slate-500" />
+                          <FileImageList data={item} setItems={setItems} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+        </DragDropContext> : <div className="text-center text-gray-700">Empty content<br /><span className="text-gray-500 text-sm">insert an image file content</span></div>
+        }
+
+        </div>
+
+        <div className="w-full flex flex-row justify-end">
+          <Button className="submit-btn">Save</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
