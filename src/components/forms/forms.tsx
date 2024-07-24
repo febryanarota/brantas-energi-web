@@ -15,6 +15,7 @@ import { Heading2Form } from "./heading2-form";
 import { ImageForm } from "./image-form";
 import { FileForm } from "./file-form";
 import { FaqForm } from "./faq-form";
+import FileImageForm from "./fileImage-form";
 
 export default function FormTrigger({
   page,
@@ -67,6 +68,15 @@ export default function FormTrigger({
           <FaqForm openChange={onOpenChange} page={page} session={session} />,
         );
         break;
+      case "fileImage":
+        setFormBody(
+          <FileImageForm
+            openChange={onOpenChange}
+            page={page}
+            session={session}
+          />,
+        );
+        break;
       default:
         setFormBody(
           <TextForm openChange={onOpenChange} page={page} session={session} />,
@@ -105,6 +115,7 @@ export default function FormTrigger({
                   <option value="image">Image</option>
                   <option value="file">File or Link</option>
                   <option value="faq">QnA</option>
+                  <option value="fileImage">File Image</option>
                 </select>
               </div>
               {formBody}
