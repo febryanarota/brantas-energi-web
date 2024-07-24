@@ -10,6 +10,7 @@ import {
 } from "@/lib/dataType";
 import FileImageList from "../list/FileImageList";
 import Image from "next/image";
+import { blockType } from "@prisma/client";
 
 export default function FileImageForm({
   openChange,
@@ -23,6 +24,7 @@ export default function FileImageForm({
   const [items, setItems] = useState<createFileImage[]>([]);
   const [tempId, setTempId] = useState(0);
   const [errorAdd, setErrorAdd] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string>();
   
   const [fileName, setFileName] = useState<string | null>(null);
@@ -31,6 +33,8 @@ export default function FileImageForm({
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState<string>("");
   const [link, setLink] = useState<string | null>(null);
+
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleAddCard = () => {
     if (title === "") {
@@ -139,6 +143,84 @@ export default function FileImageForm({
       setImageName(null);
     }
   };
+
+  const handleSubmit = async () => {
+    setError("");
+    setIsSaving(true);
+    if (items.length === 0) {
+      setError("Please add at least one content");
+      setIsSaving(false);
+      return;
+    }
+
+    const formData = new FormData();
+    items.forEach((item, index) => {
+      formData.append(`link[${index}]`, item.link ?? "");
+      formData.append(`file[${index}]`, item.file ?? "");
+      formData.append(`image[${index}]`, item.image);
+      formData.append(`title[${index}]`, item.title);
+    });
+
+    formData.append("length", items.length.toString()); 
+
+    try {
+      const res = await fetch(`/api/file-image`, {
+        method: "POST",
+        body: formData,
+      });     
+
+      if (!res.ok) {
+        const errorResponse = await res.text();
+        console.error("API Response Error:", errorResponse);
+        throw new Error(
+          `Network response was not ok: ${res.status} ${res.statusText}`,
+        );
+      }
+
+      const resultId : number[] = await res.json();
+
+      // POST request to create a new content block
+      let status = "createPending";
+      if (session.role === "admin") {
+        status = "verified";
+      }
+
+      const contentResponse = await fetch("/api/content", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          blockType: "fileImage" as blockType,
+          fileImageId: resultId,
+          position: resultId[0],
+          page: page,
+          status: status,
+        }),
+      });
+
+      const contentResult = await contentResponse.json();
+
+      await fetch(`/api/page/${page}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `session=${session}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          positions: [contentResult.id],
+        }),
+      });
+
+      setIsSaving(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Failed to save the content");
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   const clearForm = () => {
     setTitle("");
@@ -299,8 +381,11 @@ export default function FileImageForm({
 
         </div>
 
-        <div className="w-full flex flex-row justify-end">
-          <Button className="submit-btn">Save</Button>
+        <div className="w-full flex flex-col justify-end">
+          <Button className="submit-btn" onClick={handleSubmit}>{isSaving ? "Saving..." : "Save"}</Button>
+          {
+            error ? <p className="text-slate-500 text-sm mt-4 text-center">{error}</p> : null
+          }
         </div>
       </div>
     </div>

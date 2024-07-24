@@ -18,7 +18,7 @@ model account {
 model contentBlock {
   id                           Int       @id @default(autoincrement())
   page                         String    @db.VarChar
-  position                     Int       @db.SmallInt
+  position                     Int?      @db.SmallInt
   blockType                    blockType @default(text)
   faqId                        Int?      @unique
   created_at                   DateTime  @default(now()) @db.Timestamptz(6)
