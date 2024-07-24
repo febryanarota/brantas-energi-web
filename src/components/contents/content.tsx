@@ -24,6 +24,7 @@ import { delay } from "@/lib/utils";
 import { ImageContent } from "./image-content";
 import { FileContent } from "./file-content";
 import { FaqContent } from "./faq-content";
+import { FileImageContent } from "./file-image-content";
 
 async function fetchData(url: string) {
   const startTime = Date.now();
@@ -101,7 +102,7 @@ export default function Content({
       try {
         const data = await getData(block);
 
-        if (!data) {
+        if (!data && type !== "fileImage") {
           throw new Error("Failed to fetch data");
         }
 
@@ -140,6 +141,11 @@ export default function Content({
               <FileContent content={data as file} editId={block.editId} />,
             );
             break;
+          case "fileImage":
+            setRenderContent(
+              <FileImageContent block={block} editId={block.editId} />,
+            );
+            break;
           default:
             // make sure to use break on every case
             setRenderContent(<div>Content</div>);
@@ -164,7 +170,7 @@ export default function Content({
                 </div>
                 <div>
                   <CancelButton
-                    id={data.id}
+                    id={data?.id as number}
                     setStatus={setStatus}
                     type={type}
                     session={session}
@@ -181,7 +187,7 @@ export default function Content({
                 <div>
                   {role === "admin" ? (
                     <ConfirmEditButton
-                      id={data.id}
+                      id={data?.id as number}
                       setStatus={setStatus}
                       session={session}
                       block={block}
@@ -190,7 +196,7 @@ export default function Content({
                 </div>
                 <div>
                   <CancelEditButton
-                    id={data.id}
+                    id={data?.id as number}
                     setStatus={setStatus}
                     session={session}
                     block={block}
@@ -206,7 +212,7 @@ export default function Content({
                 <div>
                   {role === "admin" ? (
                     <DeleteButton
-                      id={data.id}
+                      id={data?.id as number}
                       setStatus={setStatus}
                       type={type}
                       session={session}
@@ -216,7 +222,7 @@ export default function Content({
                 </div>
                 <div>
                   <CancelDeleteButton
-                    id={data.id}
+                    id={data?.id as number}
                     setStatus={setStatus}
                     type={type}
                     session={session}
@@ -232,7 +238,7 @@ export default function Content({
               <div className="flex flex-row">
                 <div>
                   <EditButton
-                    id={data.id}
+                    id={data?.id as number}
                     setStatus={setStatus}
                     type={type}
                     session={session}
@@ -241,7 +247,7 @@ export default function Content({
                 </div>
                 <div>
                   <DeleteButton
-                    id={data.id}
+                    id={data?.id as number}
                     setStatus={setStatus}
                     type={type}
                     session={session}
