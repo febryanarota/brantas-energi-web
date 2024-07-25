@@ -1,47 +1,19 @@
-import { contentBlock, file, fileImage } from "@prisma/client";
+import { fileImage, fileImageBuffer } from "@prisma/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export const FileImageContent = ({
-  block,
+  content,
   editId,
 }: {
-  block: contentBlock;
+  content: fileImageBuffer;
   editId: number | null;
 }) => {
-  //   const [editData, setEditData] = useState<file>();
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await fetch(`/api/file/${editId}`, {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         });
-
-  //         if (!response.ok) {
-  //           throw new Error("Failed to fetch data");
-  //         }
-
-  //         const data = await response.json();
-  //         setEditData(data as file);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //         // TO DO: Handle error appropriately (e.g. show error message)
-  //       }
-  //     };
-
-  //     if (editId !== null) {
-  //       fetchData();
-  //     }
-  //   }, [editId]);
 
   const [fileData, setFileData] = useState<fileImage[]>([]);
 
   useEffect(() => {
-    const fileImageId = block.fileImageId;
+    const fileImageId = content.fileImageIds;
     for (let i = 0; i < fileImageId.length; i++) {
       const fetchData = async () => {
         try {
