@@ -31,9 +31,9 @@ export default async function publicLayout({
   const data: { verified: home; pending: home } = await response.json();
   return (
     <>
-      <NavigationBar data={data.verified}/>
+      <NavigationBar data={data.verified} />
       <div>{children}</div>
-      <Footer data={data.verified}/>
+      <Footer data={data.verified} />
     </>
   );
 }

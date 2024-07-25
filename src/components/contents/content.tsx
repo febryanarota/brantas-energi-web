@@ -112,7 +112,9 @@ export default function Content({
 
         switch (type) {
           case "faq":
-            setRenderContent(<FaqContent content={data as faq} editId={block.editId}/>);
+            setRenderContent(
+              <FaqContent content={data as faq} editId={block.editId} />,
+            );
             break;
           case "text":
             setRenderContent(
@@ -147,14 +149,16 @@ export default function Content({
             break;
           case "fileImage":
             setRenderContent(
-              <FileImageContent content={data as fileImageBuffer} editId={block.editId} />,
+              <FileImageContent
+                content={data as fileImageBuffer}
+                editId={block.editId}
+              />,
             );
             break;
           default:
             // make sure to use break on every case
             setRenderContent(<div>Content</div>);
         }
-
 
         switch (status) {
           case "createPending":

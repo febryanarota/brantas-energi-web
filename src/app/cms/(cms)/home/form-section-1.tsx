@@ -214,8 +214,7 @@ export default function FormSection1({
     } finally {
       setIsRejecting(false);
     }
-
-  }
+  };
 
   return (
     <div className="flex flex-col p-5 bg-white rounded-md shadow-sm">
@@ -265,9 +264,13 @@ export default function FormSection1({
                 className="px-[1rem] py-[0.5rem] border-1 border-primaryBlue bg-transparent rounded-[0.5rem]"
                 onClick={handleReject}
               >
-                {isRejecting ? "Processing.." : role === "admin" ? "Reject" : "Cancel"}
+                {isRejecting
+                  ? "Processing.."
+                  : role === "admin"
+                    ? "Reject"
+                    : "Cancel"}
               </Button>
-              { role === "admin" &&
+              {role === "admin" && (
                 <Button
                   disabled={isSaving || isAccepting || isRejecting}
                   className="submit-btn"
@@ -275,8 +278,7 @@ export default function FormSection1({
                 >
                   {isAccepting ? "Accepting.." : "Accept"}
                 </Button>
-              }
-
+              )}
             </div>
           </div>
         </div>

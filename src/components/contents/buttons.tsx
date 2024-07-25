@@ -228,8 +228,12 @@ export const EditButton = ({
         />
       </button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-        <ModalContent >
-          {(onClose) => <ModalBody className="max-h-[80vh] overflow-auto">{modal}</ModalBody>}
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody className="max-h-[80vh] overflow-auto">
+              {modal}
+            </ModalBody>
+          )}
         </ModalContent>
       </Modal>
     </>

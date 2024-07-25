@@ -13,7 +13,7 @@ import { Container } from "../ui/container";
 import { home } from "@prisma/client";
 import { useEffect, useState } from "react";
 
-export default function Footer({data} : {data : home}) {
+export default function Footer({ data }: { data: home }) {
   // const [data, setData] = useState<home | null>(null);
   // const [error, setError] = useState<string | null>(null);
 

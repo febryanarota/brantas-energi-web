@@ -26,7 +26,7 @@ export default function FileImageForm({
   const [errorAdd, setErrorAdd] = useState<string | null>(null);
   const [error, setError] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string>();
-  
+
   const [fileName, setFileName] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -53,7 +53,9 @@ export default function FileImageForm({
     }
 
     if (file && link) {
-      setErrorAdd("Please fill only one field between file or link as attachment");
+      setErrorAdd(
+        "Please fill only one field between file or link as attachment",
+      );
       return;
     }
 
@@ -68,10 +70,7 @@ export default function FileImageForm({
       imagePreview: imagePreview,
     };
 
-    setItems([
-      ...items,
-      newFileImage,
-    ]); 
+    setItems([...items, newFileImage]);
     setTempId(tempId + 1);
     clearForm();
   };
@@ -159,16 +158,19 @@ export default function FileImageForm({
       formData.append(`file[${index}]`, item.file ?? "");
       formData.append(`image[${index}]`, item.image ?? "");
       formData.append(`title[${index}]`, item.title);
-      formData.append(`isFile[${index}]`, item.file !== null  ? "true" : "false");
+      formData.append(
+        `isFile[${index}]`,
+        item.file !== null ? "true" : "false",
+      );
     });
 
-    formData.append("length", items.length.toString()); 
+    formData.append("length", items.length.toString());
 
     try {
       const res = await fetch(`/api/file-image`, {
         method: "POST",
         body: formData,
-      });     
+      });
 
       if (!res.ok) {
         const errorResponse = await res.text();
@@ -221,7 +223,7 @@ export default function FileImageForm({
     } finally {
       setIsSaving(false);
     }
-  }
+  };
 
   const clearForm = () => {
     setTitle("");
@@ -231,7 +233,7 @@ export default function FileImageForm({
     setFileName(null);
     setImageName(null);
     setImagePreview(undefined);
-  }
+  };
 
   return (
     <div className="w-full">
@@ -258,7 +260,9 @@ export default function FileImageForm({
                   Image
                 </label>
                 <div className="field w-full flex flex-row items-center">
-                  <span className="grow">{imageName ? imageName : "No image chosen"}</span>
+                  <span className="grow">
+                    {imageName ? imageName : "No image chosen"}
+                  </span>
                   <input
                     type="file"
                     id="image"
@@ -299,7 +303,9 @@ export default function FileImageForm({
                   File
                 </label>
                 <div className="field w-full flex flex-row items-center">
-                  <span className="grow">{fileName ? fileName : "No file chosen"}</span>
+                  <span className="grow">
+                    {fileName ? fileName : "No file chosen"}
+                  </span>
                   <input
                     type="file"
                     id="file"
@@ -340,53 +346,61 @@ export default function FileImageForm({
               </div>
             </div>
           </div>
-          {errorAdd ? <p className="text-slate-500 text-sm mt-4">{errorAdd}</p> : null}
+          {errorAdd ? (
+            <p className="text-slate-500 text-sm mt-4">{errorAdd}</p>
+          ) : null}
           <Button onClick={handleAddCard} className="submit-btn">
             <p>Add</p>
           </Button>
         </div>
         <div className="w-full bg-slate-100 mt-5 px-2 pr-5 py-5 pb-10 rounded-md">
-        
-
-        {
-          items.length > 0 ?
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="droppable">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {items.map((item, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={index.toString()}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="my-5 rounded-md flex flex-row w-full"
-                        >
-                          <GripVertical className="mt-5 text-slate-500" />
-                          <FileImageList data={item} setItems={setItems} />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-        </DragDropContext> : <div className="text-center text-gray-700">Empty content<br /><span className="text-gray-500 text-sm">insert an image file content</span></div>
-        }
-
+          {items.length > 0 ? (
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {items.map((item, index) => (
+                      <Draggable
+                        key={index}
+                        draggableId={index.toString()}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="my-5 rounded-md flex flex-row w-full"
+                          >
+                            <GripVertical className="mt-5 text-slate-500" />
+                            <FileImageList data={item} setItems={setItems} />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          ) : (
+            <div className="text-center text-gray-700">
+              Empty content
+              <br />
+              <span className="text-gray-500 text-sm">
+                insert an image file content
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="w-full flex flex-col justify-end">
-          <Button className="submit-btn" onClick={handleSubmit}>{isSaving ? "Saving..." : "Save"}</Button>
-          {
-            error ? <p className="text-slate-500 text-sm mt-4 text-center">{error}</p> : null
-          }
+          <Button className="submit-btn" onClick={handleSubmit}>
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
+          {error ? (
+            <p className="text-slate-500 text-sm mt-4 text-center">{error}</p>
+          ) : null}
         </div>
       </div>
     </div>

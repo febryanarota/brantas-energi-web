@@ -97,14 +97,14 @@ export const FaqForm = ({
         }),
       });
 
-      setIsLoading(false); 
-      window.location.reload(); 
+      setIsLoading(false);
+      window.location.reload();
       if (openChange) {
-        openChange(); 
+        openChange();
       }
     } catch (error) {
       console.error(error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 

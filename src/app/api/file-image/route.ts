@@ -110,20 +110,19 @@ export async function PUT(req: NextRequest) {
   for (let i = 0; i < length; i++) {
     newIds.push(parseInt(body.get(`id[${i}]`) as string));
   }
-  console.log("new ids", newIds);
 
   // get the old array of fileImageIds
   const contentBlock = await prisma.contentBlock.findFirst({
     where: {
       id: parseInt(body.get("blockId") as string),
     },
-  })
+  });
 
-  const bufferId = contentBlock?.fileImageId
+  const bufferId = contentBlock?.fileImageId;
   const oldBuffer = await prisma.fileImageBuffer.findFirst({
     where: {
       id: bufferId as number,
-    }
+    },
   });
   const oldIds = oldBuffer?.fileImageIds;
 
@@ -133,7 +132,6 @@ export async function PUT(req: NextRequest) {
   if (role === "admin") {
     // delete = old - new
     const deleteIds = oldIds?.filter((id) => !newIds.includes(id));
-    console.log("deleting ids", deleteIds);
     if (deleteIds) {
       for (const id of deleteIds) {
         // get the fileImage
@@ -143,12 +141,11 @@ export async function PUT(req: NextRequest) {
           },
         });
 
-        console.log(fileImage);
-
         if (fileImage?.link) {
           // if isFile
           if (fileImage.isFile) {
-            const deleteFile = "public/file-image/" + fileImage.link.split("/").pop();
+            const deleteFile =
+              "public/file-image/" + fileImage.link.split("/").pop();
             await storage.file.delete(deleteFile).catch((error) => {
               console.error("Error deleting file:", error);
               throw new Error("Error deleting file");
@@ -157,7 +154,8 @@ export async function PUT(req: NextRequest) {
         }
 
         // delete image
-        const deleteImage = "public/file-image/" + fileImage?.image.split("/").pop();
+        const deleteImage =
+          "public/file-image/" + fileImage?.image.split("/").pop();
 
         await storage.image.delete(deleteImage).catch((error) => {
           console.error("Error deleting image:", error);
@@ -169,14 +167,11 @@ export async function PUT(req: NextRequest) {
             id: id,
           },
         });
-      };
+      }
     }
-  
 
     // add = new - old
     const addIds = newIds.filter((id) => !oldIds?.includes(id));
-    console.log("adding id", addIds)
-    console.log("old ids", oldIds)
 
     for (const id of addIds) {
       const isFile = body.get(`isFile[${id}]`) === "true";
@@ -194,7 +189,7 @@ export async function PUT(req: NextRequest) {
 
       const image = body.get(`image[${id}]`) as File;
       const imageExtension = image.name.split(".").pop();
-      
+
       const title = body.get(`title[${id}]`) as string;
 
       const uuid = shortUUID.generate();
@@ -254,8 +249,7 @@ export async function PUT(req: NextRequest) {
 
       // Replace the temporary id with the newly created id
       newIds = newIds.map((nid) => (nid === id ? response.id : nid));
-      console.log("updated newIds", newIds)
-    };
+    }
 
     // update new array in fileImafeBuffer
     const result = await prisma.fileImageBuffer.update({

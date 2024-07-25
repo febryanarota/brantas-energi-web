@@ -89,7 +89,6 @@ const CardForm = ({
     setError("");
     setIsSaving(true);
 
-
     if (!heading3 || !subHeading3) {
       setError("Please fill in all fields");
       setIsSaving(false);
@@ -103,7 +102,7 @@ const CardForm = ({
     const response = await fetch("/api/home/section3", {
       method: "PATCH",
       body: formData,
-    })
+    });
 
     setIsSaving(false);
     if (response) {
@@ -170,10 +169,7 @@ const CardForm = ({
         >
           {isSaving ? "Saving..." : "Save"}
         </Button>
-        {
-          error && 
-          <p className="self-end mr-2 mt-2 text-gray-500">{error}</p>
-        }
+        {error && <p className="self-end mr-2 mt-2 text-gray-500">{error}</p>}
       </div>
     </form>
   );
@@ -248,7 +244,7 @@ const RequestPending = ({
       console.error("Error:", error);
       setIsRejecting(false); // Set loading state to false
     }
-  }
+  };
 
   return (
     <div className="space-y-4 border-2 p-2 rounded-md flex flex-col">

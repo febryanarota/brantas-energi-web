@@ -21,7 +21,9 @@ export default function FormSection2({
     verified.description2 || "",
   );
   const [heading2, setHeading2] = useState<string>(verified.heading2 || "");
-  const [subHeading2, setSubHeading2] = useState<string>(verified.subheading2 || "");
+  const [subHeading2, setSubHeading2] = useState<string>(
+    verified.subheading2 || "",
+  );
   const [image, setImage] = useState<imageData>();
 
   const [descriptionPending, setDescriptionPending] = useState<string>(

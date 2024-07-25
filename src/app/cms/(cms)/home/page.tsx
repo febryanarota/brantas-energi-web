@@ -12,37 +12,40 @@ async function getData() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home`, {
     method: "GET",
   });
-  
+
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
-  
+
   const data: { verified: home; pending: home } = await response.json();
   return data;
 }
 
-async function getCardData(
-  {verifiedCardId, pendingCardId} : {verifiedCardId: number[], pendingCardId: number[]}
-) {
+async function getCardData({
+  verifiedCardId,
+  pendingCardId,
+}: {
+  verifiedCardId: number[];
+  pendingCardId: number[];
+}) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card`, {
     method: "GET",
   });
-  
+
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
-  
-  const data : card[] = await response.json();
+
+  const data: card[] = await response.json();
 
   // Filter out the cards that are not in the verifiedCardId and pendingCardId
   const verified = data.filter((card) => verifiedCardId.includes(card.id));
   const pending = data.filter((card) => pendingCardId.includes(card.id));
-  
-  return {verified, pending}; 
+
+  return { verified, pending };
 }
 
 export default async function Page() {
-
   const session = await getSession();
   const role = session?.role;
 
@@ -62,14 +65,31 @@ export default async function Page() {
 
         <div className="flex flex-col mb-5 rounded-md">
           <div className="flex flex-col gap-5 ">
-            
-            <FormSection1 verified={data.verified} pending={data.pending} role={role}/>
-            
-            <FormSection2 verified={data.verified} pending={data.pending} role={role}/>
+            <FormSection1
+              verified={data.verified}
+              pending={data.pending}
+              role={role}
+            />
 
-            <FormSection3 verified={data.verified} pending={data.pending} role={role} verifiedCards={card.verified} pendingCards={card.pending}/>
-            
-            <FormSection4 verified={data.verified} pending={data.pending} role={role}/>
+            <FormSection2
+              verified={data.verified}
+              pending={data.pending}
+              role={role}
+            />
+
+            <FormSection3
+              verified={data.verified}
+              pending={data.pending}
+              role={role}
+              verifiedCards={card.verified}
+              pendingCards={card.pending}
+            />
+
+            <FormSection4
+              verified={data.verified}
+              pending={data.pending}
+              role={role}
+            />
           </div>
         </div>
       </CMSContainer>

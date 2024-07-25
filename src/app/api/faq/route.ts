@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
   const question = body.get("question") as string;
   const answer = body.get("answer") as string;
 
-
   try {
     const result = await prisma.faq.create({
       data: {
@@ -48,4 +47,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

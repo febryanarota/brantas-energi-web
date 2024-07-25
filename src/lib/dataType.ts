@@ -21,7 +21,7 @@ export interface imageData {
 }
 
 export interface createFileImage {
-  link: string | null;  
+  link: string | null;
   file: File | null;
   image: File | null;
   title: string;

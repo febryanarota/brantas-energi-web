@@ -174,15 +174,15 @@ export async function DELETE(req: NextRequest) {
   });
 
   const update = await prisma.home.updateMany({
-    where:{
+    where: {
       status: "updatePending",
     },
     data: {
       heading2: verified?.heading2,
       description2: verified?.description2,
       image2: verified?.image2,
-    }
-  })
+    },
+  });
 
   if (!update) {
     return NextResponse.json(

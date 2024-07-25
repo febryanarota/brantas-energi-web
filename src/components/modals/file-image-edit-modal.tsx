@@ -71,16 +71,19 @@ export const FileImageEditModal = ({
         }
 
         const block: contentBlock = await responseContentBlock.json();
-        
-        const responseBuffer = await fetch(`/api/file-image-buffer/${block.fileImageId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Cookie: `session=${session}`,
-          },
-        });
 
-        const buffer : fileImageBuffer = await responseBuffer.json();
+        const responseBuffer = await fetch(
+          `/api/file-image-buffer/${block.fileImageId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Cookie: `session=${session}`,
+            },
+          },
+        );
+
+        const buffer: fileImageBuffer = await responseBuffer.json();
         const fileImageId = buffer.fileImageIds;
 
         // loop through the file image ids and get the file image data
@@ -259,7 +262,6 @@ export const FileImageEditModal = ({
 
     formData.append("length", items.length.toString());
     formData.append("blockId", blockId.toString());
-
 
     try {
       const res = await fetch(`/api/file-image`, {

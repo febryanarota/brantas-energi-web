@@ -20,7 +20,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { home } from "@prisma/client";
 
-export default function NavigationBar({data} : {data : home}) {
+export default function NavigationBar({ data }: { data: home }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = React.useState(false);
   const [isInformasiPublikOpen, setIsInformasiPublikOpen] =

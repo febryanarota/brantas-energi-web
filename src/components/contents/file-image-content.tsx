@@ -9,7 +9,6 @@ export const FileImageContent = ({
   content: fileImageBuffer;
   editId: number | null;
 }) => {
-
   const [fileData, setFileData] = useState<fileImage[]>([]);
 
   useEffect(() => {

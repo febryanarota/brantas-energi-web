@@ -23,9 +23,6 @@ async function getData(page: string) {
     const resPosition: page = await getPosition(page);
     const position = resPosition.positions;
 
-    console.log(result);
-    console.log(position);
-
     result.sort((a, b) => {
       return position.indexOf(a.id) - position.indexOf(b.id);
     });

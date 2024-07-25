@@ -29,5 +29,5 @@ export function isArraysEq(arr1: number[], arr2: number[]): boolean {
 }
 
 export function subtractArrays(arr1: number[], arr2: number[]): number[] {
-  return arr1.filter(item => !arr2.includes(item));
+  return arr1.filter((item) => !arr2.includes(item));
 }

@@ -37,7 +37,8 @@ export async function PUT(req: NextRequest) {
         },
       });
 
-      let path = "public/card/" + (deleteCard?.image as string).split("/").pop();
+      let path =
+        "public/card/" + (deleteCard?.image as string).split("/").pop();
       storage.image.delete(path).catch((error) => {
         console.error("Error deleting image:", error);
         throw new Error("Error deleting image");

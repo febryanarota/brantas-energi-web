@@ -227,7 +227,6 @@ export default function FormSection4({
   const handleAccept = async () => {
     setIsAccepting(true);
 
-  
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL}/api/home/section4/accept`,
@@ -288,7 +287,9 @@ export default function FormSection4({
             <p className="text-xs font-medium text-gray-500">Content Request</p>
             <div className="flex flex-col gap-2 mt-4">
               <div className="flex flex-col">
-                <p className="font-semibold text-slate-500 text-sm">Company Name</p>
+                <p className="font-semibold text-slate-500 text-sm">
+                  Company Name
+                </p>
                 <p>{namePending}</p>
               </div>
               <div className="flex flex-col">
@@ -308,7 +309,9 @@ export default function FormSection4({
                 <p>{youtubePending || "-"}</p>
               </div>
               <div className="flex flex-col">
-                <p className="font-semibold text-slate-500 text-sm">Instagram</p>
+                <p className="font-semibold text-slate-500 text-sm">
+                  Instagram
+                </p>
                 <p>{instagramPending || "-"}</p>
               </div>
               <div className="flex flex-col">
@@ -323,7 +326,7 @@ export default function FormSection4({
                 <p className="font-semibold text-slate-500 text-sm">Linkedin</p>
                 <p>{linkedinPending || "-"}</p>
               </div>
-              
+
               <div className="flex flex-col">
                 <p className="font-semibold text-slate-500 text-sm">Image</p>
                 {imagePending?.display && (

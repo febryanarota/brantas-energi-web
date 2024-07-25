@@ -5,7 +5,6 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string } },
 ) {
-
   try {
     const id = parseInt(context.params.id, 10);
 
@@ -29,14 +28,11 @@ export async function PUT(
   req: NextRequest,
   context: { params: { id: string } },
 ) {
-
   const sessionExists = req.cookies.get("session");
-
 
   const body = await req.formData();
   const question = body.get("question") as string;
   const answer = body.get("answer") as string;
-
 
   if (!sessionExists) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -63,7 +59,6 @@ export async function PUT(
     );
   }
 }
-
 
 export async function DELETE(
   req: NextRequest,

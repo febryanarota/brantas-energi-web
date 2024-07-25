@@ -31,13 +31,10 @@ export default function CreateCardModal({ onClose }: { onClose: () => void }) {
     formData.append("image", image?.image as File);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/card`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/card`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -48,7 +45,6 @@ export default function CreateCardModal({ onClose }: { onClose: () => void }) {
         window.location.reload();
         onClose();
       }
-
     } catch (error) {
       console.error("Error submitting new card: ", error);
     }

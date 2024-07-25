@@ -18,12 +18,11 @@ export async function GET(req: NextRequest) {
     const response = NextResponse.json({ verified, pending });
     response.headers.set("Cache-Control", "no-store");
     return response;
-
   } catch (error) {
     console.error("Error fetching data:", error);
     const response = NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
     response.headers.set("Content-Type", "application/json");
     return response;
