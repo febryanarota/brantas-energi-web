@@ -108,8 +108,9 @@ export async function PUT(req: NextRequest) {
   const length = parseInt(body.get("length") as string);
   let newIds: number[] = [];
   for (let i = 0; i < length; i++) {
-    newIds.push(parseInt(body.get(`id[${i}]`) as string));
+    newIds.push(parseInt(body.get(`order[${i}]`) as string));
   }
+  console.log("\n\nnew ids", newIds)
 
   // get the old array of fileImageIds
   const contentBlock = await prisma.contentBlock.findFirst({
@@ -125,6 +126,7 @@ export async function PUT(req: NextRequest) {
     },
   });
   const oldIds = oldBuffer?.fileImageIds;
+  console.log("\n\nold ids", oldIds)
 
   // conditional if admin or user
 
@@ -132,6 +134,7 @@ export async function PUT(req: NextRequest) {
   if (role === "admin") {
     // delete = old - new
     const deleteIds = oldIds?.filter((id) => !newIds.includes(id));
+    console.log("\n\ndelete ids", deleteIds)
     if (deleteIds) {
       for (const id of deleteIds) {
         // get the fileImage
@@ -172,9 +175,12 @@ export async function PUT(req: NextRequest) {
 
     // add = new - old
     const addIds = newIds.filter((id) => !oldIds?.includes(id));
-
+    console.log("\n\nadd ids", addIds)
     for (const id of addIds) {
-      const isFile = body.get(`isFile[${id}]`) === "true";
+      const isFile = body.get(`isFile[${id}]`) === "true" ? true : false;
+
+      console.log("\n\ncurrent id", id);
+      console.log("\n\nisFile", isFile);
 
       let file = null;
       let fileExtension = null;
@@ -182,12 +188,14 @@ export async function PUT(req: NextRequest) {
 
       if (isFile) {
         file = body.get(`file[${id}]`) as File;
+        console.log("\n\nfile name", file.name)
         fileExtension = file.name.split(".").pop();
       } else {
         link = body.get(`link[${id}]`) as string;
       }
 
       const image = body.get(`image[${id}]`) as File;
+      console.log("\n\nimage name", image.name)
       const imageExtension = image.name.split(".").pop();
 
       const title = body.get(`title[${id}]`) as string;
@@ -260,6 +268,7 @@ export async function PUT(req: NextRequest) {
         fileImageIds: newIds,
       },
     });
+    console.log("\n\nresult ids", newIds);
 
     return NextResponse.json(result);
   }

@@ -71,15 +71,12 @@ export const FileImageEditModal = ({
         }
 
         const block: contentBlock = await responseContentBlock.json();
-
+        console.log(block);
+        console.log(block.fileImageId)
         const responseBuffer = await fetch(
           `/api/file-image-buffer/${block.fileImageId}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Cookie: `session=${session}`,
-            },
           },
         );
 
@@ -251,14 +248,18 @@ export const FileImageEditModal = ({
     }
 
     const formData = new FormData();
+    
     items.forEach((item, index) => {
-      formData.append(`link[${index}]`, item.link ?? "");
-      formData.append(`file[${index}]`, item.file ?? "");
-      formData.append(`image[${index}]`, item.image ?? "");
-      formData.append(`title[${index}]`, item.title);
-      formData.append(`isFile[${index}]`, item.file ? "true" : "false");
-      formData.append(`id[${index}]`, item.id.toString());
+      formData.append(`link[${item.id}]`, item.link ?? "");
+      formData.append(`file[${item.id}]`, item.file ?? "");
+      formData.append(`image[${item.id}]`, item.image ?? "");
+      formData.append(`title[${item.id}]`, item.title);
+      formData.append(`isFile[${item.id}]`, item.file ? "true" : "false");
+      formData.append(`id[${item.id}]`, item.id.toString());
+      formData.append(`order[${index}]`, item.id.toString());
     });
+
+
 
     formData.append("length", items.length.toString());
     formData.append("blockId", blockId.toString());
