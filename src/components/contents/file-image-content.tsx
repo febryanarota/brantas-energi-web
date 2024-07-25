@@ -10,6 +10,8 @@ export const FileImageContent = ({
   editId: number | null;
 }) => {
   const [fileData, setFileData] = useState<fileImage[]>([]);
+  const [fileEdit, setFileEdit] = useState<fileImage[]>([]);
+  const [isEdit, setIsEdit] = useState<boolean>(editId !== null);
 
   useEffect(() => {
     const fileImageId = content.fileImageIds;
@@ -30,6 +32,27 @@ export const FileImageContent = ({
           console.error("Error fetching data:", error);
         }
       };
+      fetchData();
+    }
+
+    if (isEdit) {
+      const fetchData = async () => {
+        const bufferEdit = await fetch(`/api/file-image-buffer/${editId}`, {
+          method: "GET",
+        });
+        const data: fileImageBuffer = await bufferEdit.json();
+        for (let i = 0; i < data.fileImageIds.length; i++) {
+          const response = await fetch(
+            `/api/file-image/${data.fileImageIds[i]}`,
+            {
+              method: "GET",
+            },
+          );
+          const fileImage: fileImage = await response.json();
+          setFileEdit((prev) => [...prev, fileImage]);
+        }
+      };
+
       fetchData();
     }
   }, []);
@@ -59,6 +82,33 @@ export const FileImageContent = ({
           </div>
         );
       })}
+      {editId !== null && fileEdit && (
+        <div className="w-full bg-slate-100 rounded-md p-2 pb-5 mt-3">
+          <p className="text-xs font-medium text-gray-500 mb-3">New Content</p>
+          {fileEdit.map((fileImage) => {
+            return (
+              <div
+                key={fileImage.id}
+                className="flex flex-row border border-gray-300 p-2 rounded-md mb-2"
+              >
+                <div className="w-[3rem] h-[3rem] rounded-md overflow-hidden">
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${fileImage.image}`}
+                    alt={fileImage.title}
+                    width={100}
+                    height={100}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="ml-2 font-medium">{fileImage.title}</p>
+                  <p className="ml-2 text-gray-400">{fileImage.link}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
