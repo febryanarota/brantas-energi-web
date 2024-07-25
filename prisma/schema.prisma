@@ -181,5 +181,5 @@ enum blockType {
   heading2
   image
   file
-  fileImage
+  fileImageBuffer
 }

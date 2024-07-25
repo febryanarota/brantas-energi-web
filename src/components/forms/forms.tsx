@@ -68,7 +68,7 @@ export default function FormTrigger({
           <FaqForm openChange={onOpenChange} page={page} session={session} />,
         );
         break;
-      case "fileImage":
+      case "fileImageBuffer":
         setFormBody(
           <FileImageForm
             openChange={onOpenChange}
@@ -115,7 +115,7 @@ export default function FormTrigger({
                   <option value="image">Image</option>
                   <option value="file">File or Link</option>
                   <option value="faq">QnA</option>
-                  <option value="fileImage">File Image</option>
+                  <option value="fileImageBuffer">File Image</option>
                 </select>
               </div>
               {formBody}

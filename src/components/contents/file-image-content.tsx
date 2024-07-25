@@ -37,7 +37,7 @@ export const FileImageContent = ({
 
     if (isEdit) {
       const fetchData = async () => {
-        const bufferEdit = await fetch(`/api/file-image-buffer/${editId}`, {
+        const bufferEdit = await fetch(`/api/fileImageBuffer/${editId}`, {
           method: "GET",
         });
         const data: fileImageBuffer = await bufferEdit.json();

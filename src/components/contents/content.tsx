@@ -77,8 +77,8 @@ async function getData(content: contentBlock) {
     case "file":
       result = await fetchData(`/api/file/${content.fileId}`);
       return result as file;
-    case "fileImage":
-      result = await fetchData(`/api/file-image-buffer/${content.fileImageId}`);
+    case "fileImageBuffer":
+      result = await fetchData(`/api/fileImageBuffer/${content.fileImageId}`);
       return result as fileImageBuffer;
   }
 }
@@ -147,7 +147,7 @@ export default function Content({
               <FileContent content={data as file} editId={block.editId} />,
             );
             break;
-          case "fileImage":
+          case "fileImageBuffer":
             setRenderContent(
               <FileImageContent
                 content={data as fileImageBuffer}

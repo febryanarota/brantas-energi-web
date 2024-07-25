@@ -72,6 +72,9 @@ export default function ContentList({ page }: { page: string }) {
             case "faq":
               id = content.faqId;
               break;
+            case "fileImageBuffer":
+              id = content.fileImageId;
+              break;
             // add more
 
             default:

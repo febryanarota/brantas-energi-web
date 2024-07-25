@@ -76,7 +76,7 @@ export const FileImageEditModal = ({
         console.log(block);
         console.log(block.fileImageId)
         const responseBuffer = await fetch(
-          `/api/file-image-buffer/${block.fileImageId}`,
+          `/api/fileImageBuffer/${block.fileImageId}`,
           {
             method: "GET",
           },

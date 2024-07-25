@@ -17,7 +17,7 @@ import { Heading2EditModal } from "../modals/heading2-edit-modal";
 import { ImageEditModal } from "../modals/image-edit-modal";
 import { FileEditModal } from "../modals/file-edit-modal";
 import { FileImageEditModal } from "../modals/file-image-edit-modal";
-
+``
 export const DeleteButton = ({
   id,
   setStatus,
@@ -203,7 +203,7 @@ export const EditButton = ({
           />,
         );
         break;
-      case "fileImage":
+      case "fileImageBuffer":
         setModal(
           <FileImageEditModal
             openChange={onOpenChange}
@@ -336,6 +336,8 @@ export const ConfirmEditButton = ({
     if (!res.ok) {
       throw new Error("Network response was not ok");
     }
+
+    
 
     const res2 = await fetch(`/api/${block.blockType}/${id}`, {
       method: "DELETE",
