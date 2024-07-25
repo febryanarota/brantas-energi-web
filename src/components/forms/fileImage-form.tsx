@@ -178,7 +178,7 @@ export default function FileImageForm({
         );
       }
 
-      const resultId : number[] = await res.json();
+      const result = await res.json();
 
       // POST request to create a new content block
       let status = "createPending";
@@ -193,8 +193,8 @@ export default function FileImageForm({
         },
         body: JSON.stringify({
           blockType: "fileImage" as blockType,
-          fileImageId: resultId,
-          position: resultId[0],
+          fileImageId: result.id,
+          position: result.id,
           page: page,
           status: status,
         }),

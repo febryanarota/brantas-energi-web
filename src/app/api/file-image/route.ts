@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
   const length = parseInt(body.get("length") as string);
 
-  let data = [];
+  let dataId : number[] = [];
   for (let i = 0; i < length; i++) {
     const uuid = shortUUID.generate();
     const title = body.get(`title[${i}]`) as string;
@@ -75,8 +75,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    data.push(response.id);
+    dataId.push(response.id);
   }
 
-  return NextResponse.json(data);
+  const createBuffer = await prisma.fileImageBuffer.create({
+    data: {
+      fileImageIds: dataId,
+    },
+  });
+
+
+  return NextResponse.json(createBuffer);
 }

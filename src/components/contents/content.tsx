@@ -3,6 +3,7 @@ import {
   contentBlock,
   faq,
   file,
+  fileImageBuffer,
   heading1,
   heading2,
   image,
@@ -76,6 +77,9 @@ async function getData(content: contentBlock) {
     case "file":
       result = await fetchData(`/api/file/${content.fileId}`);
       return result as file;
+    case "fileImage":
+      result = await fetchData(`/api/file-image-buffer/${content.fileImageId}`);
+      return result as fileImageBuffer;
   }
 }
 
@@ -102,7 +106,7 @@ export default function Content({
       try {
         const data = await getData(block);
 
-        if (!data && type !== "fileImage") {
+        if (!data) {
           throw new Error("Failed to fetch data");
         }
 
@@ -143,7 +147,7 @@ export default function Content({
             break;
           case "fileImage":
             setRenderContent(
-              <FileImageContent block={block} editId={block.editId} />,
+              <FileImageContent content={data as fileImageBuffer} editId={block.editId} />,
             );
             break;
           default:

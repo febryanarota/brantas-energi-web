@@ -7,6 +7,7 @@ import {
   contentBlock,
   file,
   fileImage,
+  fileImageBuffer,
   heading1,
 } from "@prisma/client";
 import { delay } from "@/lib/utils";
@@ -70,7 +71,17 @@ export const FileImageEditModal = ({
         }
 
         const block: contentBlock = await responseContentBlock.json();
-        const fileImageId = block.fileImageId;
+        
+        const responseBuffer = await fetch(`/api/file-image-buffer/${block.fileImageId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: `session=${session}`,
+          },
+        });
+
+        const buffer : fileImageBuffer = await responseBuffer.json();
+        const fileImageId = buffer.fileImageIds;
 
         // loop through the file image ids and get the file image data
         for (let i = 0; i < fileImageId.length; i++) {
