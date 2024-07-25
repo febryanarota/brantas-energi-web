@@ -9,6 +9,7 @@ import {
   fileImage,
   fileImageBuffer,
   heading1,
+  status,
 } from "@prisma/client";
 import { delay } from "@/lib/utils";
 import { GripVertical, X } from "lucide-react";
@@ -21,6 +22,7 @@ import {
 import Image from "next/image";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import FileImageList from "../list/FileImageList";
+import { stat } from "fs/promises";
 
 export const FileImageEditModal = ({
   openChange,
@@ -278,42 +280,31 @@ export const FileImageEditModal = ({
         );
       }
 
-      const resultId: number[] = await res.json();
-      console.log(resultId);
+      const result = await res.json();
+      const role = session.role;
 
-      // POST request to create a new content block
-      //   let status = "createPending";
-      //   if (session.role === "admin") {
-      //     status = "verified";
-      //   }
+      if (role !== "admin") {
+        const response = await fetch(`/api/content/${blockId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: `session=${session}`,
+          },
+          body: JSON.stringify({
+            editId: result.id,
+            status: "updatePending",
+          }),
+        });
 
-      //   const contentResponse = await fetch("/api/content", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       blockType: "fileImage" as blockType,
-      //       fileImageId: resultId,
-      //       position: resultId[0],
-      //       page: page,
-      //       status: status,
-      //     }),
-      //   });
-
-      //   const contentResult = await contentResponse.json();
-
-      //   await fetch(`/api/page/${page}`, {
-      //     method: "PATCH",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Cookie: `session=${session}`,
-      //     },
-      //     credentials: "include",
-      //     body: JSON.stringify({
-      //       positions: [contentResult.id],
-      //     }),
-      //   });
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Response Error:", errorResponse);
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`,
+          );
+        }
+      
+      }
 
       setIsSaving(false);
       window.location.reload();
