@@ -253,13 +253,17 @@ export const FileImageEditModal = ({
       formData.append(`file[${index}]`, item.file ?? "");
       formData.append(`image[${index}]`, item.image ?? "");
       formData.append(`title[${index}]`, item.title);
+      formData.append(`isFile[${index}]`, item.file ? "true" : "false");
+      formData.append(`id[${index}]`, item.id.toString());
     });
 
     formData.append("length", items.length.toString());
+    formData.append("blockId", blockId.toString());
+
 
     try {
       const res = await fetch(`/api/file-image`, {
-        method: "POST",
+        method: "PUT",
         body: formData,
       });
 

@@ -155,7 +155,6 @@ export default function Content({
             setRenderContent(<div>Content</div>);
         }
 
-        console.log(type);
 
         switch (status) {
           case "createPending":
