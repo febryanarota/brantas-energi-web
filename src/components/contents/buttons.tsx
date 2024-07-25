@@ -16,6 +16,7 @@ import { Heading1EditModal } from "../modals/heading1-edit-modal";
 import { Heading2EditModal } from "../modals/heading2-edit-modal";
 import { ImageEditModal } from "../modals/image-edit-modal";
 import { FileEditModal } from "../modals/file-edit-modal";
+import { FileImageEditModal } from "../modals/file-image-edit-modal";
 
 export const DeleteButton = ({
   id,
@@ -202,6 +203,16 @@ export const EditButton = ({
           />,
         );
         break;
+      case "fileImage":
+        setModal(
+          <FileImageEditModal
+            openChange={onOpenChange}
+            session={session}
+            id={id}
+            blockId={blockId}
+          />,
+        );
+        break;
       default:
         setModal(null);
     }
@@ -217,8 +228,8 @@ export const EditButton = ({
         />
       </button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
-        <ModalContent>
-          {(onClose) => <ModalBody>{modal}</ModalBody>}
+        <ModalContent >
+          {(onClose) => <ModalBody className="max-h-[80vh] overflow-auto">{modal}</ModalBody>}
         </ModalContent>
       </Modal>
     </>

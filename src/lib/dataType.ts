@@ -23,7 +23,7 @@ export interface imageData {
 export interface createFileImage {
   link: string | null;  
   file: File | null;
-  image: File;
+  image: File | null;
   title: string;
   id: number;
   fileName: string | null;

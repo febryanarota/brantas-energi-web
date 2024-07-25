@@ -157,8 +157,9 @@ export default function FileImageForm({
     items.forEach((item, index) => {
       formData.append(`link[${index}]`, item.link ?? "");
       formData.append(`file[${index}]`, item.file ?? "");
-      formData.append(`image[${index}]`, item.image);
+      formData.append(`image[${index}]`, item.image ?? "");
       formData.append(`title[${index}]`, item.title);
+      formData.append(`isFile[${index}]`, item.file !== null  ? "true" : "false");
     });
 
     formData.append("length", items.length.toString()); 
