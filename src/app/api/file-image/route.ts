@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
   for (let i = 0; i < length; i++) {
     const uuid = shortUUID.generate();
     const title = body.get(`title[${i}]`) as string;
+    const isFile = body.get(`isFile[${i}]`) === "true" ? true : false;
     let link = body.get(`link[${i}]`) ? body.get(`link[${i}]`) as string : null;
 
     const file = body.get(`file[${i}]`) ?  body.get(`file[${i}]`) as File : null;
@@ -62,6 +63,7 @@ export async function POST(req: NextRequest) {
         title: title,
         link: link || undefined,
         image: `public/file-image/${uuid}.${imageExt}`,
+        isFile: isFile,
       },
     });
 
