@@ -314,6 +314,9 @@ export const ConfirmEditButton = ({
       case "file":
         editIdKey = "fileId";
         break;
+      case "fileImageBuffer":
+        editIdKey = "fileImageId";
+        break;
       default:
         editIdKey = "editId";
     }
@@ -337,8 +340,6 @@ export const ConfirmEditButton = ({
       throw new Error("Network response was not ok");
     }
 
-    
-
     const res2 = await fetch(`/api/${block.blockType}/${id}`, {
       method: "DELETE",
       headers: {
@@ -348,6 +349,7 @@ export const ConfirmEditButton = ({
       credentials: "include",
       body: JSON.stringify({
         id: id,
+        editId : block.editId,
       }),
     });
 

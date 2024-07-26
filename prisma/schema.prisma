@@ -32,7 +32,7 @@ model contentBlock {
   fileImageId                  Int?
   qna                          faq?             @relation(fields: [faqId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   file                         file?            @relation(fields: [fileId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  fileImageBuffer              fileImageBuffer? @relation(fields: [fileImageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fileImageBuffer              fileImageBuffer? @relation(fields: [fileImageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading1                     heading1?        @relation(fields: [heading1Id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   heading2                     heading2?        @relation(fields: [heading2Id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "contentBlock_heading2Id_fkey1")
   image                        image?           @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
