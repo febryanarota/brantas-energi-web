@@ -495,6 +495,7 @@ export const CancelEditButton = ({
       credentials: "include",
       body: JSON.stringify({
         id: id,
+        fileImageId : block.fileImageId,
       }),
     });
 
