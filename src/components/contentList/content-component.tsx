@@ -1,8 +1,17 @@
 "use client";
 
 import { delay } from "@/lib/utils";
-import { Accordion, AccordionItem, Skeleton } from "@nextui-org/react";
-import { faq, file, heading1, heading2, image, text } from "@prisma/client";
+import { Accordion, AccordionItem, Button, Skeleton } from "@nextui-org/react";
+import {
+  faq,
+  file,
+  fileImage,
+  fileImageBuffer,
+  heading1,
+  heading2,
+  image,
+  text,
+} from "@prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -80,6 +89,11 @@ export function ContentComponent({
           break;
         case "faq":
           setRenderContent(<FaqContent data={result as faq} />);
+          break;
+        case "fileImageBuffer":
+          setRenderContent(
+            <FileImageContent data={result as fileImageBuffer} />,
+          );
           break;
         default:
           setRenderContent(null);
@@ -221,6 +235,106 @@ export function FaqContent({ data }: { data: faq }) {
           />
         </AccordionItem>
       </Accordion>
+    </div>
+  );
+}
+
+export function FileImageContent({ data }: { data: fileImageBuffer }) {
+  const [fileImageData, setFileImageData] = useState<fileImage[] | null>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(true);
+  useEffect(() => {
+    const fileImageIds = data.fileImageIds;
+
+    async function fetchFileImages() {
+      try {
+        const fileImageFetches = fileImageIds.map(async (fileImageId) => {
+          const response = await fetch(`/api/file-image/${fileImageId}`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return await response.json();
+        });
+
+        const fileImages: fileImage[] = await Promise.all(fileImageFetches);
+
+        setFileImageData(fileImages);
+      } catch (error) {
+        console.error("Error fetching file images:", error);
+      } finally {
+        setIsFetching(false);
+      }
+    }
+
+    if (fileImageIds.length > 0) {
+      fetchFileImages();
+    } else {
+      setIsFetching(false);
+    }
+  }, [data.fileImageIds]);
+
+  const handleDownload = (link: string) => {
+    window.open(link, "_blank");
+  };
+
+  return (
+    <div className="mb-10">
+      {fileImageData && (
+        <div className="grid md:grid-cols-4 grid-cols-2 gap-10">
+          {fileImageData.map((item, index) => (
+            <div
+              className="flex flex-col w-full h-fit items-center"
+              key={index}
+            >
+              <div className="w-full grow aspect-[3/4] hover:cursor-pointer hover:scale-105 transition-transform duration-300 max-h-[300px] h-full overflow-hidden rounded-md shadow-md">
+                <a
+                  href={
+                    item.isFile
+                      ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${item.link}`
+                      : item.link
+                  }
+                  target="_blank"
+                >
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${item.image}`}
+                    width={300}
+                    height={300}
+                    alt={item.title || "image"}
+                    className="w-full h-full object-cover"
+                  />
+                </a>
+              </div>
+              <p className="mt-3 text-center">{item.title}</p>
+              <Button
+                className="text-white w-fit p-5 bg-sky-900 mt-1"
+                onClick={() =>
+                  handleDownload(
+                    item.isFile
+                      ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${item.link}`
+                      : item.link,
+                  )
+                }
+              >
+                Download
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+      {isFetching ? (
+        <div className="space-y-3 mt-5">
+        <Skeleton className="w-full rounded-lg">
+          <div className="h-3 w-full rounded-lg bg-default-200"></div>
+        </Skeleton>
+        <Skeleton className="w-full rounded-lg">
+          <div className="h-3 w-full rounded-lg bg-default-200"></div>
+        </Skeleton>
+        <Skeleton className="w-3/5 rounded-lg">
+          <div className="h-3 w-3/5 rounded-lg bg-default-300"></div>
+        </Skeleton>
+      </div>
+      ) : (
+        !fileImageData && <div>something went wrong</div>
+      )}
     </div>
   );
 }
