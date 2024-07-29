@@ -4,6 +4,7 @@ import "../globals.css";
 import Footer from "@/components/footer/footer";
 import NavigationBar from "@/components/navbar/navbar";
 import { home } from "@prisma/client";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +34,9 @@ export default async function publicLayout({
     <>
       <NavigationBar data={data.verified} />
       <div>{children}</div>
+      <Toaster/>
       <Footer data={data.verified} />
+      
     </>
   );
 }
