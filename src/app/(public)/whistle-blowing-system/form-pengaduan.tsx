@@ -247,8 +247,9 @@ export default function FormPengaduan() {
         <Button
           className="w-fit bg-primaryYellow font-semibold px-20 shadow-sm mt-10"
           type="submit"
+          disabled={formik.isSubmitting}
         >
-          Submit
+          {formik.isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </div>
