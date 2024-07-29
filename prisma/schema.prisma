@@ -177,6 +177,20 @@ model permohonan_informasi {
   @@map("permohonan-informasi")
 }
 
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model pengaduan {
+  id              Int      @id @default(autoincrement())
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  judul           String   @db.VarChar
+  uraian          String   @db.VarChar
+  nama_terduga    String   @db.VarChar
+  jabatan_terduga String   @db.VarChar
+  link_lampiran   String?  @db.VarChar
+  nama_pelapor    String?  @db.VarChar
+  email_pelapor   String?  @db.VarChar
+  telepon_pelapor String?  @db.VarChar
+}
+
 enum status {
   verified
   createPending
