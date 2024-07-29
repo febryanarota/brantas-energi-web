@@ -43,7 +43,7 @@ export const FormPermohonanInformasi = () => {
           const sanitizedValue = sanitizeInput(value as string);
           return sanitizedValue === value;
         })
-        .required("Alasan harus diisi"),
+        .required("Required"),
     }),
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
@@ -233,3 +233,6 @@ export const FormPermohonanInformasi = () => {
     </div>
   );
 };
+
+
+

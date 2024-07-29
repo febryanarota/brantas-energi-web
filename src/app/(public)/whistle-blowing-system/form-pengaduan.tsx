@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { ALLOWED_FILE_TYPES } from "@/lib/dataType";
+import { sanitizeInput } from "@/lib/utils";
 import { Button } from "@nextui-org/button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,6 +28,10 @@ export default function FormPengaduan() {
         .required("Required"),
       uraian: Yup.string()
         .max(200, "Must be 200 characters or less")
+        .test("sanitize-input", "Please input a valid character", (value) => {
+          const sanitizedValue = sanitizeInput(value as string);
+          return sanitizedValue === value;
+        })
         .required("Required"),
       namaTerduga: Yup.string()
         .max(50, "Must be 50 characters or less")
