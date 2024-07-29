@@ -162,6 +162,21 @@ model fileImageBuffer {
   contentBlock contentBlock[]
 }
 
+model permohonan_informasi {
+  id              Int      @id @default(autoincrement())
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  nama            String   @db.VarChar
+  tipe_identitas  String   @map("tipe-identitas") @db.VarChar
+  instansi        String   @db.VarChar
+  email           String   @db.VarChar
+  telepon         String   @db.VarChar
+  jenis_informasi String   @map("jenis-informasi") @db.VarChar
+  alasan          String   @db.VarChar
+  nomor_identitas String   @map("nomor-identitas") @db.VarChar
+
+  @@map("permohonan-informasi")
+}
+
 enum status {
   verified
   createPending
