@@ -191,6 +191,20 @@ model pengaduan {
   telepon_pelapor String?  @db.VarChar
 }
 
+model kepuasan {
+  id           Int       @id @default(autoincrement())
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  nama         String    @db.VarChar
+  jenisKelamin String?   @db.VarChar
+  email        String    @db.VarChar
+  pendidikan   String?   @db.VarChar
+  tanggalLahir DateTime? @db.Date
+  pekerjaan    String?   @db.VarChar
+  pengajuan    Boolean?
+  answers      Int[]
+  saran        String?   @db.VarChar
+}
+
 enum status {
   verified
   createPending
