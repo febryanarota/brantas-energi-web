@@ -11,6 +11,7 @@ export default function Sidebar() {
   const [isInformasiPublikOpen, setIsInformasiPulbikOpen] = useState(false);
   const [isLaporanLayananOpen, setIsLaporanLayananOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isFormsOpen, setIsFormsOpen] = useState(false);
   const router = useRouter();
 
   const handleTrigger = () => {
@@ -47,10 +48,16 @@ export default function Sidebar() {
     setIsProfileOpen(!isProfileOpen);
   };
 
+  const handleOpenForms = () => {
+    closeAll();
+    setIsFormsOpen(!isFormsOpen);
+  }
+
   const closeAll = () => {
     setIsInformasiPulbikOpen(false);
     setIsLaporanLayananOpen(false);
     setIsProfileOpen(false);
+    setIsFormsOpen(false);
   };
 
   return (
@@ -166,6 +173,29 @@ export default function Sidebar() {
             <a href="/cms/faq" className="sidebar-item">
               FAQ
             </a>
+            <a
+              className="sidebar-item flex flex-row justify-between"
+              onClick={handleOpenForms}
+            >
+              Forms
+              {isFormsOpen ? <ChevronUp /> : <ChevronDown />}
+            </a>
+            {isFormsOpen && (
+              <div className="flex flex-col">
+                <a href="/cms/form-pengaduan" className="sidebar-item-child">
+                  Form Pengaduan
+                </a>
+                <a href="/cms/form-kepuasan-layanan" className="sidebar-item-child">
+                  Form Kepuasan Layanan
+                </a>
+                <a
+                  href="/cms/form-permohonan-informasi"
+                  className="sidebar-item-child"
+                >
+                  Form Permohonan Informasi
+                </a>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleLogout}>
