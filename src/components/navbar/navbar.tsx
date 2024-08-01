@@ -116,7 +116,7 @@ export default function NavigationBar({ data }: { data: home }) {
 
         <NavbarItem>
           <Link
-            href="/regulasi-informasi-publik"
+            href="/regulasi"
             color="foreground"
             className="text-sm"
           >
@@ -223,7 +223,7 @@ export default function NavigationBar({ data }: { data: home }) {
 
         <NavbarItem>
           <Link
-            href="/whistle-blowing-system"
+            href="/pengaduan"
             color="foreground"
             className="text-sm"
           >
@@ -233,7 +233,7 @@ export default function NavigationBar({ data }: { data: home }) {
 
         <NavbarItem>
           <Link
-            href="/frequently-asked-questions"
+            href="/faq"
             color="foreground"
             className="text-sm"
           >
@@ -263,7 +263,7 @@ export default function NavigationBar({ data }: { data: home }) {
         <NavbarMenuItem>
           <div className="">
             <a
-              href="/regulasi-informasi-publik"
+              href="/regulasi"
               className="uppercase font-medium w-full "
             >
               Regulasi
@@ -315,13 +315,13 @@ export default function NavigationBar({ data }: { data: home }) {
           </a>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <a href="/whistle-blowing-system" className="uppercase font-medium">
+          <a href="/pengaduan" className="uppercase font-medium">
             Pengaduan
           </a>
         </NavbarMenuItem>
         <NavbarMenuItem>
           <a
-            href="/frequently-asked-questions"
+            href="/faq"
             className="uppercase font-medium"
           >
             FAQ
