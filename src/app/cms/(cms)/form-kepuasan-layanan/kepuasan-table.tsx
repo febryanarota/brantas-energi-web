@@ -135,7 +135,11 @@ export default function TableComponent() {
                   {row.pengajuan ? "Sudah" : "Belum"}
                 </TableCell>
                 <TableCell className="align-text-top">{row.answers}</TableCell>
-                <TableCell className="align-text-top">{row.saran}</TableCell>
+                <TableCell className="align-text-top">
+                  <div className="min-w-[25rem] max-h-[10rem] h-fit overflow-auto">
+                    {row.saran}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
