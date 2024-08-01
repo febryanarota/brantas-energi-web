@@ -24,10 +24,12 @@ export default function FormPengaduan() {
     },
     validationSchema: Yup.object({
       judul: Yup.string()
-        .max(50, "Must be 50 characters or less")
-        .required("Required"),
+        .required("Required")
+        .test("sanitize-input", "Please input a valid character", (value) => {
+          const sanitizedValue = sanitizeInput(value as string);
+          return sanitizedValue === value;
+        }),
       uraian: Yup.string()
-        .max(200, "Must be 200 characters or less")
         .test("sanitize-input", "Please input a valid character", (value) => {
           const sanitizedValue = sanitizeInput(value as string);
           return sanitizedValue === value;
