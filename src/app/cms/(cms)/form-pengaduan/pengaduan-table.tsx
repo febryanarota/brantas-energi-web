@@ -145,7 +145,7 @@ export default function TableComponent() {
                 </TableCell>
                 <TableCell className="align-text-top">
                   <div className=" max-w-[10rem] overflow-clip">
-                    {row.link_lampiran ?? "-"}
+                    <a href={`${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${row.link_lampiran}`} target="_blank">{row.link_lampiran ?? "-"}</a>
                   </div>
                 </TableCell>
                 <TableCell className="align-text-top">

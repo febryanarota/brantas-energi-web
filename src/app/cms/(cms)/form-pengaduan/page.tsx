@@ -1,5 +1,5 @@
 import { CMSContainer } from "@/components/ui/container";
-import TableComponent from "./table-component";
+import TableComponent from "./pengaduan-table";
 
 
 export default async function Page() {
