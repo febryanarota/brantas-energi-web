@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import * as XLSX from "xlsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,8 +33,15 @@ export function subtractArrays(arr1: number[], arr2: number[]): number[] {
   return arr1.filter((item) => !arr2.includes(item));
 }
 
-export function sanitizeInput (value : string) {
-  const div = document.createElement('div');
+export function sanitizeInput(value: string) {
+  const div = document.createElement("div");
   div.textContent = value;
   return div.innerHTML;
+}
+
+export const exportToExcel = (data : any) => {
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "untitled");
+  XLSX.writeFile(workbook, "untitled.xlsx");
 };

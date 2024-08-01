@@ -1,5 +1,6 @@
 "use client";
 
+import { exportToExcel } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -35,7 +36,6 @@ export default function TableComponent() {
       });
   }, [page, limit, sortDateAscending, searchName]);
 
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -53,10 +53,25 @@ export default function TableComponent() {
     return { startPage, endPage };
   };
 
+  const handleExport = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/pengaduan?limit=0`).then(
+      async (res) => {
+        const exportData = await res.json();
+        exportToExcel(exportData.data);
+      },
+    );
+  };
+
   return (
     <div>
       <div className="flex flex-row space-x-5 my-4 justify-between">
         <div className="grow flex flex-row items-center space-x-2">
+          <button
+            className="py-1 px-2 rounded-md bg-sky-800 text-white text-sm"
+            onClick={handleExport}
+          >
+            Export
+          </button>
           <input
             type="text"
             className="bg-white grow max-w-xl px-5 py-1 rounded-md shadow-sm"
@@ -73,11 +88,11 @@ export default function TableComponent() {
             name="limit"
             className="rounded-md shadow-sm w-[4rem] px-2 py-1"
             id="limit"
-            value={limit} 
+            value={limit}
             onChange={(e) => {
-              setLimit(Number(e.target.value))
-              setPage(1)
-              setSearchName("")
+              setLimit(Number(e.target.value));
+              setPage(1);
+              setSearchName("");
             }}
           >
             <option value="3">3</option>
@@ -145,7 +160,12 @@ export default function TableComponent() {
                 </TableCell>
                 <TableCell className="align-text-top">
                   <div className=" max-w-[10rem] overflow-clip">
-                    <a href={`${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${row.link_lampiran}`} target="_blank">{row.link_lampiran ?? "-"}</a>
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${row.link_lampiran}`}
+                      target="_blank"
+                    >
+                      {row.link_lampiran ?? "-"}
+                    </a>
                   </div>
                 </TableCell>
                 <TableCell className="align-text-top">

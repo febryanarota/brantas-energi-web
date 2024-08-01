@@ -1,5 +1,6 @@
 "use client";
 
+import { exportToExcel } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -51,10 +52,19 @@ export default function TableComponent() {
     return { startPage, endPage };
   };
 
+  const handleExport = async () => {
+    await fetch('/api/kepuasan-layanan?limit=0').then(async (res) => {
+      const exportData = await res.json()
+      exportToExcel(exportData.data);
+    });
+  }
+
   return (
     <div>
-      <div className="flex flex-row space-x-5 my-4 justify-between">
-        <div className="grow flex flex-row items-center space-x-2"></div>
+      <div className="flex flex-row space-x-5 my-4 justify-between items-center">
+        <div className="grow flex flex-row items-center space-x-2">
+          <button className="py-1 px-2 rounded-md bg-sky-800 text-white text-sm" onClick={handleExport}>Export</button>
+        </div>
         <div className="flex flex-row space-x-3 items-center">
           <label htmlFor="limit">Limit per page</label>
           <select

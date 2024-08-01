@@ -13,12 +13,13 @@ export async function GET(req: NextRequest) {
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "3");
 
+
   const result = await prisma.permohonan_informasi.findMany({
     orderBy: {
       created_at: sortDate === "asc" ? "asc" : "desc",
     },
-    take: limit, // limit is the number of items per page
-    skip: (page - 1) * limit, // skip is the number of items to skip
+    take: limit > 0 ? limit : undefined, // If limit is 0, do not limit the number of records
+    skip: limit > 0 ? (page - 1) * limit : 0, // Skip is only applied if limit is greater than 0
   });
 
   const count = await prisma.permohonan_informasi.count();
