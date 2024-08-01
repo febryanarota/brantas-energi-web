@@ -3,6 +3,81 @@ import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 import shortUUID from "short-uuid";
 
+export async function GET(req: NextRequest) {
+  const sessionExists = req.cookies.get("session");
+
+  if (!sessionExists) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const searchParams = new URL(req.url).searchParams;
+  const sortDate = searchParams.get("sortDate")?.toLowerCase() || "desc";
+  const searchName = searchParams.get("searchName") || "";
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "3");
+
+  const result = await prisma.pengaduan.findMany({
+    where: {
+      nama_terduga: {
+        contains: searchName,
+      },
+    },
+    orderBy: {
+      created_at: sortDate === "asc" ? "asc" : "desc",
+    },
+    take: limit, // limit is the number of items per page
+    skip: (page - 1) * limit, // skip is the number of items to skip
+  });
+
+  const count = await prisma.pengaduan.count({
+    where: {
+      nama_terduga: {
+        contains: searchName,
+      },
+    },
+  });
+
+  const totalPage = Math.ceil(count  / limit) || 1;
+
+  if (page > totalPage) {
+    return NextResponse.json({ error: "Page not found" }, { status: 404 });
+  }
+
+  let previousPage = null;
+  let nextPage = null;
+
+  if (page > 1) {
+    previousPage =
+      "/api/pengaduan?" +
+      new URLSearchParams({
+        sortDate,
+        searchName,
+        page: (page - 1).toString(),
+        limit: limit.toString(),
+      }).toString();
+  }
+
+  if (page < totalPage) {
+    nextPage =
+      "/api/pengaduan?" +
+      new URLSearchParams({
+        sortDate,
+        searchName,
+        page: (page + 1).toString(),
+        limit: limit.toString(),
+      }).toString();
+  }
+
+  return NextResponse.json({
+    data: result,
+    pagination: {
+      totalPage,
+      previousPage,
+      nextPage,
+    },
+  });
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.formData();
 
@@ -46,7 +121,10 @@ export async function POST(req: NextRequest) {
   });
 
   if (!response) {
-    return NextResponse.json({ error: "Error create pengaduan" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error create pengaduan" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json(response);
