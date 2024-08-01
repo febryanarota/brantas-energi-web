@@ -31,6 +31,26 @@ export interface createFileImage {
   imagePreview: string | undefined;
 }
 
+export const CMS_PAGES = [
+  "home",
+  "struktur-ppid",
+  "visi-misi-ppid",
+  "tugas-fungsi-wewenang",
+  "regulasi",
+  "informasi-publik",
+  "informasi-serta-merta",
+  "informasi-berkala",
+  "informasi-wajib-tersedia",
+  "laporan-layanan-informasi",
+  "permohonan-informasi",
+  "laporan-tahunan",
+  "laporan-berkelanjutan",
+  "kepuasan-layanan-informasi-publik",
+  "prosedur",
+  "pengaduan",
+  "faq",
+]
+
 export const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png"];
 export const ALLOWED_FILE_TYPES = [
   "image/jpeg",

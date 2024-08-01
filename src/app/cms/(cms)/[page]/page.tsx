@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { delay } from "@/lib/utils";
+import { CMS_PAGES } from "@/lib/dataType";
 
 async function getData(page: string): Promise<contentBlock[]> {
   const sessionCookie = cookies().get("session")?.value || "";
@@ -73,6 +74,9 @@ export default async function Page(context: { params: { page: string } }) {
   const session = await getSession();
   if (!session) redirect("/cms/login");
   const page = context.params.page as string;
+  // if page not in CMS_PAGES, redirect to 404
+  if (!CMS_PAGES.includes(page)) redirect("/404");
+
   const data: contentBlock[] = await getData(page);
   return (
     <div className="w-full">
