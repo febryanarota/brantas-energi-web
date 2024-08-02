@@ -92,7 +92,7 @@ export default function ContentList({ page }: { page: string }) {
         })
       )}
 
-      {!data && !loading && <div>No data</div>}
+      {!data && !loading && <div></div>}
     </div>
   );
 }

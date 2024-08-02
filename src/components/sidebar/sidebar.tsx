@@ -151,7 +151,7 @@ export default function Sidebar() {
                   Laporan Tahunan
                 </a>
                 <a
-                  href="/cms/laporan-berkelanjutan"
+                  href="/cms/laporan-keberlanjutan"
                   className="sidebar-item-child"
                 >
                   Laporan Keberlanjutan

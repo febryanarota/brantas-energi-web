@@ -74,6 +74,7 @@ export default async function Page(context: { params: { page: string } }) {
   const session = await getSession();
   if (!session) redirect("/cms/login");
   const page = context.params.page as string;
+  const title = page.replace(/-/g, " ").toUpperCase();
   // if page not in CMS_PAGES, redirect to 404
   if (!CMS_PAGES.includes(page)) redirect("/404");
 
@@ -82,7 +83,7 @@ export default async function Page(context: { params: { page: string } }) {
     <div className="w-full">
       <CMSContainer>
         <div className="flex flex-row justify-between items-center border-b-3 pb-2">
-          <h1 className="text-3xl font-bold tracking-widerfle">{page}</h1>
+          <h1 className="text-3xl font-bold tracking-widerfle">{title}</h1>
           <FormTrigger page={page} session={session} />
         </div>
         <DraggableList data={data} session={session} />

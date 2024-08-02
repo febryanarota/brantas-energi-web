@@ -44,7 +44,7 @@ export const CMS_PAGES = [
   "laporan-layanan-informasi",
   "permohonan-informasi",
   "laporan-tahunan",
-  "laporan-berkelanjutan",
+  "laporan-keberlanjutan",
   "kepuasan-layanan-informasi-publik",
   "prosedur",
   "pengaduan",

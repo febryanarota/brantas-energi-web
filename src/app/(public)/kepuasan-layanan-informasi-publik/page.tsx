@@ -2,6 +2,7 @@ import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
 import FormKepuasanLayanan from "./form-kepuasan-layanan";
 import { Metadata } from "next";
+import ContentList from "@/components/contentList/content-list";
 
 export const metadata: Metadata = {
   title: "Survei Kepuasan Layanan | PPID Brantas Energi",
@@ -12,15 +13,8 @@ export default function Page() {
     <div className="pb-20">
       <Header title="Survei Kepuasan Layanan Informasi" />
       <Container className="flex flex-col items-center">
-        <div className="text-sm text-slate-700 mb-10 max-w-2xl">
-          <p className="text-justify">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et aut
-            placeat exercitationem.
-          </p>
-          <p>
-            <br />
-            Berikut form untuk survei kepuasan layanan informasi.
-          </p>
+        <div className="max-w-2xl">
+          <ContentList page={"kepuasan-layanan-informasi-publik"} />
         </div>
         <FormKepuasanLayanan />
       </Container>

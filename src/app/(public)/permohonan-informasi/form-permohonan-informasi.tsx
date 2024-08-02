@@ -79,7 +79,7 @@ export const FormPermohonanInformasi = () => {
     <div className="flex flex-col items-center w-full">
       <form
         onSubmit={formik.handleSubmit}
-        className="max-w-2xl w-full gap-3 flex flex-col text-sm items-center"
+        className="max-w-2xl mt-5 w-full gap-3 flex flex-col text-sm items-center"
       >
         <div className="w-full flex flex-col">
           <label className="" htmlFor="nama">
