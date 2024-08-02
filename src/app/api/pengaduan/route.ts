@@ -3,6 +3,8 @@ import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 import shortUUID from "short-uuid";
 
+export const maxDuration = 60;
+
 export async function GET(req: NextRequest) {
   const sessionExists = req.cookies.get("session");
 
@@ -37,7 +39,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const totalPage = Math.ceil(count  / limit) || 1;
+  const totalPage = Math.ceil(count / limit) || 1;
 
   if (page > totalPage) {
     return NextResponse.json({ error: "Page not found" }, { status: 404 });

@@ -34,9 +34,8 @@ export default async function publicLayout({
     <>
       <NavigationBar data={data.verified} />
       <div>{children}</div>
-      <Toaster/>
+      <Toaster />
       <Footer data={data.verified} />
-      
     </>
   );
 }

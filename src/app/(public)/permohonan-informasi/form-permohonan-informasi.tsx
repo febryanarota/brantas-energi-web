@@ -233,6 +233,3 @@ export const FormPermohonanInformasi = () => {
     </div>
   );
 };
-
-
-

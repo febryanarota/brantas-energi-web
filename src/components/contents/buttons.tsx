@@ -17,7 +17,7 @@ import { Heading2EditModal } from "../modals/heading2-edit-modal";
 import { ImageEditModal } from "../modals/image-edit-modal";
 import { FileEditModal } from "../modals/file-edit-modal";
 import { FileImageEditModal } from "../modals/file-image-edit-modal";
-``
+``;
 export const DeleteButton = ({
   id,
   setStatus,
@@ -349,7 +349,7 @@ export const ConfirmEditButton = ({
       credentials: "include",
       body: JSON.stringify({
         id: id,
-        editId : block.editId,
+        editId: block.editId,
       }),
     });
 
@@ -495,7 +495,7 @@ export const CancelEditButton = ({
       credentials: "include",
       body: JSON.stringify({
         id: id,
-        fileImageId : block.fileImageId,
+        fileImageId: block.fileImageId,
       }),
     });
 

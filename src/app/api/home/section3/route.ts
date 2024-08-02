@@ -2,6 +2,8 @@ import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60;
+
 export async function PATCH(req: NextRequest) {
   // handle session
   const sessionExists = req.cookies.get("session");

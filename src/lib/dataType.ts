@@ -49,7 +49,7 @@ export const CMS_PAGES = [
   "prosedur",
   "pengaduan",
   "faq",
-]
+];
 
 export const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png"];
 export const ALLOWED_FILE_TYPES = [

@@ -74,7 +74,7 @@ export const FileImageEditModal = ({
 
         const block: contentBlock = await responseContentBlock.json();
         console.log(block);
-        console.log(block.fileImageId)
+        console.log(block.fileImageId);
         const responseBuffer = await fetch(
           `/api/fileImageBuffer/${block.fileImageId}`,
           {
@@ -250,7 +250,7 @@ export const FileImageEditModal = ({
     }
 
     const formData = new FormData();
-    
+
     items.forEach((item, index) => {
       formData.append(`link[${item.id}]`, item.link ?? "");
       formData.append(`file[${item.id}]`, item.file ?? "");
@@ -260,8 +260,6 @@ export const FileImageEditModal = ({
       formData.append(`id[${item.id}]`, item.id.toString());
       formData.append(`order[${index}]`, item.id.toString());
     });
-
-
 
     formData.append("length", items.length.toString());
     formData.append("blockId", blockId.toString());
@@ -303,7 +301,6 @@ export const FileImageEditModal = ({
             `Network response was not ok: ${response.status} ${response.statusText}`,
           );
         }
-      
       }
 
       setIsSaving(false);

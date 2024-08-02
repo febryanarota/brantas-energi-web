@@ -175,7 +175,7 @@ export default function FormKepuasanLayanan() {
             <p className="invalid-feedback">{formik.errors.pendidikan}</p>
           ) : null}
         </div>
-        
+
         <div className="flex flex-col w-full">
           <Popover>
             <PopoverTrigger asChild>
@@ -185,7 +185,9 @@ export default function FormKepuasanLayanan() {
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal border-2 rounded-sm p-2",
-                    (formik.touched.tanggalLahir && formik.errors.tanggalLahir) && "border-red-300",
+                    formik.touched.tanggalLahir &&
+                      formik.errors.tanggalLahir &&
+                      "border-red-300",
                     !formik.values.tanggalLahir && "text-muted-foreground",
                   )}
                 >

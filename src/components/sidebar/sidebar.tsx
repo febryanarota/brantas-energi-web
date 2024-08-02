@@ -51,7 +51,7 @@ export default function Sidebar() {
   const handleOpenForms = () => {
     closeAll();
     setIsFormsOpen(!isFormsOpen);
-  }
+  };
 
   const closeAll = () => {
     setIsInformasiPulbikOpen(false);
@@ -185,7 +185,10 @@ export default function Sidebar() {
                 <a href="/cms/form-pengaduan" className="sidebar-item-child">
                   Form Pengaduan
                 </a>
-                <a href="/cms/form-kepuasan-layanan" className="sidebar-item-child">
+                <a
+                  href="/cms/form-kepuasan-layanan"
+                  className="sidebar-item-child"
+                >
                   Form Kepuasan Layanan
                 </a>
                 <a

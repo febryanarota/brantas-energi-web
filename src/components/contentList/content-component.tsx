@@ -277,7 +277,7 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
   };
 
   return (
-    <div className="mb-10">
+    <div className="mb-10 mt-10">
       {fileImageData && (
         <div className="grid md:grid-cols-4 grid-cols-2 gap-10">
           {fileImageData.map((item, index) => (
@@ -303,7 +303,7 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
                   />
                 </a>
               </div>
-              <p className="mt-3 text-center">{item.title}</p>
+              <p className="mt-3 text-center line-clamp-1">{item.title}</p>
               <Button
                 className="text-white w-fit p-5 bg-sky-900 mt-1"
                 onClick={() =>
@@ -322,16 +322,16 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
       )}
       {isFetching ? (
         <div className="space-y-3 mt-5">
-        <Skeleton className="w-full rounded-lg">
-          <div className="h-3 w-full rounded-lg bg-default-200"></div>
-        </Skeleton>
-        <Skeleton className="w-full rounded-lg">
-          <div className="h-3 w-full rounded-lg bg-default-200"></div>
-        </Skeleton>
-        <Skeleton className="w-3/5 rounded-lg">
-          <div className="h-3 w-3/5 rounded-lg bg-default-300"></div>
-        </Skeleton>
-      </div>
+          <Skeleton className="w-full rounded-lg">
+            <div className="h-3 w-full rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg">
+            <div className="h-3 w-full rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-3/5 rounded-lg">
+            <div className="h-3 w-3/5 rounded-lg bg-default-300"></div>
+          </Skeleton>
+        </div>
       ) : (
         !fileImageData && <div>something went wrong</div>
       )}

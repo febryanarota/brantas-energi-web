@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60;
+
 export async function GET(req: NextRequest) {
   const sessionExists = req.cookies.get("session");
 
@@ -13,7 +15,6 @@ export async function GET(req: NextRequest) {
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "3");
 
-
   const result = await prisma.permohonan_informasi.findMany({
     orderBy: {
       created_at: sortDate === "asc" ? "asc" : "desc",
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest) {
 
   const count = await prisma.permohonan_informasi.count();
 
-  const totalPage = Math.ceil(count  / limit) || 1;
+  const totalPage = Math.ceil(count / limit) || 1;
 
   if (page > totalPage) {
     return NextResponse.json({ error: "Page not found" }, { status: 404 });
@@ -88,7 +89,6 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(response);
-    
   } catch (error) {
     console.error("Error saving data:", error);
     return NextResponse.json(

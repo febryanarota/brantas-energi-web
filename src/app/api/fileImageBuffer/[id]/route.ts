@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60;
+
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } },

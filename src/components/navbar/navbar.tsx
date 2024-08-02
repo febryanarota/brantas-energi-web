@@ -115,11 +115,7 @@ export default function NavigationBar({ data }: { data: home }) {
         </Dropdown>
 
         <NavbarItem>
-          <Link
-            href="/regulasi"
-            color="foreground"
-            className="text-sm"
-          >
+          <Link href="/regulasi" color="foreground" className="text-sm">
             REGULASI
           </Link>
         </NavbarItem>
@@ -222,21 +218,13 @@ export default function NavigationBar({ data }: { data: home }) {
         </NavbarItem>
 
         <NavbarItem>
-          <Link
-            href="/pengaduan"
-            color="foreground"
-            className="text-sm"
-          >
+          <Link href="/pengaduan" color="foreground" className="text-sm">
             PENGADUAN
           </Link>
         </NavbarItem>
 
         <NavbarItem>
-          <Link
-            href="/faq"
-            color="foreground"
-            className="text-sm"
-          >
+          <Link href="/faq" color="foreground" className="text-sm">
             FAQ
           </Link>
         </NavbarItem>
@@ -262,10 +250,7 @@ export default function NavigationBar({ data }: { data: home }) {
 
         <NavbarMenuItem>
           <div className="">
-            <a
-              href="/regulasi"
-              className="uppercase font-medium w-full "
-            >
+            <a href="/regulasi" className="uppercase font-medium w-full ">
               Regulasi
             </a>
           </div>
@@ -320,10 +305,7 @@ export default function NavigationBar({ data }: { data: home }) {
           </a>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <a
-            href="/faq"
-            className="uppercase font-medium"
-          >
+          <a href="/faq" className="uppercase font-medium">
             FAQ
           </a>
         </NavbarMenuItem>

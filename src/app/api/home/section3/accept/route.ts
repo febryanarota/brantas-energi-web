@@ -3,6 +3,8 @@ import storage from "@/lib/storage";
 import { subtractArrays } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 60;
+
 export async function PUT(req: NextRequest) {
   // accept the request
   const sessionExists = req.cookies.get("session");

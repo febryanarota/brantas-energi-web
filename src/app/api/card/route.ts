@@ -4,6 +4,8 @@ import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 import shortUUID from "short-uuid";
 
+export const maxDuration = 60;
+
 export async function GET(req: NextRequest) {
   try {
     const response = await prisma.card.findMany();

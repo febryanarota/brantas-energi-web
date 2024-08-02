@@ -10,11 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function Page(context: { params: { page: string } }) {
-
   const page = context.params.page as string;
   const title = page.replace(/-/g, " ").toUpperCase();
   if (!CMS_PAGES.includes(page)) {
-    redirect("/")
+    redirect("/");
   }
 
   return (

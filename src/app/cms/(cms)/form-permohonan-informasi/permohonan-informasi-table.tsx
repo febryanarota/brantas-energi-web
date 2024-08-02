@@ -53,7 +53,9 @@ export default function TableComponent() {
   };
 
   const handleExport = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/permohonan-informasi?limit=0`).then(async (res) => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/permohonan-informasi?limit=0`,
+    ).then(async (res) => {
       const exportData = await res.json();
       exportToExcel(exportData.data);
     });
