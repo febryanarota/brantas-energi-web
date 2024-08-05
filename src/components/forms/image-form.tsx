@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from "@/lib/dataType";
+import Image from "next/image";
 
 export const ImageForm = ({
   openChange,
@@ -183,10 +184,12 @@ export const ImageForm = ({
           {imagePreview && (
             <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
               <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
-                <img
+                <Image
                   src={imagePreview}
                   alt="Preview"
                   className="h-full w-fit"
+                  height={100}
+                  width={100}
                 />
               </div>
             </div>

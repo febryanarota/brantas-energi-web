@@ -5,6 +5,7 @@ import { Button } from "@nextui-org/button";
 import { heading1, image } from "@prisma/client";
 import { delay } from "@/lib/utils";
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from "@/lib/dataType";
+import Image from "next/image";
 
 export const ImageEditModal = ({
   openChange,
@@ -219,7 +220,7 @@ export const ImageEditModal = ({
         {imagePreview && (
           <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
             <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
-              <img src={imagePreview} alt="Preview" className="h-full w-fit" />
+              <Image src={imagePreview} alt="Preview" className="h-full w-fit" width={100} height={100}/>
             </div>
           </div>
         )}
