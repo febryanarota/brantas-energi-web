@@ -7,7 +7,7 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react";
-import { Trash, Check, X, Pencil } from "lucide-react";
+import { Trash, Check, X, Pencil, LoaderCircle } from "lucide-react";
 import { FaqEditModal } from "../modals/faq-edit-modal";
 import { useEffect, useState } from "react";
 import { TextEditModal } from "../modals/text-edit-modal";
@@ -60,6 +60,9 @@ export const DeleteButton = ({
             `Network response was not ok: ${res.status} ${res.statusText}`,
           );
         }
+
+        const deleteDiv = document.getElementById(`block-${blockId}`);
+        if (deleteDiv) deleteDiv.remove();
       } else {
         const res2 = await fetch(`/api/content/${blockId}`, {
           method: "PATCH",
@@ -76,9 +79,10 @@ export const DeleteButton = ({
         if (!res2.ok) {
           throw new Error("Network response was not ok");
         }
-      }
 
-      window.location.reload();
+        const result = await res2.json();
+        if (result && result.status) setStatus(result.status);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -251,7 +255,10 @@ export const ConfirmButton = ({
   session: any;
   blockId: number;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleUpdate = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/content/${blockId}`, {
       method: "PATCH",
       headers: {
@@ -264,16 +271,24 @@ export const ConfirmButton = ({
     });
 
     if (!res.ok) {
+      setIsLoading(false);
       throw new Error("Network response was not ok");
     }
 
     const result = await res.json();
+    setIsLoading(false);
     if (result && result.status) setStatus(result.status);
   };
+
   return (
-    <button onClick={handleUpdate}>
+    <button onClick={handleUpdate} disabled={isLoading}>
       <Check
-        className="mt-1 hover:bg-green-100 rounded-full p-1"
+        className={`mt-1 hover:bg-green-100 rounded-full p-1 ${isLoading ? "hidden" : ""}`}
+        width={30}
+        height={30}
+      />
+      <LoaderCircle
+        className={`mt-1 rounded-full p-1 ${isLoading ? "animate-spin" : "hidden"}`}
         width={30}
         height={30}
       />
@@ -292,7 +307,11 @@ export const ConfirmEditButton = ({
   session: any;
   block: contentBlock;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleUpdate = async () => {
+    setIsLoading(true);
+
     let editIdKey;
 
     switch (block.blockType) {
@@ -337,6 +356,7 @@ export const ConfirmEditButton = ({
     });
 
     if (!res.ok) {
+      setIsLoading(false);
       throw new Error("Network response was not ok");
     }
 
@@ -360,7 +380,12 @@ export const ConfirmEditButton = ({
   return (
     <button onClick={handleUpdate}>
       <Check
-        className="mt-1 hover:bg-green-100 rounded-full p-1"
+        className={`mt-1 hover:bg-green-100 rounded-full p-1 ${isLoading ? "hidden" : ""}`}
+        width={30}
+        height={30}
+      />
+      <LoaderCircle
+        className={`mt-1 rounded-full p-1 ${isLoading ? "animate-spin" : "hidden"}`}
         width={30}
         height={30}
       />
@@ -381,7 +406,10 @@ export const CancelButton = ({
   session: any;
   blockId: number;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleCancel = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/${type}/${id}`, {
       method: "DELETE",
       headers: {
@@ -395,17 +423,24 @@ export const CancelButton = ({
     });
 
     if (!res.ok) {
+      setIsLoading(false);
       throw new Error("Network response was not ok");
     }
 
-    const result = await res.json();
-    if (result) window.location.reload();
+    setIsLoading(false);
+    const deleteDiv = document.getElementById(`block-${blockId}`);
+    if (deleteDiv) deleteDiv.remove();
   };
 
   return (
     <button onClick={handleCancel}>
       <X
-        className="mt-1 hover:bg-gray-100 rounded-full p-1"
+        className={`mt-1 hover:bg-green-100 rounded-full p-1 ${isLoading ? "hidden" : ""}`}
+        width={30}
+        height={30}
+      />
+      <LoaderCircle
+        className={`mt-1 rounded-full p-1 ${isLoading ? "animate-spin" : "hidden"}`}
         width={30}
         height={30}
       />
@@ -426,7 +461,10 @@ export const CancelDeleteButton = ({
   session: any;
   blockId: number;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleCancel = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/content/${blockId}`, {
       method: "PATCH",
       headers: {
@@ -440,17 +478,24 @@ export const CancelDeleteButton = ({
     });
 
     if (!res.ok) {
+      setIsLoading(false);
       throw new Error("Network response was not ok");
     }
 
     const result = await res.json();
+    setIsLoading(false);
     if (result && result.status) setStatus(result.status);
   };
 
   return (
     <button onClick={handleCancel}>
       <X
-        className="mt-1 hover:bg-gray-100 rounded-full p-1"
+        className={`mt-1 hover:bg-gray-100 rounded-full p-1 ${isLoading ? "hidden" : ""}`}
+        width={30}
+        height={30}
+      />
+      <LoaderCircle
+        className={`mt-1 rounded-full p-1 ${isLoading ? "animate-spin" : "hidden"}`}
         width={30}
         height={30}
       />
@@ -469,7 +514,10 @@ export const CancelEditButton = ({
   session: any;
   block: contentBlock;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleCancel = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/content/${block.id}`, {
       method: "PATCH",
       headers: {
@@ -483,6 +531,7 @@ export const CancelEditButton = ({
     });
 
     if (!res.ok) {
+      setIsLoading(false);
       throw new Error("Network response was not ok");
     }
 
@@ -506,7 +555,12 @@ export const CancelEditButton = ({
   return (
     <button onClick={handleCancel}>
       <X
-        className="mt-1 hover:bg-gray-100 rounded-full p-1"
+        className={`mt-1 hover:bg-gray-100 rounded-full p-1 ${isLoading ? "hidden" : ""}`}
+        width={30}
+        height={30}
+      />
+      <LoaderCircle
+        className={`mt-1 rounded-full p-1 ${isLoading ? "animate-spin" : "hidden"}`}
         width={30}
         height={30}
       />
