@@ -249,8 +249,6 @@ export const ConfirmButton = ({
   blockId,
 }: {
   setStatus: Function;
-  type: string;
-  session: any;
   blockId: number;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
