@@ -6,6 +6,6 @@ export default async function Page() {
   if (!session) {
     redirect("/cms/login");
   } else {
-    redirect("/cms/profile");
+    redirect("/cms/home");
   }
 }
