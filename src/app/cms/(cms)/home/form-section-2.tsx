@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Editor } from "@/components/editor/Editor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
@@ -26,12 +27,8 @@ export default function FormSection2({
   );
   const [image, setImage] = useState<imageData>();
 
-  const [descriptionPending, setDescriptionPending] = useState<string>(
-    pending.description2 || "",
-  );
-  const [headingPending, setHeadingPending] = useState<string>(
-    pending.heading2 || "",
-  );
+  const descriptionPending = pending.description2 || "";
+  const headingPending = pending.heading2 || "";
   const [imagePending, setImagePending] = useState<imageData>();
   const [isPending, setIsPending] = useState<boolean>(false);
 

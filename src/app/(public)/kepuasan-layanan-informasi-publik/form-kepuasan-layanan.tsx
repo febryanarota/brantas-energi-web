@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, Tangent } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
 import { useFormik } from "formik";
 import { useToast } from "@/components/ui/use-toast";
 import * as Yup from "yup";
 
 export default function FormKepuasanLayanan() {
-  const [date, setDate] = useState<Date>();
+  // let date;
 
   const { toast } = useToast();
   const formik = useFormik({
@@ -208,7 +207,6 @@ export default function FormKepuasanLayanan() {
             <PopoverContent className="w-auto p-0">
               <Calendar
                 mode="single"
-                selected={date}
                 onSelect={(date) => formik.setFieldValue("tanggalLahir", date)}
                 initialFocus
               />

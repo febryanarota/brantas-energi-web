@@ -1,4 +1,3 @@
-import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { subtractArrays } from "@/lib/utils";
@@ -11,8 +10,6 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const session = await decrypt(sessionExists.value);
-  const role = session.role;
 
   try {
     // get both verified and pending data

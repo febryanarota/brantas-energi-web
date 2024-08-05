@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       answers.push(parseInt(body[`q${i}`] as string));
     }
 
-    const pengajuan = "true" ? true : false;
+    const pengajuan = body.pengajuan === "true" ? true : false;
     const tanggalLahir = body.tanggalLahir ? new Date(body.tanggalLahir) : null;
 
     const response = await prisma.kepuasan.create({

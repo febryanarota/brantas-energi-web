@@ -11,7 +11,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { permohonan_informasi } from "@prisma/client";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function TableComponent() {

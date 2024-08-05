@@ -55,6 +55,7 @@ export default function FormPengaduan() {
       teleponPelapor: Yup.string().max(50, "Must be 50 characters or less"),
     }),
     onSubmit: async (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
       const formData = new FormData();
       formData.append("judul", values.judul);
       formData.append("uraian", values.uraian);
@@ -88,6 +89,8 @@ export default function FormPengaduan() {
           variant: "destructive",
         });
         console.error("Form submission error:", error);
+      } finally {
+        setSubmitting(false);
       }
     },
   });

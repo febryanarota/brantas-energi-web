@@ -10,8 +10,8 @@ import {
   TableRow,
   Button,
 } from "@nextui-org/react";
-import { kepuasan, pengaduan } from "@prisma/client";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { kepuasan } from "@prisma/client";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function TableComponent() {

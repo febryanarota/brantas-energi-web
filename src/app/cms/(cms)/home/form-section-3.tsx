@@ -28,7 +28,6 @@ export default function FormSection3({
   pendingCards: card[];
 }) {
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!isArraysEq(verified.cards, pending.cards)) {
@@ -70,12 +69,11 @@ const CardForm = ({
   verified: home;
   role: string;
 }) => {
-  const [description, setDescription] = useState(verified.subheading3);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [heading3, setHeading3] = useState(verified.heading3);
   const [subHeading3, setSubHeading3] = useState(verified.subheading3);
 
-  const [cardsData, setCardsData] = useState<card[]>(cards);
+  const cardsData : card[] = cards
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 

@@ -2,7 +2,6 @@ import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
-import * as path from "path";
 
 export async function DELETE(
   req: NextRequest,

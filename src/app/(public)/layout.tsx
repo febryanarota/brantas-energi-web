@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import Footer from "@/components/footer/footer";
 import NavigationBar from "@/components/navbar/navbar";
 import { home } from "@prisma/client";
 import { Toaster } from "@/components/ui/toaster";
-
-const inter = Inter({ subsets: ["latin"] });
+import React from "react";
 
 export const metadata: Metadata = {
   title: "PPID Brantas Energi",
