@@ -1,7 +1,6 @@
 import { Editor } from "@/components/editor/Editor";
 import { ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
-import { card } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
 

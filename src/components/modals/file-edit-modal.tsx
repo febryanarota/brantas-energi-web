@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
-import { file, heading1 } from "@prisma/client";
+import { file } from "@prisma/client";
 import { delay } from "@/lib/utils";
 import { X } from "lucide-react";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/dataType";

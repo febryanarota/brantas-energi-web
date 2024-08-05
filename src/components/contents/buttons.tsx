@@ -17,7 +17,8 @@ import { Heading2EditModal } from "../modals/heading2-edit-modal";
 import { ImageEditModal } from "../modals/image-edit-modal";
 import { FileEditModal } from "../modals/file-edit-modal";
 import { FileImageEditModal } from "../modals/file-image-edit-modal";
-``;
+import { JSX } from "react";
+
 export const DeleteButton = ({
   id,
   setStatus,
@@ -131,7 +132,6 @@ export const DeleteButton = ({
 
 export const EditButton = ({
   id,
-  setStatus,
   type,
   session,
   blockId,
@@ -246,8 +246,6 @@ export const EditButton = ({
 
 export const ConfirmButton = ({
   setStatus,
-  type,
-  session,
   blockId,
 }: {
   setStatus: Function;

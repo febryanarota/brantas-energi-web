@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
@@ -79,7 +80,7 @@ export const Heading2Form = ({
 
       const contentResult = await contentResponse.json();
 
-      const pageResponse = await fetch(`/api/page/${page}`, {
+      await fetch(`/api/page/${page}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

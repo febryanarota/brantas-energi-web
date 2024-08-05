@@ -3,7 +3,7 @@
 import { contentBlock, page } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { ContentComponent } from "./content-component";
-import { CircularProgress, Skeleton } from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react";
 
 async function getPosition(page: string) {
   try {

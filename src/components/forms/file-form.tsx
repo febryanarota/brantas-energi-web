@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/dataType";

@@ -1,8 +1,7 @@
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
-
-// get current data and display it on the form
+import React from "react";
 
 export const FaqEditModal = ({
   openChange,

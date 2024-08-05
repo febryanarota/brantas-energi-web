@@ -1,5 +1,6 @@
 "use client";
 
+import { JSX } from "react";
 import { delay } from "@/lib/utils";
 import { Accordion, AccordionItem, Button, Skeleton } from "@nextui-org/react";
 import {

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
@@ -90,7 +91,7 @@ export const TextForm = ({
 
       const contentResult = await contentResponse.json();
 
-      const pageResponse = await fetch(`/api/page/${page}`, {
+      await fetch(`/api/page/${page}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

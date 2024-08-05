@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ALLOWED_MIME_TYPES, imageData, MAX_FILE_SIZE } from "@/lib/dataType";
 import { Button } from "@nextui-org/button";
@@ -16,9 +17,6 @@ export default function FormSection4({
   pending: home;
   role: string;
 }) {
-  const [description1, setDescription1] = useState<string>(
-    verified.description1 || "",
-  );
   const [name, setName] = useState<string>(verified.name || "");
   const [address, setAddress] = useState<string>(verified.address || "");
   const [phone, setPhone] = useState<string>(verified.phone || "");
@@ -30,27 +28,15 @@ export default function FormSection4({
   const [linkedin, setLinkedin] = useState<string>(verified.linkedin || "");
   const [image, setImage] = useState<imageData>();
 
-  const [namePending, setNamePending] = useState<string>(pending.name || "");
-  const [addressPending, setAddressPending] = useState<string>(
-    pending.address || "",
-  );
-  const [phonePending, setPhonePending] = useState<string>(pending.phone || "");
-  const [emailPending, setEmailPending] = useState<string>(pending.email || "");
-  const [youtubePending, setYoutubePending] = useState<string>(
-    pending.youtube || "",
-  );
-  const [instagramPending, setInstagramPending] = useState<string>(
-    pending.instagram || "",
-  );
-  const [facebookPending, setFacebookPending] = useState<string>(
-    pending.facebook || "",
-  );
-  const [twitterPending, setTwitterPending] = useState<string>(
-    pending.twitter || "",
-  );
-  const [linkedinPending, setLinkedinPending] = useState<string>(
-    pending.linkedin || "",
-  );
+  const namePending = pending.name || "";
+  const addressPending = pending.address || "";
+  const phonePending = pending.phone || "";
+  const emailPending = pending.email || "";
+  const youtubePending = pending.youtube || "";
+  const instagramPending = pending.instagram || "";
+  const facebookPending = pending.facebook || "";
+  const twitterPending = pending.twitter || "";
+  const linkedinPending = pending.linkedin || "";
   const [imagePending, setImagePending] = useState<imageData>();
 
   const [isPending, setIsPending] = useState<boolean>(false);

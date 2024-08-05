@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { Editor } from "../editor/Editor";
 import { Button } from "@nextui-org/button";
 import { blockType } from "@prisma/client";

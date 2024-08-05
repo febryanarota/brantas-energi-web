@@ -35,7 +35,6 @@ export default function Home({ data }: { data: home }) {
     fetchData();
   }, []);
 
-  const SLIDES = Array.from(Array(5).keys());
   return (
     <div className="flex flex-col">
       {/* Landing image */}

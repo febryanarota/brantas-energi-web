@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { heading1 } from "@prisma/client";

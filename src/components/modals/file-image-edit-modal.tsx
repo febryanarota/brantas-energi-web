@@ -3,13 +3,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import {
-  blockType,
   contentBlock,
-  file,
   fileImage,
   fileImageBuffer,
-  heading1,
-  status,
 } from "@prisma/client";
 import { delay } from "@/lib/utils";
 import { GripVertical, X } from "lucide-react";
@@ -22,7 +18,6 @@ import {
 import Image from "next/image";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import FileImageList from "../list/FileImageList";
-import { stat } from "fs/promises";
 
 export const FileImageEditModal = ({
   openChange,

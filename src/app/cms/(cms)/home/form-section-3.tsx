@@ -184,7 +184,7 @@ const RequestPending = ({
 }) => {
   const [isRejecting, setIsRejecting] = useState(false);
   const [isAccepting, setIsAccepting] = useState(false);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const handleOpen = (event: any) => {
     event.preventDefault();
     onOpen();

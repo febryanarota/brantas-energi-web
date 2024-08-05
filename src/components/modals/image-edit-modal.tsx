@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
-import { heading1, image } from "@prisma/client";
+import { image } from "@prisma/client";
 import { delay } from "@/lib/utils";
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from "@/lib/dataType";
 import Image from "next/image";

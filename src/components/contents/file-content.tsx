@@ -1,5 +1,4 @@
 import { file } from "@prisma/client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export const FileContent = ({

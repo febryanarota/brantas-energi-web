@@ -19,6 +19,7 @@ import {
   DeleteButton,
   EditButton,
 } from "./buttons";
+import { JSX } from "react";
 import { TextContent } from "./text-content";
 import { Heading1Content, Heading2Content } from "./heading-content";
 import { delay } from "@/lib/utils";
@@ -169,8 +170,6 @@ export default function Content({
                   {role === "admin" ? (
                     <ConfirmButton
                       setStatus={setStatus}
-                      type={type}
-                      session={session}
                       blockId={block.id}
                     />
                   ) : null}

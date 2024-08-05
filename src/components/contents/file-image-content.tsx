@@ -11,7 +11,7 @@ export const FileImageContent = ({
 }) => {
   const [fileData, setFileData] = useState<fileImage[]>([]);
   const [fileEdit, setFileEdit] = useState<fileImage[]>([]);
-  const [isEdit, setIsEdit] = useState<boolean>(editId !== null);
+  const isEdit = editId !== null;
 
   useEffect(() => {
     const fileImageId = content.fileImageIds;
