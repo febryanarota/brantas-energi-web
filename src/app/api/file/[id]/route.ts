@@ -113,24 +113,7 @@ export async function PUT(
         });
 
       link = `/public/${uuid}.${fileExtension}`;
-      // if (role !== "admin") {
-      //   const res = await prisma.contentBlock.update({
-      //     where: {
-      //       id: blockId,
-      //     },
-      //     data: {
-      //       status: "updatePending",
-      //     },
-      //   });
-
-      //   if (!res) {
-      //     return NextResponse.json(
-      //       { error: "Failed to update content block status" },
-      //       { status: 500 },
-      //     );
-      //   }
-      // }
-      // return NextResponse.json(result);
+      
     } else {
       link = body.get("link") as string;
     }

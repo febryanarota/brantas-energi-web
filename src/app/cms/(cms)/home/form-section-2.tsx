@@ -127,11 +127,11 @@ export default function FormSection2({
         );
       }
 
-      setIsSaving(false); // Set loading state to false
+      setIsSaving(false);
       window.location.reload();
     } catch (error) {
       console.error("Error:", error);
-      setIsSaving(false); // Set loading state to false
+      setIsSaving(false);
     }
   };
 
