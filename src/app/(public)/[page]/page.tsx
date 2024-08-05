@@ -1,7 +1,7 @@
 import ContentList from "@/components/contentList/content-list";
 import Header from "@/components/header/header";
 import { Container } from "@/components/ui/container";
-import { CMS_PAGES, DataItem } from "@/lib/dataType";
+import { CMS_PAGES } from "@/lib/dataType";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 

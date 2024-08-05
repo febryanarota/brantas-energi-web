@@ -74,7 +74,6 @@ export default function FormPengaduan() {
         });
 
         if (!response.ok) {
-          // handle error
           throw new Error("Network response was not ok");
         }
         resetForm();

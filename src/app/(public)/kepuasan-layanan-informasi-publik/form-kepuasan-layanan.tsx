@@ -79,6 +79,11 @@ export default function FormKepuasanLayanan() {
           description: "Form successfully submitted",
         });
       } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
         console.error("Form submission error:", error);
       } finally {
         setSubmitting(false);

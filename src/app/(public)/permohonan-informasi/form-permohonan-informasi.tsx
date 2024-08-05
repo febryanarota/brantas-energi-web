@@ -56,11 +56,9 @@ export const FormPermohonanInformasi = () => {
           body: JSON.stringify(values),
         });
         if (!response.ok) {
-          // handle error
           throw new Error("Network response was not ok");
         }
         const result = await response.json();
-        // handle message
         console.log("Form successfully submitted:", result);
         resetForm();
         toast({
@@ -68,6 +66,11 @@ export const FormPermohonanInformasi = () => {
           description: "Form successfully submitted",
         });
       } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
         console.error("Form submission error:", error);
       } finally {
         setSubmitting(false);
