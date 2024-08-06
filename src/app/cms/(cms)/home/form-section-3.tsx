@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import CreateCardModal from "../../../../components/modals/createCardModal";
 import { isArraysEq } from "@/lib/utils";
 import { ListComponent } from "@/components/card/cardList";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function FormSection3({
   verified,
@@ -77,6 +78,8 @@ const CardForm = ({
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
+  const { toast } = useToast();
+
   const handleOpen = (event: any) => {
     event.preventDefault();
     onOpen();
@@ -104,7 +107,17 @@ const CardForm = ({
 
     setIsSaving(false);
     if (response) {
-      window.location.reload();
+      toast({
+        title: "Success!",
+        description: "Section 3 has been updated successfully",
+      });
+    } else {
+      setError("Failed to save changes");
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Failed to update Section 3",
+      });
     }
   };
 

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../../globals.css"; // Import global styles
+import "../../globals.css";
 import Sidebar from "@/components/sidebar/sidebar";
 import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function CmsLayout({
       <div className="bg-slate-100 grow h-full min-h-screen max-h-screen overflow-auto py-10 flex justify-center">
         {children}
       </div>
+      <Toaster />
     </div>
   );
 }

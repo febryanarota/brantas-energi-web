@@ -7,6 +7,7 @@ import { Button } from "@nextui-org/button";
 import { home } from "@prisma/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function FormSection4({
   verified,
@@ -46,6 +47,8 @@ export default function FormSection4({
   const [isRejecting, setIsRejecting] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [isFetching, setIsFetching] = useState<boolean>(true);
+
+  const { toast } = useToast();
 
   useEffect(() => {
     if (verified) {
@@ -131,6 +134,8 @@ export default function FormSection4({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setError(""); 
+
     setIsSaving(true);
 
     const formData = new FormData();
@@ -176,11 +181,19 @@ export default function FormSection4({
         );
       }
 
-      setIsSaving(false); // Set loading state to false
-      window.location.reload();
+      setIsSaving(false); 
+      toast({
+        title: "Success!",
+        description: "Section 4 has been updated successfully",
+      });
     } catch (error) {
       console.error("Error:", error);
-      setIsSaving(false); // Set loading state to false
+      setIsSaving(false);
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Failed to update Section 4",
+      });
     }
   };
 
