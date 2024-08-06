@@ -169,8 +169,8 @@ const CardForm = ({
         </div>
         <div className="w-full border-1 border-slate-200 rounded-md p-2 space-y-2">
           {cardsData.map((card, index) => (
-            <div id={"list-component-" + index}>
-              <ListComponent key={index} card={card} role={role} id={"list-component-" + index}/>
+            <div id={"list-component-" + index} key={index}>
+              <ListComponent  card={card} role={role} id={"list-component-" + index}/>
             </div>
           ))}
         </div>
@@ -294,8 +294,8 @@ const RequestPending = ({
       </div>
       <div className="text-sm space-y-5">
         {pendingCards.map((card, index) => (
-          <div id={"pending-list-" + index}>
-            <ListComponent key={index} card={card} isRequest={true} role={role} id={"pending-list-" + index}/>
+          <div id={"pending-list-" + index} key={index}>
+            <ListComponent card={card} isRequest={true} role={role} id={"pending-list-" + index}/>
           </div>
         ))}
       </div>
