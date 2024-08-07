@@ -48,19 +48,6 @@ model page {
   contentBlock_contentBlock_pageTopage contentBlock[] @relation("contentBlock_pageTopage")
 }
 
-model profile {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  name       String?  @db.VarChar
-  address    String?  @db.VarChar
-  phone      String?  @db.VarChar
-  email      String?  @db.VarChar
-  instagram  String?  @db.VarChar
-  youtube    String?  @db.VarChar
-  twitter    String?  @db.VarChar
-  facebook   String?  @db.VarChar
-}
-
 model text {
   id           Int           @id @default(autoincrement())
   content      String?       @db.VarChar
