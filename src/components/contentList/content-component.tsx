@@ -110,13 +110,7 @@ export function ContentComponent({
       {loading ? (
         <div className="space-y-3 mt-5">
           <Skeleton className="w-full rounded-lg">
-            <div className="h-3 w-full rounded-lg bg-default-200"></div>
-          </Skeleton>
-          <Skeleton className="w-full rounded-lg">
-            <div className="h-3 w-full rounded-lg bg-default-200"></div>
-          </Skeleton>
-          <Skeleton className="w-3/5 rounded-lg">
-            <div className="h-3 w-3/5 rounded-lg bg-default-300"></div>
+            <div className="h-[30px] w-full rounded-lg bg-default-200"></div>
           </Skeleton>
         </div>
       ) : !data ? (
