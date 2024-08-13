@@ -2,7 +2,9 @@ import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -20,9 +22,13 @@ export async function POST(req: NextRequest) {
 
   const length = parseInt(body.get("length") as string);
 
+  const dir = path.join(process.cwd(), "public/fileImageBlock");
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
   let dataId: number[] = [];
   for (let i = 0; i < length; i++) {
-    const uuid = shortUUID.generate();
     const title = body.get(`title[${i}]`) as string;
     const isFile = body.get(`isFile[${i}]`) === "true" ? true : false;
     let link = body.get(`link[${i}]`)
@@ -32,52 +38,37 @@ export async function POST(req: NextRequest) {
     const file = body.get(`file[${i}]`)
       ? (body.get(`file[${i}]`) as File)
       : null;
-    const fileExt = file ? file.name.split(".").pop() : null;
 
     const image = body.get(`image[${i}]`) as File;
-    const imageExt = image.name.split(".").pop();
+    const imageName = `${shortUUID.generate()}.${image.type.split("/")[1]}`; 
+    const imagePath = path.join(dir, imageName); 
 
-    const imageUpload = await storage.image.upload(
-      `/public/file-image/${uuid}.${imageExt}`,
-      image,
-    );
-
-    if (!imageUpload) {
-      return NextResponse.json(
-        { error: "Error image upload" },
-        { status: 500 },
-      );
-    }
+    // save the image to the local 
+    const blob = await image.arrayBuffer(); 
+    const buffer = Buffer.from(blob); 
+    fs.writeFileSync(imagePath, buffer); 
 
     if (file) {
-      const fileUpload = await storage.file.upload(
-        `/public/file-image/${uuid}.${fileExt}`,
-        file,
-      );
+      // upload file
+      const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+      const filePath = path.join(dir, fileName);
 
-      if (!fileUpload) {
-        return NextResponse.json(
-          { error: "Error file upload" },
-          { status: 500 },
-        );
-      }
+      const blob = await file.arrayBuffer();
+      const buffer = Buffer.from(blob);
+      fs.writeFileSync(filePath, buffer)
 
-      link = `public/file-image/${uuid}.${fileExt}`;
+      link = `/fileImageBlock/${fileName}`;
     }
 
     const response = await prisma.fileImage.create({
       data: {
         title: title,
         link: link || undefined,
-        image: `public/file-image/${uuid}.${imageExt}`,
+        image: `/fileImageBlock/${imageName}`,
         isFile: isFile,
       },
     });
 
-    if (!response) {
-      await storage.file.delete(`/public/file-image/${uuid}.${imageExt}`);
-      return NextResponse.json({ error: "Error saving file" }, { status: 500 });
-    }
 
     dataId.push(response.id);
   }
