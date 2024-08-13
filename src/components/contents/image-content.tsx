@@ -46,11 +46,11 @@ export const ImageContent = ({
           <div className="flex flex-col">
             <p className="font-semibold text-slate-500">Image</p>
             <a
-              href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${content.shadowId}`}
+              href={content.image}
               target="_blank"
             >
               <Image
-                src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${content.shadowId}`}
+                src={content.image}
                 alt={content.alt ? content.alt : "image"}
                 width={100}
                 height={100}
@@ -72,11 +72,11 @@ export const ImageContent = ({
             <div className="flex flex-col">
               <p className="font-semibold text-slate-500">Image</p>
               <a
-                href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${editData.shadowId}`}
+                href={editData.image}
                 target="_blank"
               >
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${editData.shadowId}`}
+                  src={editData.image}
                   alt={editData.alt ? editData.alt : "image"}
                   width={100}
                   height={100}

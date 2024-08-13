@@ -68,7 +68,7 @@ export const FileImageContent = ({
           >
             <div className="w-[3rem] h-[3rem] rounded-md overflow-hidden">
               <Image
-                src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${fileImage.image}`}
+                src={fileImage.image}
                 alt={fileImage.title}
                 width={100}
                 height={100}
@@ -93,7 +93,7 @@ export const FileImageContent = ({
               >
                 <div className="w-[3rem] h-[3rem] rounded-md overflow-hidden">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${fileImage.image}`}
+                    src={fileImage.image}
                     alt={fileImage.title}
                     width={100}
                     height={100}
