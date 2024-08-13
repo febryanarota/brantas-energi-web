@@ -14,6 +14,17 @@ export async function GET(
       },
     });
 
+    if (!result) {
+      // create a new page if it doesn't exist
+      const newPage = await prisma.page.create({
+        data: {
+          id: context.params.id,
+          positions: [],
+        },
+      });
+      return NextResponse.json(newPage);
+    }
+
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching data:", error);
