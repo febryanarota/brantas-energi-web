@@ -171,12 +171,12 @@ export function ImageContent({ data }: { data: image }) {
   return (
     <div className="w-full md:py-8 py-4">
       <a
-        href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`}
+        href={data.image}
         target="_blank"
       >
         <div className="max-h-[70vh] flex justify-center items-center">
           <Image
-            src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`}
+            src={data.image}
             alt={data.alt ? data.alt : "image"}
             width={2000}
             height={2000}
