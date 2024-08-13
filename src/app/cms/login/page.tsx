@@ -24,10 +24,9 @@ export default function Page() {
 
     if (result.success) {
       router.push("/cms/profile");
-    } 
-    // else {
-    //   setError(result.error);
-    // }
+    } else {
+      setError(result.error);
+    }
 
     setLoading(false);
   }
