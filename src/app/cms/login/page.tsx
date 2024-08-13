@@ -20,12 +20,14 @@ export default function Page() {
     });
 
     const result = await response.json();
+    console.log(result);
 
     if (result.success) {
       router.push("/cms/profile");
-    } else {
-      setError(result.error);
-    }
+    } 
+    // else {
+    //   setError(result.error);
+    // }
 
     setLoading(false);
   }
@@ -55,7 +57,7 @@ export default function Page() {
           className={`bg-primaryYellow font-extrabold px-10 mt-5`}
           disabled={loading ? true : false}
         >
-          {loading ? "Loading" : "Login"}
+          {loading ? "Loading" : "Login test"}
         </Button>
         {error && !loading && (
           <p className="text-red-500 mt-2 text-sm">{error}</p>
