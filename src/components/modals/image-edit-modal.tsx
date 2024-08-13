@@ -49,9 +49,9 @@ export const ImageEditModal = ({
         const data: image = await response.json();
         setContent(data);
         setImagePreview(
-          `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.shadowId}`,
+          data.image,
         );
-        setFileName(data.shadowId);
+        setFileName(data.image);
         setIsFetching(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -219,9 +219,9 @@ export const ImageEditModal = ({
         </div>
 
         {imagePreview && (
-          <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center ">
+          <div className="w-full max-w-[80%] h-[20rem] self-center flex flex-col items-center mt-5">
             <div className="rounded-md overflow-hidden h-full w-fit shadow-md">
-              <Image src={imagePreview} alt="Preview" className="h-full w-fit" width={100} height={100}/>
+              <Image src={imagePreview} alt="Preview" className="h-full w-fit object-cover" width={500} height={500}/>
             </div>
           </div>
         )}
