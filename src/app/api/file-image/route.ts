@@ -1,6 +1,5 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import shortUUID from "short-uuid";
@@ -40,7 +39,8 @@ export async function POST(req: NextRequest) {
       : null;
 
     const image = body.get(`image[${i}]`) as File;
-    const imageName = `${shortUUID.generate()}.${image.type.split("/")[1]}`; 
+    const extension = image.name.split(".").pop();
+    const imageName = `${shortUUID.generate()}.${extension}`; 
     const imagePath = path.join(dir, imageName); 
 
     // save the image to the local 
@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
 
     if (file) {
       // upload file
-      const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+      const extension = file.name.split(".").pop();
+      const fileName = `${shortUUID.generate()}.${extension}`;
       const filePath = path.join(dir, fileName);
 
       const blob = await file.arrayBuffer();
@@ -148,7 +149,8 @@ export async function PUT(req: NextRequest) {
     // if isFile
     // upload file
     if (isFile && file) {
-      const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+      const extension = file.name.split(".").pop();
+      const fileName = `${shortUUID.generate()}.${extension}`;
       const filePath = path.join(imagesDir, fileName);
 
       const blob = await file.arrayBuffer();
@@ -159,7 +161,8 @@ export async function PUT(req: NextRequest) {
     }
 
     // upload image
-    const imageName = `${shortUUID.generate()}.${image.type.split("/")[1]}`;
+    const extension = image.name.split(".").pop();
+    const imageName = `${shortUUID.generate()}.${extension}`;
     const imagePath = path.join(imagesDir, imageName);
 
     const blob = await image.arrayBuffer();

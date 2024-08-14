@@ -102,7 +102,8 @@ export async function PUT(
     if (!fs.existsSync(imagesDir)) {
       fs.mkdirSync(imagesDir, { recursive: true });
     }
-    const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+    const extension = file.name.split(".").pop();
+    const fileName = `${shortUUID.generate()}.${extension}`;
     const filePath = path.join(imagesDir, fileName);
 
     // save the image to the local 
