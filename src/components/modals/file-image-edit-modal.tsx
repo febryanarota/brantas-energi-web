@@ -107,7 +107,7 @@ export const FileImageEditModal = ({
             id: fileImage.id,
             fileName: null,
             imageName: null,
-            imagePreview: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${fileImage.image}`,
+            imagePreview: fileImage.image,
           };
 
           console.log(newFileImage);

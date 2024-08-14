@@ -1,7 +1,8 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 import shortUUID from "short-uuid";
 
 export async function GET(
@@ -41,11 +42,13 @@ export async function DELETE(
     });
 
     if (result) {
-      const image = "public/" + result.shadowId.split("/").pop();
-      await storage.image.delete(image as string).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      // delete the file
+      const filePath = path.join(process.cwd(), "public", result.image);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      } else {
+        console.warn("File not found:", filePath);
+      }
     }
 
     return NextResponse.json(result);
@@ -73,39 +76,52 @@ export async function PUT(
   const body = await req.formData();
   const blockId = parseInt(body.get("blockId") as string, 10);
   const file = body.get("file") as File;
-  const fileExtension = file.name.split(".").pop();
-  const uuid = shortUUID.generate();
 
   try {
     const id = parseInt(context.params.id, 10);
-    const fileName = await prisma.image.findFirst({
+    const oldImage = await prisma.image.findFirst({
       where: {
         id: id,
       },
     });
 
-    const deleteImage = "public/" + fileName?.shadowId.split("/").pop();
-    await storage.image.delete(deleteImage).catch((error) => {
-      console.error("Error deleting image:", error);
-      throw new Error("Error deleting image");
-    });
+    if (!oldImage) {
+      return NextResponse.json({ error: "deleted file not found" });
+    }
+
+    // remove the old image
+    const oldPath = path.join(process.cwd(), "public", oldImage.image);
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
+    } else {
+      console.warn("File not found:", oldPath);
+    }
+
+    // save the new image
+    const imagesDir = path.join(process.cwd(), "public/imageBlock");
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+    const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+    const filePath = path.join(imagesDir, fileName);
+
+    // save the image to the local 
+    const blob = await file.arrayBuffer(); 
+    const buffer = Buffer.from(blob); 
+    fs.writeFileSync(filePath, buffer); 
+
+    const relativeFilePath = `/imageBlock/${fileName}`;
 
     const result = await prisma.image.update({
       where: {
         id: id,
       },
       data: {
-        shadowId: `/public/${uuid}.${fileExtension}`,
+        image: relativeFilePath,
         alt: body.get("alt") as string,
       },
     });
 
-    await storage.image
-      .upload(`/public/${uuid}.${fileExtension}`, file)
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        throw new Error("Error uploading image");
-      });
 
     if (role !== "admin") {
       const res = await prisma.contentBlock.update({

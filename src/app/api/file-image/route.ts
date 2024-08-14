@@ -2,7 +2,9 @@ import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -20,9 +22,13 @@ export async function POST(req: NextRequest) {
 
   const length = parseInt(body.get("length") as string);
 
+  const dir = path.join(process.cwd(), "public/fileImageBlock");
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
   let dataId: number[] = [];
   for (let i = 0; i < length; i++) {
-    const uuid = shortUUID.generate();
     const title = body.get(`title[${i}]`) as string;
     const isFile = body.get(`isFile[${i}]`) === "true" ? true : false;
     let link = body.get(`link[${i}]`)
@@ -32,52 +38,37 @@ export async function POST(req: NextRequest) {
     const file = body.get(`file[${i}]`)
       ? (body.get(`file[${i}]`) as File)
       : null;
-    const fileExt = file ? file.name.split(".").pop() : null;
 
     const image = body.get(`image[${i}]`) as File;
-    const imageExt = image.name.split(".").pop();
+    const imageName = `${shortUUID.generate()}.${image.type.split("/")[1]}`; 
+    const imagePath = path.join(dir, imageName); 
 
-    const imageUpload = await storage.image.upload(
-      `/public/file-image/${uuid}.${imageExt}`,
-      image,
-    );
-
-    if (!imageUpload) {
-      return NextResponse.json(
-        { error: "Error image upload" },
-        { status: 500 },
-      );
-    }
+    // save the image to the local 
+    const blob = await image.arrayBuffer(); 
+    const buffer = Buffer.from(blob); 
+    fs.writeFileSync(imagePath, buffer); 
 
     if (file) {
-      const fileUpload = await storage.file.upload(
-        `/public/file-image/${uuid}.${fileExt}`,
-        file,
-      );
+      // upload file
+      const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+      const filePath = path.join(dir, fileName);
 
-      if (!fileUpload) {
-        return NextResponse.json(
-          { error: "Error file upload" },
-          { status: 500 },
-        );
-      }
+      const blob = await file.arrayBuffer();
+      const buffer = Buffer.from(blob);
+      fs.writeFileSync(filePath, buffer)
 
-      link = `public/file-image/${uuid}.${fileExt}`;
+      link = `/fileImageBlock/${fileName}`;
     }
 
     const response = await prisma.fileImage.create({
       data: {
         title: title,
         link: link || undefined,
-        image: `public/file-image/${uuid}.${imageExt}`,
+        image: `/fileImageBlock/${imageName}`,
         isFile: isFile,
       },
     });
 
-    if (!response) {
-      await storage.file.delete(`/public/file-image/${uuid}.${imageExt}`);
-      return NextResponse.json({ error: "Error saving file" }, { status: 500 });
-    }
 
     dataId.push(response.id);
   }
@@ -101,6 +92,12 @@ export async function PUT(req: NextRequest) {
   const session = await decrypt(sessionExists.value);
   const role = session.role;
 
+  // create image folder if not existed
+  const imagesDir = path.join(process.cwd(), "public/fileImageBlock");
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
+  }
+
   const body = await req.formData();
   if (!body) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -112,7 +109,6 @@ export async function PUT(req: NextRequest) {
   for (let i = 0; i < length; i++) {
     newIds.push(parseInt(body.get(`order[${i}]`) as string));
   }
-  console.log("\n\nnew ids", newIds);
 
   // get the old array of fileImageIds
   const contentBlock = await prisma.contentBlock.findFirst({
@@ -128,83 +124,57 @@ export async function PUT(req: NextRequest) {
     },
   });
   const oldIds = oldBuffer?.fileImageIds;
-  console.log("\n\nold ids", oldIds);
 
   const addIds = newIds.filter((id) => !oldIds?.includes(id));
-  console.log("\n\nadd ids", addIds);
   for (const id of addIds) {
     const isFile = body.get(`isFile[${id}]`) === "true" ? true : false;
 
-    console.log("\n\ncurrent id", id);
-    console.log("\n\nisFile", isFile);
-
     let file = null;
-    let fileExtension = null;
+    // let fileExtension = null;
     let link = null;
 
     if (isFile) {
       file = body.get(`file[${id}]`) as File;
-      console.log("\n\nfile name", file.name);
-      fileExtension = file.name.split(".").pop();
     } else {
       link = body.get(`link[${id}]`) as string;
     }
 
     const image = body.get(`image[${id}]`) as File;
-    console.log("\n\nimage name", image.name);
-    const imageExtension = image.name.split(".").pop();
 
     const title = body.get(`title[${id}]`) as string;
 
-    const uuid = shortUUID.generate();
+
 
     // if isFile
     // upload file
     if (isFile && file) {
-      const fileUpload = await storage.file.upload(
-        `/public/file-image/${uuid}.${fileExtension}`,
-        file,
-      );
+      const fileName = `${shortUUID.generate()}.${file.type.split("/")[1]}`;
+      const filePath = path.join(imagesDir, fileName);
 
-      if (!fileUpload) {
-        return NextResponse.json(
-          { error: "Error file upload" },
-          { status: 500 },
-        );
-      }
-      link = `public/file-image/${uuid}.${fileExtension}`;
+      const blob = await file.arrayBuffer();
+      const buffer = Buffer.from(blob);
+      fs.writeFileSync(filePath, buffer);
+
+      link = `/fileImageBlock/${fileName}`;
     }
 
     // upload image
-    const imageUpload = await storage.image.upload(
-      `/public/file-image/${uuid}.${imageExtension}`,
-      image,
-    );
+    const imageName = `${shortUUID.generate()}.${image.type.split("/")[1]}`;
+    const imagePath = path.join(imagesDir, imageName);
 
-    if (!imageUpload) {
-      return NextResponse.json(
-        { error: "Error image upload" },
-        { status: 500 },
-      );
-    }
+    const blob = await image.arrayBuffer();
+    const buffer = Buffer.from(blob);
+    fs.writeFileSync(imagePath, buffer);
 
     // create fileImage
     const response = await prisma.fileImage.create({
       data: {
         title: title,
         link: link as string,
-        image: `public/file-image/${uuid}.${imageExtension}`,
+        image: `/fileImageBlock/${imageName}`,
         isFile: isFile,
       },
     });
-
-    if (!response) {
-      await storage.file.delete(`/public/file-image/${uuid}.${fileExtension}`);
-      await storage.image.delete(
-        `/public/file-image/${uuid}.${imageExtension}`,
-      );
-      return NextResponse.json({ error: "Error saving file" }, { status: 500 });
-    }
 
     // Replace the temporary id with the newly created id
     newIds = newIds.map((nid) => (nid === id ? response.id : nid));
@@ -216,7 +186,6 @@ export async function PUT(req: NextRequest) {
   if (role === "admin") {
     // delete = old - new
     const deleteIds = oldIds?.filter((id) => !newIds.includes(id));
-    console.log("\n\ndelete ids", deleteIds);
     if (deleteIds) {
       for (const id of deleteIds) {
         // get the fileImage
@@ -229,23 +198,20 @@ export async function PUT(req: NextRequest) {
         if (fileImage?.link) {
           // if isFile
           if (fileImage.isFile) {
-            const deleteFile =
-              "public/file-image/" + fileImage.link.split("/").pop();
-            await storage.file.delete(deleteFile).catch((error) => {
-              console.error("Error deleting file:", error);
-              throw new Error("Error deleting file");
-            });
+            const deletePath = path.join(process.cwd(), "public", fileImage.link);
+            if (fs.existsSync(deletePath)) {
+              fs.unlinkSync(deletePath);
+            }
           }
         }
 
         // delete image
-        const deleteImage =
-          "public/file-image/" + fileImage?.image.split("/").pop();
-
-        await storage.image.delete(deleteImage).catch((error) => {
-          console.error("Error deleting image:", error);
-          throw new Error("Error deleting image");
-        });
+        if (fileImage) {
+          const deleteImagePath = path.join(process.cwd(), "public", fileImage.image);
+          if (fs.existsSync(deleteImagePath)) {
+            fs.unlinkSync(deleteImagePath);
+          }
+        }
 
         await prisma.fileImage.delete({
           where: {
@@ -281,9 +247,4 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(result);
   }
-
-  // add = new - old
-  // update new array in fileImafeBuffer
-
-  // return NextResponse.json(response);
 }

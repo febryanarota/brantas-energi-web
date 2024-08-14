@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -60,20 +61,21 @@ export async function DELETE(
 
         if (fileImage) {
           if (fileImage.link && fileImage.isFile) {
-            const file = "public/file-image/" + fileImage.link.split("/").pop();
-            await storage.file.delete(file as string).catch((error) => {
-              console.error("Error deleting file:", error);
-              throw new Error("Error deleting file");
-            });
+            const deleteFile = path.join(process.cwd(), "public", fileImage.link);
+            if (fs.existsSync(deleteFile)) {
+              fs.unlinkSync(deleteFile);
+            } else {
+              console.warn("File not found:", deleteFile);
+            }
           }
 
           if (fileImage.image) {
-            const image =
-              "public/file-image/" + fileImage.image.split("/").pop();
-            await storage.image.delete(image as string).catch((error) => {
-              console.error("Error deleting image:", error);
-              throw new Error("Error deleting image");
-            });
+            const deleteImage = path.join(process.cwd(), "public", fileImage.image);
+            if (fs.existsSync(deleteImage)) {
+              fs.unlinkSync(deleteImage);
+            } else {
+              console.warn("Image not found:", deleteImage);
+            }
           }
         }
 
@@ -122,20 +124,17 @@ export async function DELETE(
 
         if (fileImage) {
           if (fileImage.link && fileImage.isFile) {
-            const file = "public/file-image/" + fileImage.link.split("/").pop();
-            await storage.file.delete(file as string).catch((error) => {
-              console.error("Error deleting file:", error);
-              throw new Error("Error deleting file");
-            });
+            const deleteFile = path.join(process.cwd(), "public", fileImage.link);
+            if (fs.existsSync(deleteFile)) {
+              fs.unlinkSync(deleteFile);
+            }
           }
 
           if (fileImage.image) {
-            const image =
-              "public/file-image/" + fileImage.image.split("/").pop();
-            await storage.image.delete(image as string).catch((error) => {
-              console.error("Error deleting image:", error);
-              throw new Error("Error deleting image");
-            });
+            const deleteImage = path.join(process.cwd(), "public", fileImage.image);
+            if (fs.existsSync(deleteImage)) {
+              fs.unlinkSync(deleteImage);
+            }
           }
         }
 
@@ -168,19 +167,17 @@ export async function DELETE(
 
     if (fileImage) {
       if (fileImage.link && fileImage.isFile) {
-        const file = "public/file-image/" + fileImage.link.split("/").pop();
-        await storage.file.delete(file as string).catch((error) => {
-          console.error("Error deleting file:", error);
-          throw new Error("Error deleting file");
-        });
+        const deleteFile = path.join(process.cwd(), "public", fileImage.link);
+        if (fs.existsSync(deleteFile)) {
+          fs.unlinkSync(deleteFile);
+        }
       }
 
       if (fileImage.image) {
-        const image = "public/file-image/" + fileImage.image.split("/").pop();
-        await storage.image.delete(image as string).catch((error) => {
-          console.error("Error deleting image:", error);
-          throw new Error("Error deleting image");
-        });
+        const deleteImage = path.join(process.cwd(), "public", fileImage.image);
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        }
       }
     }
 
