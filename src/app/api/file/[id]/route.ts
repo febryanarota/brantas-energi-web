@@ -1,8 +1,9 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export async function GET(
   req: NextRequest,
@@ -42,11 +43,12 @@ export async function DELETE(
 
     if (result.isFile) {
       if (result.link) {
-        const file = "public/" + result.link.split("/").pop();
-        await storage.file.delete(file as string).catch((error) => {
-          console.error("Error deleting file:", error);
-          throw new Error("Error deleting file");
-        });
+        const filePath = path.join(process.cwd(), "public", result.link);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        } else {
+          console.warn("File not found:", filePath);
+        }
       } else {
         throw new Error("Link not found");
       }
@@ -92,28 +94,38 @@ export async function PUT(
 
     if (oldIsFile) {
       // remove the file in storage
-      const deleteFile = "public/" + fileTarget?.link?.split("/").pop();
-      await storage.file.delete(deleteFile).catch((error) => {
-        console.error("Error deleting file:", error);
-        throw new Error("Error deleting file");
-      });
+      if (fileTarget.link) {
+        const filePath = path.join(process.cwd(), "public", fileTarget.link);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        } else {
+          console.warn("File not found:", filePath);
+        }
+      }
     }
 
     let link;
     if (newIsFile) {
       const file = body.get("file") as File;
+
+      // create image folder if not existed
+      const fileDir = path.join(process.cwd(), "public/fileBlock");
+      if (!fs.existsSync(fileDir)) {
+        fs.mkdirSync(fileDir, { recursive: true });
+      }
+
+      // Generate a unique filename
       const fileExtension = file.name.split(".").pop();
-      const uuid = shortUUID.generate();
+      const fileName = `${shortUUID.generate()}.${fileExtension}`;
+      const filePath = path.join(fileDir, fileName);
 
-      await storage.file
-        .upload(`/public/${uuid}.${fileExtension}`, file)
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-          throw new Error("Error uploading image");
-        });
+      // save the image to the local
+      const blob = await file.arrayBuffer();
+      const buffer = Buffer.from(blob);
+      fs.writeFileSync(filePath, buffer);
 
-      link = `/public/${uuid}.${fileExtension}`;
-      
+      link = `/fileBlock/${fileName}`;
+
     } else {
       link = body.get("link") as string;
     }

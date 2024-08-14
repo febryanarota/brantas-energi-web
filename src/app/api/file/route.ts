@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -37,33 +38,33 @@ export async function POST(req: NextRequest) {
   const isFile = body.get("isFile");
 
   if (isFile === "true") {
-    const uuid = shortUUID.generate();
+    const imagesDir = path.join(process.cwd(), "public/fileBlock");
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+
     const file: File = body.get("file") as File;
     const display = body.get("display");
+
     const fileExtension = file.name.split(".").pop();
+    const fileName = `${shortUUID.generate()}.${fileExtension}`; 
+    const filePath = path.join(imagesDir, fileName); 
+
+    const blob = await file.arrayBuffer(); 
+    const buffer = Buffer.from(blob); 
+    fs.writeFileSync(filePath, buffer);
 
     try {
-      const fileUpload = await storage.file.upload(
-        `/public/${uuid}.${fileExtension}`,
-        file,
-      );
-      if (!fileUpload) {
-        return NextResponse.json(
-          { error: "Error file upload" },
-          { status: 500 },
-        );
-      }
-
       const result = await prisma.file.create({
         data: {
-          link: `/public/${uuid}.${fileExtension}`,
+          link: `/fileBlock/${fileName}`,
           display: display as string,
           isFile: true,
         },
       });
 
       if (!result) {
-        await storage.file.delete(`/public/${uuid}.${fileExtension}`);
+        fs.unlinkSync(filePath);
         return NextResponse.json(
           { error: "Error saving file" },
           { status: 500 },
