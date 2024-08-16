@@ -32,7 +32,7 @@ const Layanan: React.FC<PropType> = (props) => {
                   <div className="w-full h-[90%] py-5">
                     <div className="w-[75%] h-full rounded-md overflow-hidden md:block hidden max-w-[75%]">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${slide.image}`}
+                        src={`${slide.image}`}
                         width={1000}
                         height={1000}
                         alt=""

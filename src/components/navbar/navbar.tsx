@@ -50,7 +50,7 @@ export default function NavigationBar({ data }: { data: home }) {
         <NavbarBrand>
           <a href="/">
             <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.logo}`}
+              src={`${data.logo}`}
               width={40}
               height={40}
               alt="Logo PT Brantas Energi "
@@ -68,7 +68,7 @@ export default function NavigationBar({ data }: { data: home }) {
         <NavbarBrand>
           <a href="/">
             <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.logo}`}
+              src={`${data.logo}`}
               width={75}
               height={75}
               alt="Logo PT Brantas Energi "

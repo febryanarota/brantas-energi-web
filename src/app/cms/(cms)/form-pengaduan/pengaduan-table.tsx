@@ -32,8 +32,8 @@ export default function TableComponent() {
         console.log(res);
         setData(res.data);
         setTotalPage(res.pagination.totalPage);
-        setIsLoading(false);
       });
+    setIsLoading(false);
   }, [page, limit, sortDateAscending, searchName]);
 
   const handlePageChange = (newPage: number) => {
@@ -161,7 +161,7 @@ export default function TableComponent() {
                 <TableCell className="align-text-top">
                   <div className=" max-w-[10rem] overflow-clip">
                     <a
-                      href={`${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${row.link_lampiran}`}
+                      href={`${row.link_lampiran}`}
                       target="_blank"
                     >
                       {row.link_lampiran ?? "-"}

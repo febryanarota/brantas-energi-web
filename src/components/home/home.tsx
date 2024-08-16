@@ -41,7 +41,7 @@ export default function Home({ data }: { data: home }) {
       <div className="w-full h-screen relative">
         <div className="absolute inset-0 bg-black opacity-30"></div>
         <Image
-          src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.image1}`}
+          src={`${data.image1}`}
           width={2000}
           height={1000}
           alt=""
@@ -69,7 +69,7 @@ export default function Home({ data }: { data: home }) {
           <div className="relative sm:w-1/2 h-fit">
             <div className="relative w-[90%] h-[200px] sm:h-[350px] rounded-md overflow-hidden">
               <Image
-                src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.image2}`}
+                src={`${data.image2}`}
                 width={500}
                 height={500}
                 alt=""
@@ -78,7 +78,7 @@ export default function Home({ data }: { data: home }) {
               <div className="absolute w-full h-full bg-primaryYellow inset-0 bg-opacity-30"></div>
             </div>
             <Image
-              src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${data.image2}`}
+              src={`${data.image2}`}
               width={500}
               height={500}
               alt=""

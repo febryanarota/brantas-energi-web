@@ -194,7 +194,7 @@ export function FileLinkContent({ data }: { data: file }) {
       <a
         href={
           data.isFile
-            ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${data.link}`
+            ? `/${data.link}`
             : (data.link as string)
         }
         target="_blank"
@@ -284,13 +284,13 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
                 <a
                   href={
                     item.isFile
-                      ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${item.link}`
+                      ? `$${item.link}`
                       : item.link
                   }
                   target="_blank"
                 >
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${item.image}`}
+                    src={`${item.image}`}
                     width={300}
                     height={300}
                     alt={item.title || "image"}
@@ -304,7 +304,7 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
                 onClick={() =>
                   handleDownload(
                     item.isFile
-                      ? `${process.env.NEXT_PUBLIC_FILE_STORAGE_URL}/${item.link}`
+                      ? `/${item.link}`
                       : item.link,
                   )
                 }
