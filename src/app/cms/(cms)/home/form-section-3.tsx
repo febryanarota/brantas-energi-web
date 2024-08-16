@@ -111,6 +111,9 @@ const CardForm = ({
         title: "Success!",
         description: "Section 3 has been updated successfully",
       });
+      if (role !== "admin") {
+        window.location.reload();
+      }
     } else {
       setError("Failed to save changes");
       toast({

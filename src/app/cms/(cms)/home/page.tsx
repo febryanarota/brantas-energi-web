@@ -84,11 +84,11 @@ export default async function Page() {
               pendingCards={card.pending}
             />
 
-            {/* <FormSection4
+            <FormSection4
               verified={data.verified}
               pending={data.pending}
               role={role}
-            /> */}
+            />
           </div>
         </div>
       </CMSContainer>

@@ -2,7 +2,9 @@ import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -18,10 +20,15 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const uuid = shortUUID.generate();
 
   const image = body.get("logo") as File;
-  const fileExtension = image.name.split(".").pop();
+  const imagesDir = path.join(process.cwd(), "public/homeBlock");
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
+  }
+  const extension = image.name.split(".").pop();
+  const fileName = `${shortUUID.generate()}.${extension}`;
+  const filePath = path.join(imagesDir, fileName);
 
   const name = body.get("name") as string;
   const address = body.get("address") as string;
@@ -44,19 +51,21 @@ export async function PUT(req: NextRequest) {
           status: "verified",
         },
       });
-      let path = "public/logo/" + (currData?.logo as string).split("/").pop();
-      await storage.image.delete(path).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      if (currData?.logo) {
+        const deleteImage = path.join(process.cwd(), "public", currData.logo);
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        } else {
+          console.warn("File not found:", deleteImage);
+        }
+      }
     }
 
-    await storage.image
-      .upload(`public/logo/${uuid}.${fileExtension}`, image)
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        throw new Error("Error uploading image");
-      });
+    const blob = await image.arrayBuffer();
+    const buffer = Buffer.from(blob);
+    fs.writeFileSync(filePath, buffer);
+
+    const relativeFilePath = `/homeBlock/${fileName}`;
 
     let result;
     if (role === "admin") {
@@ -67,7 +76,7 @@ export async function PUT(req: NextRequest) {
           },
         },
         data: {
-          logo: `public/logo/${uuid}.${fileExtension}`,
+          logo: relativeFilePath,
           name: name,
           address: address,
           email: email,
@@ -85,7 +94,7 @@ export async function PUT(req: NextRequest) {
           status: "updatePending",
         },
         data: {
-          logo: `public/logo/${uuid}.${fileExtension}`,
+          logo: relativeFilePath,
           name: name,
           address: address,
           email: email,

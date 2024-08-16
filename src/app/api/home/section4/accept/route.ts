@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export const maxDuration = 60;
 
@@ -26,11 +27,18 @@ export async function PUT(req: NextRequest) {
     });
 
     if (pending?.logo !== verified?.logo) {
-      let path = "public/logo/" + (verified?.logo as string).split("/").pop();
-      await storage.image.delete(path).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      if (verified?.logo) {
+        const deleteImage = path.join(
+          process.cwd(),
+          "public",
+          verified.logo,
+        );
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        } else {
+          console.warn("File not found:", deleteImage);
+        }
+      }
     }
 
     const update = await prisma.home.updateMany({

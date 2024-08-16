@@ -54,31 +54,34 @@ export default function FormSection4({
     if (verified) {
       const fetchImage = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.logo}`,
-          );
+          if (!verified.logo) {
+            setIsFetching(false);
+            return;
+          }
+
+          const response = await fetch(verified.logo);
           const blob = await response.blob();
           const file = new File([blob], verified.logo, { type: blob.type });
 
           setImage({
             image: file,
             name: verified.logo,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.logo}`,
+            display: verified.logo,
           });
 
-          const resPending = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.logo}`,
-          );
-          const blobPending = await resPending.blob();
-          const filePending = new File([blob], pending.logo, {
-            type: blobPending.type,
-          });
+          if (pending.logo) {
+            const resPending = await fetch(pending.logo);
+            const blobPending = await resPending.blob();
+            const filePending = new File([blob], pending.logo, {
+              type: blobPending.type,
+            });
 
-          setImagePending({
-            image: filePending,
-            name: pending.logo,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.logo}`,
-          });
+            setImagePending({
+              image: filePending,
+              name: pending.logo,
+              display: pending.logo,
+            });
+          }
 
           if (verified.logo !== pending.logo) {
             setIsPending(true);
@@ -186,6 +189,9 @@ export default function FormSection4({
         title: "Success!",
         description: "Section 4 has been updated successfully",
       });
+      if (role !== "admin") {
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Error:", error);
       setIsSaving(false);
@@ -330,7 +336,7 @@ export default function FormSection4({
                 <p className="font-semibold text-slate-500 text-sm">Image</p>
                 {imagePending?.display && (
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${imagePending.name}`}
+                    href={`${imagePending.display}`}
                     target="_blank"
                     className="w-fit h-fit"
                   >
@@ -454,7 +460,7 @@ export default function FormSection4({
               {image?.display && (
                 <div>
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${image.name}`}
+                    href={`${image.display}`}
                     target="_blank"
                     className="w-fit h-fit"
                   >
