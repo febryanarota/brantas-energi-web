@@ -103,27 +103,27 @@ model card {
 model home {
   id           Int      @id @default(autoincrement())
   created_at   DateTime @default(now()) @db.Timestamptz(6)
-  heading1     String   @db.VarChar
+  heading1     String?  @db.VarChar
   description1 String?  @db.VarChar
-  subheading2  String   @db.VarChar
-  heading2     String   @db.VarChar
+  subheading2  String?  @db.VarChar
+  heading2     String?  @db.VarChar
   description2 String?  @db.VarChar
-  subheading3  String   @db.VarChar
-  heading3     String   @db.VarChar
-  image1       String   @db.VarChar
-  status       status
-  image2       String   @default("") @db.VarChar
+  subheading3  String?  @db.VarChar
+  heading3     String?  @db.VarChar
+  image1       String?  @db.VarChar
+  status       status?
+  image2       String?  @default("") @db.VarChar
   cards        Int[]
-  name         String   @default("") @db.VarChar
-  address      String   @default("") @db.VarChar
-  phone        String   @default("") @db.VarChar
-  email        String   @default("") @db.VarChar
+  name         String?  @default("") @db.VarChar
+  address      String?  @default("") @db.VarChar
+  phone        String?  @default("") @db.VarChar
+  email        String?  @default("") @db.VarChar
   instagram    String?  @default("") @db.VarChar
   youtube      String?  @db.VarChar
   twitter      String?  @db.VarChar
   facebook     String?  @db.VarChar
   linkedin     String?  @db.VarChar
-  logo         String   @default("") @db.VarChar
+  logo         String?  @default("") @db.VarChar
 }
 
 model faq {

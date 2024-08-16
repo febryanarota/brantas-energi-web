@@ -42,31 +42,37 @@ export default function FormSection1({
     if (verified) {
       const fetchImage = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image1}`,
-          );
+          if (!verified.image1) {
+            setIsFetching(false);
+            return;
+          }
+
+          const response = await fetch(verified.image1);
           const blob = await response.blob();
-          const file = new File([blob], verified.image1, { type: blob.type });
+          if (verified.image1) {
+            const file = new File([blob], verified.image1, { type: blob.type });
+            setImage({
+              image: file,
+              name: verified.image1,
+              display: verified.image1,
+            });
+          }
+          
 
-          setImage({
-            image: file,
-            name: verified.image1,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image1}`,
-          });
-
-          const resPending = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.image1}`,
-          );
-          const blobPending = await resPending.blob();
-          const filePending = new File([blob], pending.image1, {
-            type: blobPending.type,
-          });
-
-          setImagePending({
-            image: filePending,
-            name: pending.image1,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.image1}`,
-          });
+          
+          if (pending.image1) {
+            const resPending = await fetch(pending.image1);
+            const blobPending = await resPending.blob();
+            const filePending = new File([blob], pending.image1, {
+              type: blobPending.type,
+            });
+  
+            setImagePending({
+              image: filePending,
+              name: pending.image1,
+              display: pending.image1,
+            });
+          }
 
           if (verified.image1 !== pending.image1) {
             setIsPending(true);
@@ -137,6 +143,10 @@ export default function FormSection1({
         title: "Success!",
         description: "Section 1 has been updated successfully",
       });
+
+      if (role !== "admin") {
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Error:", error);
       toast({
@@ -258,7 +268,7 @@ export default function FormSection1({
                 <p className="font-semibold text-slate-500 text-sm">Image</p>
                 {imagePending?.display && (
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${imagePending.name}`}
+                    href={imagePending.display}
                     target="_blank"
                     className="w-fit h-fit"
                   >
@@ -344,12 +354,12 @@ export default function FormSection1({
               {image?.display && (
                 <div>
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${image.name}`}
+                    href={image.display}
                     target="_blank"
                     className="w-fit h-fit"
                   >
                     <Image
-                      src={image?.display}
+                      src={image?.display? image.display : "/images/logo.png"}
                       alt=""
                       width={200}
                       height={200}

@@ -50,10 +50,10 @@ export default async function Page() {
 
   if (!session) redirect("/cms/login");
   const data = await getData();
-  const card = await getCardData({
-    verifiedCardId: data.verified.cards,
-    pendingCardId: data.pending.cards,
-  });
+  // const card = await getCardData({
+  //   verifiedCardId: data.verified.cards,
+  //   pendingCardId: data.pending.cards,
+  // });
 
   return (
     <div className="w-full">
@@ -70,25 +70,25 @@ export default async function Page() {
               role={role}
             />
 
-            <FormSection2
+            {/* <FormSection2
               verified={data.verified}
               pending={data.pending}
               role={role}
-            />
+            /> */}
 
-            <FormSection3
+            {/* <FormSection3
               verified={data.verified}
               pending={data.pending}
               role={role}
               verifiedCards={card.verified}
               pendingCards={card.pending}
-            />
+            /> */}
 
-            <FormSection4
+            {/* <FormSection4
               verified={data.verified}
               pending={data.pending}
               role={role}
-            />
+            /> */}
           </div>
         </div>
       </CMSContainer>

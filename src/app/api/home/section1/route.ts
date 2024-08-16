@@ -1,8 +1,9 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -18,16 +19,21 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const uuid = shortUUID.generate();
-
   const image = body.get("image1") as File;
-  const fileExtension = image.name.split(".").pop();
 
   const heading1 = body.get("heading1") as string;
   const description1 = body.get("description1") as string;
 
   const session = await decrypt(sessionExists.value);
   const role = session.role;
+
+  const imagesDir = path.join(process.cwd(), "public/homeBlock");
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
+  }
+  const extension = image.name.split(".").pop();
+  const fileName = `${shortUUID.generate()}.${extension}`;
+  const filePath = path.join(imagesDir, fileName);
 
   try {
     if (image) {
@@ -37,19 +43,26 @@ export async function PUT(req: NextRequest) {
             status: "verified",
           },
         });
-        const deleteImage = "public/" + currData?.image1.split("/").pop();
-        await storage.image.delete(deleteImage).catch((error) => {
-          console.error("Error deleting image:", error);
-          throw new Error("Error deleting image");
-        });
+        if (currData?.image1) {
+          const deleteImage = path.join(
+            process.cwd(),
+            "public",
+            currData.image1,
+          );
+          if (fs.existsSync(deleteImage)) {
+            fs.unlinkSync(deleteImage);
+          } else {
+            console.warn("File not found:", deleteImage);
+          }
+        }
       }
 
-      await storage.image
-        .upload(`/public/${uuid}.${fileExtension}`, image)
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-          throw new Error("Error uploading image");
-        });
+      const blob = await image.arrayBuffer();
+      const buffer = Buffer.from(blob);
+      fs.writeFileSync(filePath, buffer);
+
+      // Save the file path to the database (relative to the public folder)
+      const relativeFilePath = `/homeBlock/${fileName}`;
 
       let result;
       if (role === "admin") {
@@ -60,7 +73,7 @@ export async function PUT(req: NextRequest) {
             },
           },
           data: {
-            image1: `/public/${uuid}.${fileExtension}`,
+            image1: relativeFilePath,
             heading1: heading1,
             description1: description1,
           },
@@ -71,7 +84,7 @@ export async function PUT(req: NextRequest) {
             status: "updatePending",
           },
           data: {
-            image1: `/public/${uuid}.${fileExtension}`,
+            image1: relativeFilePath,
             heading1: heading1,
             description1: description1,
           },
@@ -115,12 +128,13 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    if (pending?.image1 !== verified?.image1) {
-      const deleteImage = "public/" + verified?.image1.split("/").pop();
-      await storage.image.delete(deleteImage).catch((error) => {
-        console.error("Error deleting old image:", error);
-        throw new Error("Error deleting old image");
-      });
+    if (pending?.image1 !== verified?.image1 && verified?.image1) {
+      const deleteImage = path.join(process.cwd(), "public", verified.image1);
+      if (fs.existsSync(deleteImage)) {
+        fs.unlinkSync(deleteImage);
+      } else {
+        console.warn("File not found:", deleteImage);
+      }
     }
 
     const update = await prisma.home.updateMany({
@@ -169,11 +183,14 @@ export async function DELETE(req: NextRequest) {
     },
   });
 
-  const deleteImage = "public/" + pending?.image1.split("/").pop();
-  await storage.image.delete(deleteImage).catch((error) => {
-    console.error("Error deleting image:", error);
-    throw new Error("Error deleting image");
-  });
+  if (pending?.image1) {
+    const deleteImage = path.join(process.cwd(), "public", pending.image1);
+    if (fs.existsSync(deleteImage)) {
+      fs.unlinkSync(deleteImage);
+    } else {
+      console.warn("File not found:", deleteImage);
+    }
+  }
 
   const update = await prisma.home.updateMany({
     where: {

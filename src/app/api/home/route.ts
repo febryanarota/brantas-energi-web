@@ -3,17 +3,34 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const verified = await prisma.home.findFirst({
+    let verified = await prisma.home.findFirst({
       where: {
         status: "verified",
       },
     });
 
-    const pending = await prisma.home.findFirst({
+    if (!verified) {
+      verified = await prisma.home.create({
+        data: {
+          status: "verified",
+        },
+      });
+    }
+
+
+    let pending = await prisma.home.findFirst({
       where: {
         status: "updatePending",
       },
     });
+
+    if (!pending) {
+      pending = await prisma.home.create({
+        data: {
+          status: "updatePending",
+        },
+      });
+    }
 
     const response = NextResponse.json({ verified, pending });
     response.headers.set("Cache-Control", "no-store");
