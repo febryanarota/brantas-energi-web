@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import React from "react";
 import { Editor } from "@/components/editor/Editor";
@@ -45,31 +45,35 @@ export default function FormSection2({
     if (verified) {
       const fetchImage = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image2}`,
-          );
+          if (!verified.image2) {
+            setIsFetching(false);
+            return;
+          }
+
+          const response = await fetch(verified.image2);
           const blob = await response.blob();
           const file = new File([blob], verified.image2, { type: blob.type });
 
           setImage({
             image: file,
             name: verified.image2,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${verified.image2}`,
+            display: verified.image2,
           });
 
-          const resPending = await fetch(
-            `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.image2}`,
-          );
-          const blobPending = await resPending.blob();
-          const filePending = new File([blob], pending.image2, {
-            type: blobPending.type,
-          });
+          if (pending.image2) {
 
-          setImagePending({
-            image: filePending,
-            name: pending.image2,
-            display: `${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${pending.image2}`,
-          });
+            const resPending = await fetch(pending.image2);
+            const blobPending = await resPending.blob();
+            const filePending = new File([blob], pending.image2, {
+              type: blobPending.type,
+            });
+  
+            setImagePending({
+              image: filePending,
+              name: pending.image2,
+              display: pending.image2,
+            });
+          }
 
           if (verified.image2 !== pending.image2) {
             setIsPending(true);
@@ -136,6 +140,9 @@ export default function FormSection2({
         title: "Success!",
         description: "Section 2 has been updated successfully",
       });
+      if (role !== "admin") {
+        window.location.reload();
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -257,7 +264,7 @@ export default function FormSection2({
                 <p className="font-semibold text-slate-500 text-sm">Image</p>
                 {imagePending?.display && (
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${imagePending.name}`}
+                    href={imagePending.display}
                     target="_blank"
                     className="w-fit h-fit"
                   >
@@ -355,7 +362,7 @@ export default function FormSection2({
               {image?.display && (
                 <div>
                   <a
-                    href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${image.name}`}
+                    href={image.display}
                     target="_blank"
                     className="w-fit h-fit"
                   >
