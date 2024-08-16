@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { subtractArrays } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -39,12 +40,18 @@ export async function PUT(req: NextRequest) {
         },
       });
 
-      let path =
-        "public/card/" + (deleteCard?.image as string).split("/").pop();
-      storage.image.delete(path).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      if (deleteCard?.image) {
+        const deleteImage = path.join(
+          process.cwd(),
+          "public",
+          deleteCard.image,
+        );
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        } else {
+          console.warn("File not found:", deleteImage);
+        }
+      }
       // delete the cards instance
       await prisma.card.delete({
         where: {

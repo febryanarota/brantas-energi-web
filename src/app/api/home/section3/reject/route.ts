@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { subtractArrays } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 
 export async function PUT(req: NextRequest) {
   const sessionExists = req.cookies.get("session");
@@ -9,7 +10,6 @@ export async function PUT(req: NextRequest) {
   if (!sessionExists) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
 
   try {
     // get both verified and pending data
@@ -39,12 +39,14 @@ export async function PUT(req: NextRequest) {
         },
       });
 
-      let path =
-        "public/card/" + (deleteCard?.image as string).split("/").pop();
-      storage.image.delete(path).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      if (deleteCard?.image) {
+        let deleteImage = path.join(process.cwd(), "public", deleteCard?.image);
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        } else {
+          console.warn("File not found:", deleteImage);
+        }
+      }
     });
 
     // delete the cards instance

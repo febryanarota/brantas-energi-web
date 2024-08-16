@@ -25,8 +25,8 @@ export default function FormSection3({
   verified: home;
   pending: home;
   role: string;
-  verifiedCards: card[];
-  pendingCards: card[];
+  verifiedCards?: card[];
+  pendingCards?: card[];
 }) {
   const [isPending, setIsPending] = useState(false);
 
@@ -48,7 +48,7 @@ export default function FormSection3({
     <div className="flex flex-col p-5 bg-white rounded-md shadow-sm">
       <p className="font-bold text-primaryBlue mb-4">Section 3</p>
 
-      {isPending ? (
+      {isPending && pendingCards ? (
         <RequestPending
           pending={pending}
           pendingCards={pendingCards}
@@ -66,7 +66,7 @@ const CardForm = ({
   verified,
   role,
 }: {
-  cards: card[];
+  cards?: card[];
   verified: home;
   role: string;
 }) => {
@@ -74,7 +74,7 @@ const CardForm = ({
   const [heading3, setHeading3] = useState(verified.heading3);
   const [subHeading3, setSubHeading3] = useState(verified.subheading3);
 
-  const cardsData : card[] = cards
+  const cardsData : card[] | undefined = cards
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -132,7 +132,7 @@ const CardForm = ({
           name="heading3"
           className="field"
           onChange={(e) => setHeading3(e.target.value)}
-          value={heading3}
+          value={heading3 || ""}
         />
       </div>
       <div className="flex flex-col justify-center w-full">
@@ -144,7 +144,7 @@ const CardForm = ({
           name="Subheading3"
           className="field"
           onChange={(e) => setSubHeading3(e.target.value)}
-          value={subHeading3}
+          value={subHeading3 || ""}
         />
       </div>
 
@@ -167,13 +167,18 @@ const CardForm = ({
             </ModalContent>
           </Modal>
         </div>
-        <div className="w-full border-1 border-slate-200 rounded-md p-2 space-y-2">
-          {cardsData.map((card, index) => (
-            <div id={"list-component-" + index} key={index}>
-              <ListComponent  card={card} role={role} id={"list-component-" + index}/>
-            </div>
-          ))}
-        </div>
+        {
+          cardsData && (
+          <div className="w-full border-1 border-slate-200 rounded-md p-2 space-y-2">
+            {cardsData.map((card, index) => (
+              <div id={"list-component-" + index} key={index}>
+                <ListComponent  card={card} role={role} id={"list-component-" + index}/>
+              </div>
+            ))}
+          </div>
+          )
+        }
+
 
         <Button
           type="submit"
