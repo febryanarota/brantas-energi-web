@@ -171,7 +171,7 @@ export function ImageContent({ data }: { data: image }) {
   return (
     <div className="w-full md:py-8 py-4">
       <a
-        href={data.image}
+        href={`${process.env.NEXT_PUBLIC_URL}/${data.image}`}
         target="_blank"
       >
         <div className="max-h-[70vh] flex justify-center items-center">
@@ -194,7 +194,7 @@ export function FileLinkContent({ data }: { data: file }) {
       <a
         href={
           data.isFile
-            ? `/${data.link}`
+            ? `${process.env.NEXT_PUBLIC_URL}/${data.link}`
             : (data.link as string)
         }
         target="_blank"
@@ -284,7 +284,7 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
                 <a
                   href={
                     item.isFile
-                      ? `$${item.link}`
+                      ? `${process.env.NEXT_PUBLIC_URL}/${item.link}`
                       : item.link
                   }
                   target="_blank"
@@ -304,7 +304,7 @@ export function FileImageContent({ data }: { data: fileImageBuffer }) {
                 onClick={() =>
                   handleDownload(
                     item.isFile
-                      ? `/${item.link}`
+                      ? `${process.env.NEXT_PUBLIC_URL}/${item.link}`
                       : item.link,
                   )
                 }
