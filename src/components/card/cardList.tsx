@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { card } from "@prisma/client";
 import { LoaderCircle, Trash } from "lucide-react";
@@ -37,18 +37,17 @@ export const ListComponent = ({
   return (
     <div className="w-full bg-slate-100 rounded-md p-2 flex flex-row">
       <div className="w-[5rem] h-[5rem] bg-slate-300 rounded-md overflow-hidden">
-        <a
-          href={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${card.image}`}
-          target="_blank"
-        >
-          <Image
-            src={`${process.env.NEXT_PUBLIC_IMAGE_STORAGE_URL}/${card.image}`}
-            width={100}
-            height={100}
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </a>
+        {card.image && (
+          <a href={card.image} target="_blank">
+            <Image
+              src={card.image}
+              width={100}
+              height={100}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          </a>
+        )}
       </div>
       <div className="flex flex-col text-sm ml-3 flex-1">
         <a className="font-semibold" href={card.link as string}>

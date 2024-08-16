@@ -1,7 +1,9 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
+// import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 import shortUUID from "short-uuid";
 
 export const maxDuration = 60;
@@ -29,23 +31,28 @@ export async function POST(req: NextRequest) {
   const session = await decrypt(sessionExists.value);
   const role = session.role;
   const body = await req.formData();
-  const uuid = shortUUID.generate();
+
+  const imagesDir = path.join(process.cwd(), "public/homeBlock");
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
+  }
 
   const file: File = body.get("image") as File;
-  const fileExtension = file.name.split(".").pop();
+  const extension = file.name.split(".").pop();
+  const fileName = `${shortUUID.generate()}.${extension}`;
+  const filePath = path.join(imagesDir, fileName);
   const title = body.get("title") as string;
   const link = body.get("link") as string;
   const description = body.get("description") as string;
 
-  const imagePath = `public/card/${uuid}.${fileExtension}`;
-
   try {
     // store the image
-    const image = await storage.image.upload(imagePath, file);
+    const blob = await file.arrayBuffer();
+    const buffer = Buffer.from(blob);
+    fs.writeFileSync(filePath, buffer);
 
-    if (!image) {
-      throw new Error("Image upload failed");
-    }
+    // Save the file path to the database (relative to the public folder)
+    const relativeFilePath = `/homeBlock/${fileName}`;
 
     // create the card
     const response = await prisma.card.create({
@@ -53,7 +60,7 @@ export async function POST(req: NextRequest) {
         title: title,
         description: description,
         link: link,
-        image: imagePath,
+        image: relativeFilePath,
       },
     });
 

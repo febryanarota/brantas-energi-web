@@ -1,7 +1,8 @@
 import { decrypt } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 
 export async function DELETE(
   req: NextRequest,
@@ -27,11 +28,14 @@ export async function DELETE(
       });
 
       // remove the image cards in storage
-
-      await storage.image.delete(result.image as string).catch((error) => {
-        console.error("Error deleting image:", error);
-        throw new Error("Error deleting image");
-      });
+      if (result.image) {
+        const deleteImage = path.join(process.cwd(), "public", result.image);
+        if (fs.existsSync(deleteImage)) {
+          fs.unlinkSync(deleteImage);
+        } else {
+          console.warn("File not found:", deleteImage);
+        }
+      }
 
       // remove the id in array of cards in home
       const home = await prisma.home.findFirst({
