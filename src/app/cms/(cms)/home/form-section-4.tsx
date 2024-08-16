@@ -169,7 +169,7 @@ export default function FormSection4({
     try {
       // POST request to create a new text block
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/home/section4`,
+        `/api/home/section4`,
         {
           method: "PUT",
           body: formData,
