@@ -22,7 +22,7 @@ export default function Page() {
     const result = await response.json();
 
     if (result.success) {
-      router.push("/cms/profile");
+      router.push("/cms/home");
     } else {
       setError(result.error);
     }
