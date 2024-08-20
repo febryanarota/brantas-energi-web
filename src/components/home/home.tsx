@@ -11,6 +11,7 @@ export default function Home({ data }: { data: home }) {
   const OPTIONS: EmblaOptionsType = {
     loop: true,
   };
+  const [isFetchingCard, setIsFetchingCard] = useState(true);
 
   const [slides, setSlides] = useState<card[]>([]);
 
@@ -33,6 +34,7 @@ export default function Home({ data }: { data: home }) {
     };
 
     fetchData();
+    setIsFetchingCard(false);
   }, []);
 
   return (
@@ -114,7 +116,14 @@ export default function Home({ data }: { data: home }) {
               {data.heading3}
             </p>
           </div>
-          <Layanan slides={slides} options={OPTIONS} />
+          { !isFetchingCard ?
+            <Layanan slides={slides} options={OPTIONS} />
+            : 
+            <div className="w-full bg-slate-200 h-[25rem] rounded-md shadow-sm animate-pulse">
+
+            </div>
+
+          }
         </Container>
       </div>
     </div>
