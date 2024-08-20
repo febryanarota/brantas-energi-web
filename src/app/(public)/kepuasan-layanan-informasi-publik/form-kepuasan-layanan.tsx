@@ -13,6 +13,7 @@ import {
 import { useFormik } from "formik";
 import { useToast } from "@/components/ui/use-toast";
 import * as Yup from "yup";
+import { DatePicker } from "@nextui-org/react";
 
 export default function FormKepuasanLayanan() {
   // let date;
@@ -77,6 +78,7 @@ export default function FormKepuasanLayanan() {
           title: "Success!",
           description: "Form successfully submitted",
         });
+        window.location.reload();
       } catch (error) {
         toast({
           variant: "destructive",
@@ -89,6 +91,14 @@ export default function FormKepuasanLayanan() {
       }
     },
   });
+
+  const toDate = (year: number, month: number, day: number, era: string) => {
+    // Adjust year based on the era
+    const adjustedYear = era === "BC" ? 1 - year : year;
+    
+    // Convert to Date object
+    return new Date(adjustedYear, month - 1, day);
+  }
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -181,37 +191,25 @@ export default function FormKepuasanLayanan() {
         </div>
 
         <div className="flex flex-col w-full">
-          <Popover>
-            <PopoverTrigger asChild>
-              <div className="w-full">
-                <p>Tanggal Lahir</p>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal border-2 rounded-sm p-2",
-                    formik.touched.tanggalLahir &&
-                      formik.errors.tanggalLahir &&
-                      "border-red-300",
-                    !formik.values.tanggalLahir && "text-muted-foreground",
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {formik.values.tanggalLahir ? (
-                    format(formik.values.tanggalLahir, "PPP")
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </div>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                onSelect={(date) => formik.setFieldValue("tanggalLahir", date)}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <div className="w-full">
+            <p>Tanggal Lahir</p>
+            <DatePicker
+              className={cn(
+                "w-full",
+                formik.touched.tanggalLahir &&
+                  formik.errors.tanggalLahir &&
+                  "border-red-300",
+                !formik.values.tanggalLahir && "text-muted-foreground",
+              )}
+              onChange={(date) => {
+                formik.setFieldValue("tanggalLahir", toDate(date.year, date.month, date.day, date.era));
+                console.log(toDate(date.year, date.month, date.day, date.era));
+              }}
+              variant="bordered"
+              showMonthAndYearPickers
+            />
+          </div>
+
           {formik.touched.tanggalLahir && formik.errors.tanggalLahir ? (
             <div className="invalid-feedback">{formik.errors.tanggalLahir}</div>
           ) : null}
