@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import storage from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 import shortUUID from "short-uuid";
+import fs from "fs";
 
 export const maxDuration = 60;
 
@@ -98,15 +99,19 @@ export async function POST(req: NextRequest) {
     const file = lampiran as File;
     const fileExt = file.name.split(".").pop();
 
-    const response = await storage.file.upload(
-      `/public/lampiran-pengaduan/${uuid}.${fileExt}`,
-      file,
-    );
-
-    if (!response) {
-      return NextResponse.json({ error: "Error file upload" }, { status: 500 });
+    const dir = path.join(process.cwd(), "public/pengaduan");
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-    link = `public/lampiran-pengaduan/${uuid}.${fileExt}`;
+
+    const fileName = `${uuid}.${fileExt}`;
+    const filePath = path.join(dir, fileName);
+
+    const blob = await file.arrayBuffer();
+    const buffer = Buffer.from(blob);
+    fs.writeFileSync(filePath, buffer);
+
+    link = `/pengaduan/${fileName}`;
   }
 
   const response = await prisma.pengaduan.create({

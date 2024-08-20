@@ -82,6 +82,7 @@ export default function FormPengaduan() {
           title: "Success!",
           description: "Form successfully submitted",
         });
+        window.location.reload();
       } catch (error) {
         toast({
           title: "Error!",
