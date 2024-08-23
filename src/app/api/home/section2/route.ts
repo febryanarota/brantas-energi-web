@@ -24,6 +24,7 @@ export async function PUT(req: NextRequest) {
 
   const heading2 = body.get("heading2") as string;
   const description2 = body.get("description2") as string;
+  const subHeading2 = body.get("subHeading2") as string;
 
   const session = await decrypt(sessionExists.value);
   const role = session.role;
@@ -77,6 +78,7 @@ export async function PUT(req: NextRequest) {
             image2: relativeFilePath,
             heading2: heading2,
             description2: description2,
+            subheading2: subHeading2
           },
         });
       } else {
@@ -88,6 +90,7 @@ export async function PUT(req: NextRequest) {
             image2: relativeFilePath,
             heading2: heading2,
             description2: description2,
+            subheading2: subHeading2
           },
         });
       }
@@ -146,6 +149,7 @@ export async function PATCH(req: NextRequest) {
         image2: pending?.image2,
         heading2: pending?.heading2,
         description2: pending?.description2,
+        subheading2: pending?.subheading2
       },
     });
 
@@ -201,6 +205,7 @@ export async function DELETE(req: NextRequest) {
       heading2: verified?.heading2,
       description2: verified?.description2,
       image2: verified?.image2,
+      subheading2: verified?.subheading2
     },
   });
 

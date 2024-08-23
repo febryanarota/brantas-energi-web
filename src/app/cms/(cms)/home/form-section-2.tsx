@@ -119,6 +119,8 @@ export default function FormSection2({
     formData.append("heading2", heading2);
     formData.append("image2", image?.image as File);
     formData.append("description2", description2);
+    formData.append("subHeading2", subHeading2);
+    
 
     try {
       // POST request to create a new text block
